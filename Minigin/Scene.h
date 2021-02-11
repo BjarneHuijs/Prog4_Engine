@@ -10,8 +10,10 @@ namespace dae
 	public:
 		void Add(const std::shared_ptr<SceneObject>& object);
 
-		void Update();
-		void Render() const;
+		void FixedUpdate(float deltaTime);
+		void Update(float deltaTime);
+		void LateUpdate(float deltaTime);
+		void Render(float nextFrameTime) const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;

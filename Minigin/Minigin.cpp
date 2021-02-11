@@ -7,7 +7,10 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
+
+#include "Font.h"
 #include "TextObject.h"
+#include "FPSComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
 
@@ -22,7 +25,7 @@ void dae::Minigin::Initialize()
 	}
 
 	m_Window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		"This engine doesn't know what it's doing",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		640,
@@ -35,6 +38,8 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+
+
 }
 
 /**
@@ -57,6 +62,13 @@ void dae::Minigin::LoadGame() const
 	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
 	to->SetPosition(80, 20);
 	scene.Add(to);
+
+	go = std::make_shared<GameObject>();
+	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	auto fps = std::make_shared<FPSComponent>("0", font);
+	go->AddComponent(fps, "FpsCounter");
+	go->SetPosition(10, 5);
+	scene.Add(go);
 }
 
 void dae::Minigin::Cleanup()
@@ -75,23 +87,36 @@ void dae::Minigin::Run()
 	ResourceManager::GetInstance().Init("../Data/");
 
 	LoadGame();
-
+	
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
-
+		
 		bool doContinue = true;
+		auto lastTime = high_resolution_clock::now();
+		float lag{ 0.0f };
 		while (doContinue)
 		{
 			const auto currentTime = high_resolution_clock::now();
-			
+			const float deltaTime{ std::chrono::duration<float>(currentTime - lastTime).count() };
+
+			//int fps{ nrOfFrames / std::chrono::duration<float>(currentTime - startTime).count() };
+
+			lastTime = currentTime;
+			lag += deltaTime;
 			doContinue = input.ProcessInput();
-			sceneManager.Update();
-			renderer.Render();
+			while(lag >= MsPerFrame)
+			{
+				sceneManager.FixedUpdate(deltaTime);
+				lag -= MsPerFrame;
+			}
+			sceneManager.Update(deltaTime);
+			sceneManager.LateUpdate(deltaTime);
 			
-			auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
-			this_thread::sleep_for(sleepTime);
+			renderer.Render(lag / deltaTime);
+			
+
 		}
 	}
 

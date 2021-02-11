@@ -27,11 +27,11 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 }
 
-void dae::Renderer::Render() const
+void dae::Renderer::Render(const float nextFrameTime) const
 {
 	SDL_RenderClear(m_Renderer);
 
-	SceneManager::GetInstance().Render();
+	SceneManager::GetInstance().Render(nextFrameTime);
 	
 	SDL_RenderPresent(m_Renderer);
 }

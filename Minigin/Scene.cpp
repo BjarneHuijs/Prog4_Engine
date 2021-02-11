@@ -15,19 +15,35 @@ void Scene::Add(const std::shared_ptr<SceneObject>& object)
 	m_Objects.push_back(object);
 }
 
-void Scene::Update()
+void Scene::FixedUpdate(const float deltaTime)
 {
-	for(auto& object : m_Objects)
+	for (auto& object : m_Objects)
 	{
-		object->Update();
+		object->FixedUpdate(deltaTime);
 	}
 }
 
-void Scene::Render() const
+void Scene::Update(const float deltaTime)
+{
+	for (auto& object : m_Objects)
+	{
+		object->Update(deltaTime);
+	}
+}
+
+void Scene::LateUpdate(const float deltaTime)
+{
+	for (auto& object : m_Objects)
+	{
+		object->LateUpdate(deltaTime);
+	}
+}
+
+void Scene::Render(const float nextFrameTime) const
 {
 	for (const auto& object : m_Objects)
 	{
-		object->Render();
+		object->Render(nextFrameTime);
 	}
 }
 
