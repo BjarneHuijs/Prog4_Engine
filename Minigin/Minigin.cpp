@@ -64,8 +64,8 @@ void dae::Minigin::LoadGame() const
 	scene.Add(to);
 
 	go = std::make_shared<GameObject>();
-	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
-	auto fps = std::make_shared<FPSComponent>("0", font);
+	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	const auto fps = std::make_shared<FPSComponent>("test 0", font);
 	go->AddComponent(fps, "FpsCounter");
 	go->SetPosition(10, 5);
 	scene.Add(go);

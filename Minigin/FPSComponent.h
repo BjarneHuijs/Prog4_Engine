@@ -12,7 +12,7 @@ namespace dae
 		//void FixedUpdate(const float deltaTime) override;
 		//void Update(const float deltaTime) override;
 		void LateUpdate(const float deltaTime) override;
-		//void Render(const float nextFrameTime) const override;
+		void Render(const float nextFrameTime) const override;
 		
 		
 		explicit FPSComponent(const std::string& text, const std::shared_ptr<Font>& font);
@@ -23,7 +23,7 @@ namespace dae
 		FPSComponent& operator=(FPSComponent && other) = delete;
 
 	private:
-		const std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTime;
+		std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTime;
 		int m_FPS;
 		int m_NrOfFrames;
 	};

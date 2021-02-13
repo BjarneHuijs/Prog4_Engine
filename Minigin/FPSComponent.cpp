@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "FPSComponent.h"
 
-//#include "Renderer.h"
+#include "Renderer.h"
 
 dae::FPSComponent::FPSComponent(const std::string& text, const std::shared_ptr<Font>& font)
 	: TextComponent(text, font)
@@ -15,17 +15,18 @@ void dae::FPSComponent::LateUpdate(const float deltaTime)
 	deltaTime;
 	const auto currentTime{ std::chrono::high_resolution_clock::now() };
 
-	m_FPS = int(m_NrOfFrames / std::chrono::duration<float>(currentTime - m_StartTime).count());
-	SetText(m_FPS + "");
-	m_NrOfFrames++;
+	m_FPS = static_cast<int>(1 / std::chrono::duration<float>(currentTime - m_StartTime).count());
+	SetText(std::to_string(m_FPS));
+	//m_NrOfFrames++;
+	m_StartTime = currentTime;
 }
 
-//void dae::FPSComponent::Render(const float nextFrameTime) const
-//{
-//	if (m_Texture != nullptr)
-//	{
-//		nextFrameTime;
-//		const auto pos = m_Transform.GetPosition();
-//		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
-//	}
-//}
+void dae::FPSComponent::Render(const float nextFrameTime) const
+{
+	if (m_Texture != nullptr)
+	{
+		nextFrameTime;
+		const auto pos = m_Transform.GetPosition();
+		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+	}
+}
