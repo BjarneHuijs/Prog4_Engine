@@ -16,9 +16,13 @@ namespace dae
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(const float x, const float y);
+		Transform GetPosition() const;
 
 		void AddComponent(std::shared_ptr<BaseComponent> component, const std::string componentName);
 		void RemoveComponent(const std::string componentName);
+		template<typename T>
+		std::shared_ptr<T> GetComponent() const;
+
 		
 		GameObject() = default;
 		virtual ~GameObject();
@@ -32,4 +36,19 @@ namespace dae
 		std::shared_ptr<Texture2D> m_Texture{};
 		std::map<std::string, std::shared_ptr<BaseComponent>> m_pComponents{};
 	};
+
+	// templated function was provided by Martijn
+	template<typename T>
+	inline std::shared_ptr<T> GameObject::GetComponent() const
+	{
+		for(const auto& pair: m_pComponents)
+		{
+			std::shared_ptr<BaseComponent> pComponent = pair.second;
+			std::shared_ptr<T> pComponentCast = dynamic_cast<T*>(pComponent);
+
+			if (pComponentCast)
+				return pComponent;
+		}
+		return nullptr;
+	}
 }

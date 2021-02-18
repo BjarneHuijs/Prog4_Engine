@@ -1,9 +1,9 @@
 #pragma once
 
-class TextObject;
 struct SDL_Window;
 namespace dae
 {
+	class TextObject;
 	class Minigin
 	{
 	public:

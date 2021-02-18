@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Transform.h"
+#include "Structs.h"
 
 namespace dae
 {
@@ -9,15 +10,17 @@ namespace dae
 	class TextComponent : public BaseComponent
 	{
 	public:
-		void FixedUpdate(const float deltaTime) override;
-		void Update(const float deltaTime) override;
-		void LateUpdate(const float deltaTime) override;
-		void Render(const float nextFrameTime) const override;
+		virtual void FixedUpdate(const float deltaTime) override;
+		virtual void Update(const float deltaTime) override;
+		virtual void LateUpdate(const float deltaTime) override;
+		virtual void Render(const float nextFrameTime) const override;
 
 		void SetText(const std::string& text);
-		void SetPosition(const float x, const float y);
+		//void SetPosition(const float x, const float y);
 
-		explicit TextComponent(const std::string& text, const std::shared_ptr<Font>& font);
+		void SetParent(GameObject* parent) override;
+
+		explicit TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const Color& color = {255, 255, 255 });
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent & other) = delete;
 		TextComponent(TextComponent && other) = delete;
@@ -26,8 +29,9 @@ namespace dae
 	protected:
 		bool m_NeedsUpdate;
 		std::string m_Text;
-		Transform m_Transform;
 		std::shared_ptr<Font> m_Font;
+		Color m_Color;
+		Transform m_Transform;
 		std::shared_ptr<Texture2D> m_Texture;
 	};
 }

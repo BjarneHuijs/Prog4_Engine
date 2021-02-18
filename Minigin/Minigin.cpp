@@ -59,13 +59,13 @@ void dae::Minigin::LoadGame() const
 	scene.Add(go);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
+	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font, Color{ 255, 0, 0 });
 	to->SetPosition(80, 20);
 	scene.Add(to);
 
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	const auto fps = std::make_shared<FPSComponent>("test 0", font);
+	const auto fps = std::make_shared<FPSComponent>("no fps", font, Color{ 255, 255, 0 });
 	go->AddComponent(fps, "FpsCounter");
 	go->SetPosition(10, 5);
 	scene.Add(go);
@@ -116,7 +116,6 @@ void dae::Minigin::Run()
 			
 			renderer.Render(lag / deltaTime);
 			
-
 		}
 	}
 
