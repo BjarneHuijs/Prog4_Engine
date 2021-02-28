@@ -27,20 +27,8 @@ void dae::Minigin::Initialize()
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
-	m_Window = SDL_CreateWindow(
-		"This engine doesn't know what it's doing",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
-		SDL_WINDOW_OPENGL
-	);
-	if (m_Window == nullptr) 
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
-
-	Renderer::GetInstance().Init(m_Window);
+	
+	Renderer::GetInstance().Init();
 
 }
 
@@ -89,8 +77,8 @@ void dae::Minigin::Cleanup()
 {
 	CoUninitialize();
 	Renderer::GetInstance().Destroy();
-	SDL_DestroyWindow(m_Window);
-	m_Window = nullptr;
+	//SDL_DestroyWindow(m_Window);
+	//m_Window = nullptr;
 	SDL_Quit();
 }
 

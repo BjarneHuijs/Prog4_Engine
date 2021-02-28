@@ -172,7 +172,7 @@ bool InputManager::HandleKeyboardInput()
             }
         
         if (e.type == SDL_MOUSEBUTTONDOWN) {
-            return false;
+            //return false;
 
         }
     }
