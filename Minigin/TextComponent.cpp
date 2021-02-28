@@ -7,14 +7,18 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "GameObject.h"
+#include "PlayerComponent.h"
 
-dae::TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
+dae::TextComponent::TextComponent(const std::string& name, const std::string& text, const std::shared_ptr<Font>& font, const Color& color, EventTypes type)
 	: m_NeedsUpdate( true )
+	, m_Name( name )
 	, m_Text( text )
 	, m_Font( font )
 	, m_Color( color )
 	, m_Texture(nullptr)
-{}
+{
+	m_Type = type;
+}
 
 void dae::TextComponent::FixedUpdate(const float deltaTime)
 {
@@ -57,7 +61,7 @@ void dae::TextComponent::Render(const float nextFrameTime) const
 	{
 		nextFrameTime;
 		//const auto pos = m_Transform.GetPosition();
-		const auto pos{ m_pParent->GetPosition().GetPosition() };
+		const auto pos{ m_pParent->GetPosition().GetPosition() + m_Transform.GetPosition() };
 		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	}
 }
@@ -69,6 +73,15 @@ void dae::TextComponent::SetText(const std::string& text)
 	m_NeedsUpdate = true;
 }
 
+void dae::TextComponent::onNotify(const GameObject& object, Event event)
+{
+	object;
+	if (event.type == m_Type)
+	{
+		SetText(event.message);
+	}
+}
+
 //void dae::TextComponent::SetParent(GameObject* pParent)
 //{
 //	if(pParent)
@@ -77,7 +90,7 @@ void dae::TextComponent::SetText(const std::string& text)
 //	}
 //}
 
-//void dae::TextComponent::SetPosition(const float x, const float y)
-//{
-//	m_Transform.SetPosition(x, y, 0.0f);
-//}
+void dae::TextComponent::SetPosition(const float x, const float y)
+{
+	m_Transform.SetPosition(x, y, 0.0f);
+}

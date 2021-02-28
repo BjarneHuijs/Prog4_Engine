@@ -14,7 +14,7 @@ namespace dae
 		//void Render(const float nextFrameTime) const override;
 		
 		
-		explicit FPSComponent(const std::string& text, const std::shared_ptr<Font>& font, const Color& color = { 255, 255, 255 });
+		explicit FPSComponent(const std::string& name, const std::string& text, const std::shared_ptr<Font>& font, const Color& color = { 255, 255, 255 });
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent & other) = delete;
 		FPSComponent(FPSComponent && other) = delete;

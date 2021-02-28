@@ -24,4 +24,32 @@ namespace dae
 		explicit Kill(GameObject* object) : Command(object){}
 		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->Kill(); }
 	};
+
+	class KillCoily : public Command
+	{
+	public:
+		explicit KillCoily(GameObject* object) : Command(object){}
+		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->KillCoilyWithDisc(); }
+	};
+
+	class ChangeColor : public Command
+	{
+	public:
+		explicit ChangeColor(GameObject* object) : Command(object){}
+		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->ChangeColor(); }
+	};
+
+	class CalculateRemainingDiscs : public Command
+	{
+	public:
+		explicit CalculateRemainingDiscs(GameObject* object) : Command(object) {}
+		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->RemainingDiscsScore(); }
+	};
+
+	class CatchNPC : public Command
+	{
+	public:
+		explicit CatchNPC(GameObject* object) : Command(object) {}
+		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->CatchNPC(); }
+	};
 }

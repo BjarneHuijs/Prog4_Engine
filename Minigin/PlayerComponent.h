@@ -1,8 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Subject.h"
+
 namespace dae
 {
-	class PlayerComponent : public BaseComponent
+	class PlayerComponent : public BaseComponent, public Subject
 	{
 	public:
 		void FixedUpdate(const float deltaTime) override;
@@ -20,7 +22,16 @@ namespace dae
 		PlayerComponent& operator=(PlayerComponent&& other) = delete;
 
 		void Kill();
+		void ChangeColor();
+		void KillCoilyWithDisc();
+		void RemainingDiscsScore();
+		void CatchNPC();
+	
 	private:
-		int m_Health{100};
+		float m_Health{};
+		int m_NrLives{};
+
+		int m_Score{};
+		int m_NrOfDiscsRemaining{};
 	};
 }

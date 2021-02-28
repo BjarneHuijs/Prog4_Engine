@@ -2,8 +2,8 @@
 #include "FPSComponent.h"
 
 
-dae::FPSComponent::FPSComponent(const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
-	: TextComponent(text, font, color)
+dae::FPSComponent::FPSComponent(const std::string& name, const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
+	: TextComponent(name, text, font, color)
 
 {}
 

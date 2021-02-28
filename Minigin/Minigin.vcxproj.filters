@@ -85,6 +85,18 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{85472f94-87fb-40ba-9a7e-98537040e389}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Observer">
+      <UniqueIdentifier>{5f485803-f70a-4151-9bba-b776e98c1e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Observer\Observer">
+      <UniqueIdentifier>{71750efd-1d48-454e-8be0-c71c7c9a7378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Observer\Subject">
+      <UniqueIdentifier>{be511453-6e78-4548-9c9d-50df46ca53bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Managers\EventManager">
+      <UniqueIdentifier>{88383d27-2ecd-40a4-ace9-28d4b02493cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -168,6 +180,15 @@
     <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Engine Files\Observer\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Engine Files\Observer\Subject</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Engine Files\Managers\EventManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -244,6 +265,15 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Engine Files\Observer\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Engine Files\Observer\Subject</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Engine Files\Managers\EventManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

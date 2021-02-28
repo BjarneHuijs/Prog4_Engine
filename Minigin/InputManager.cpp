@@ -58,6 +58,7 @@ bool InputManager::HandleControllerInput()
         return false;
     }
 
+#pragma region swapBindings
     bool oldKeyDefined{ false };
     bool newKeyDefined{ false };
 
@@ -124,7 +125,8 @@ bool InputManager::HandleControllerInput()
         }
 
     }
-
+#pragma endregion
+	
     const ControllerButton button{ static_cast<ControllerButton>(m_Keystroke.VirtualKey) };
     if (IsPressed(button))
     {
@@ -152,24 +154,27 @@ bool InputManager::HandleKeyboardInput()
             return false;
         }
         if (IsPressed(e))
+        {
+			//if (e.type == SDL_KEYDOWN) {
+            if(e.key.keysym.sym == SDLK_ESCAPE)
             {
-        //if (e.type == SDL_KEYDOWN) {
-                //if(e.key.keysym.sym == SDLK_e)
-                {
-                    const auto command = GetCommand(e.key.keysym.sym);
-                    if (command == nullptr)
-                    {
-                        std::cout << "nullptr command" << std::endl;
-                        m_Keystroke = XINPUT_KEYSTROKE{};
-
-                        return true;
-                    }
-
-                    command->Execute();
-                    m_Keystroke = XINPUT_KEYSTROKE{};
-                }
-
+                return false;
             }
+           
+            const auto command = GetCommand(e.key.keysym.sym);
+            if (command == nullptr)
+            {
+                std::cout << "nullptr command" << std::endl;
+                m_Keystroke = XINPUT_KEYSTROKE{};
+
+                return true;
+            }
+
+            command->Execute();
+            m_Keystroke = XINPUT_KEYSTROKE{};
+            
+
+        }
         
         if (e.type == SDL_MOUSEBUTTONDOWN) {
             //return false;
@@ -207,12 +212,20 @@ void InputManager::Clean()
 void InputManager::InitDefaultInput(GameObject* controllerObject, GameObject* keyboardObject)
 {
     // Init default controller commands
-	m_Commands.insert(std::make_pair(ControllerButton::ButtonA, new Kill(controllerObject)));
+	m_Commands.insert(std::make_pair(ControllerButton::ButtonA, new KillCoily(controllerObject)));
+	m_Commands.insert(std::make_pair(ControllerButton::ButtonX, new ChangeColor(controllerObject)));
+	m_Commands.insert(std::make_pair(ControllerButton::ButtonB, new CatchNPC(controllerObject)));
+	m_Commands.insert(std::make_pair(ControllerButton::ButtonY, new Kill(controllerObject)));
+	m_Commands.insert(std::make_pair(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject)));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonB, std::make_unique<Fire>(Fire())));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonX, std::make_unique<Duck>(Duck())));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonY, std::make_unique<Fart>(Fart())));
 
 	// Init default keyboard commands
 	//m_KeyboardCommands.insert(std::make_pair('E', std::make_unique<Kill>(Kill(controllerObject))));
+	m_Commands.insert(std::make_pair(SDLK_1, new KillCoily(keyboardObject)));
+	m_Commands.insert(std::make_pair(SDLK_2, new ChangeColor(keyboardObject)));
+	m_Commands.insert(std::make_pair(SDLK_3, new CatchNPC(keyboardObject)));
+	m_Commands.insert(std::make_pair(SDLK_4, new CalculateRemainingDiscs(keyboardObject)));
 	m_Commands.insert(std::make_pair(SDLK_e, new Kill(keyboardObject)));
 }
