@@ -170,12 +170,13 @@ bool InputManager::HandleKeyboardInput()
                 }
 
             }
-        }
+        
         if (e.type == SDL_MOUSEBUTTONDOWN) {
-            //return false;
+            return false;
 
         }
     }
+    return true;
 }
 
 Command* InputManager::GetCommand(const ControllerButton& button)
