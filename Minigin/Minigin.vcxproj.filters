@@ -79,6 +79,9 @@
     <Filter Include="Engine Files\Singletons">
       <UniqueIdentifier>{f5fd5647-48c8-4257-815e-f30c4daea3c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Components\PlayerComponent">
+      <UniqueIdentifier>{68e8459f-a60f-469b-a421-6504641f1bfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="Singleton.h">
       <Filter>Engine Files\Singletons</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Engine Files\Components\PlayerComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Engine Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Engine Files\Components\PlayerComponent</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

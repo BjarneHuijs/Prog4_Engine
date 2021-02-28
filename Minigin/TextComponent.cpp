@@ -69,13 +69,13 @@ void dae::TextComponent::SetText(const std::string& text)
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetParent(GameObject* pParent)
-{
-	if(pParent)
-	{
-		m_pParent = pParent;
-	}
-}
+//void dae::TextComponent::SetParent(GameObject* pParent)
+//{
+//	if(pParent)
+//	{
+//		m_pParent = pParent;
+//	}
+//}
 
 //void dae::TextComponent::SetPosition(const float x, const float y)
 //{

@@ -6,7 +6,7 @@ namespace dae
 {
 	class Texture2D;
 	class BaseComponent;
-	class GameObject final : public SceneObject
+	class GameObject final : public SceneObject, public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		void FixedUpdate(const float deltaTime) override;
@@ -16,7 +16,7 @@ namespace dae
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(const float x, const float y);
-		Transform GetPosition() const;
+		const Transform& GetPosition() const;
 
 		void AddComponent(std::shared_ptr<BaseComponent> component, const std::string componentName);
 		void RemoveComponent(const std::string componentName);
@@ -43,11 +43,13 @@ namespace dae
 	{
 		for(const auto& pair: m_pComponents)
 		{
-			std::shared_ptr<BaseComponent> pComponent = pair.second;
-			std::shared_ptr<T> pComponentCast = dynamic_cast<T*>(pComponent);
-
-			if (pComponentCast)
-				return pComponent;
+			if (typeid(*pair.second) == typeid(T))
+			{
+				//std::shared_ptr<BaseComponent> pComponent = pair.second;
+				return std::static_pointer_cast<T>(pair.second);
+			}
+			/*if (pComponentCast)
+				return pComponent;*/
 		}
 		return nullptr;
 	}

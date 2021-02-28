@@ -10,7 +10,7 @@ namespace dae
 		virtual void LateUpdate(const float deltaTime) = 0;
 		virtual void Render(const float nextFrame) const = 0;
 
-		virtual void SetParent(GameObject* parent) = 0;
+		virtual void SetParent(GameObject* parent);
 		
 		BaseComponent() = default;
 		virtual ~BaseComponent();

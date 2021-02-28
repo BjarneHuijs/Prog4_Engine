@@ -18,7 +18,7 @@ namespace dae
 		void SetText(const std::string& text);
 		//void SetPosition(const float x, const float y);
 
-		void SetParent(GameObject* parent) override;
+		//void SetParent(GameObject* parent) override;
 
 		explicit TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const Color& color = {255, 255, 255 });
 		virtual ~TextComponent() = default;
