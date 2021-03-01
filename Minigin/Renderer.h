@@ -25,6 +25,9 @@ namespace dae
 		SDL_Renderer* m_Renderer{};
 		SDL_Window* m_Window{};
 		bool m_ShowDemo{ true };
+
+		void Player1Controls();
+		void Player2Controls();
 	};
 }
 

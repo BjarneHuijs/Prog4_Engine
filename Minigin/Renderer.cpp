@@ -56,12 +56,19 @@ void dae::Renderer::Render(const float nextFrameTime) //const
 
 	SceneManager::GetInstance().Render(nextFrameTime);
 
+	// ImGui demo window
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
 	ImGui::NewFrame();
-	if (m_ShowDemo) ImGui::ShowDemoWindow(&m_ShowDemo);
+
+	Player1Controls();
+	Player2Controls();
+
+	
+	//if (m_ShowDemo) ImGui::ShowDemoWindow(&m_ShowDemo);
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	
 	
 	SDL_RenderPresent(m_Renderer);
 }
@@ -98,4 +105,82 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
+void dae::Renderer::Player1Controls()
+{
+	// Player 1
+	ImGui::Begin("Player 1: Controller");
+	if (ImGui::BeginTable("Controls", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextColumn();
+		ImGui::Text("Kill Coily:");
+		ImGui::TableNextColumn();
+		ImGui::Text("A");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Catch Slicky or Sam:");
+		ImGui::TableNextColumn();
+		ImGui::Text("B");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Change Color:");
+		ImGui::TableNextColumn();
+		ImGui::Text("X");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Kill Self:");
+		ImGui::TableNextColumn();
+		ImGui::Text("Y");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Calculate discs score:");
+		ImGui::TableNextColumn();
+		ImGui::Text("Right Shoulder");
+		ImGui::EndTable();
+	}
+	ImGui::End();
+}
+
+void dae::Renderer::Player2Controls()
+{
+	// Player 2
+	ImGui::Begin("Player 2: Keyboard");
+	if (ImGui::BeginTable("Controls", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextColumn();
+		ImGui::Text("Kill Coily:");
+		ImGui::TableNextColumn();
+		ImGui::Text("1");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Catch Slicky or Sam:");
+		ImGui::TableNextColumn();
+		ImGui::Text("3");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Change Color:");
+		ImGui::TableNextColumn();
+		ImGui::Text("2");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Kill Self:");
+		ImGui::TableNextColumn();
+		ImGui::Text("E");
+
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Calculate discs score:");
+		ImGui::TableNextColumn();
+		ImGui::Text("4");
+		ImGui::EndTable();
+	}
+	ImGui::End();
 }
