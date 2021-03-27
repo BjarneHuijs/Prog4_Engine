@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Command.h"
 
-using namespace dae;
+using namespace Idiot_Engine;
 bool InputManager::ProcessInput()
 {
 	// Controller handling

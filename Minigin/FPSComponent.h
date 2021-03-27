@@ -1,7 +1,7 @@
 #pragma once
 #include "TextComponent.h"
 
-namespace dae
+namespace Idiot_Engine
 {
 	class Font;
 	class Texture2D;

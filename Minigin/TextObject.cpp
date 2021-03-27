@@ -7,7 +7,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
+Idiot_Engine::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
 	: m_NeedsUpdate( true )
 	, m_Text( text )
 	, m_Font( font )
@@ -15,9 +15,9 @@ dae::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>
 	, m_Texture( nullptr )
 { }
 
-void dae::TextObject::FixedUpdate(const float deltaTime){ deltaTime; }
+void Idiot_Engine::TextObject::FixedUpdate(const float deltaTime){ deltaTime; }
 
-void dae::TextObject::Update(const float deltaTime)
+void Idiot_Engine::TextObject::Update(const float deltaTime)
 {
 	deltaTime;
 	if (m_NeedsUpdate)
@@ -41,9 +41,9 @@ void dae::TextObject::Update(const float deltaTime)
 	}
 }
 
-void dae::TextObject::LateUpdate(const float deltaTime){ deltaTime; }
+void Idiot_Engine::TextObject::LateUpdate(const float deltaTime){ deltaTime; }
 
-void dae::TextObject::Render(const float nextFrameTime) const
+void Idiot_Engine::TextObject::Render(const float nextFrameTime) const
 {
 	if (m_Texture != nullptr)
 	{
@@ -54,13 +54,13 @@ void dae::TextObject::Render(const float nextFrameTime) const
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextObject::SetText(const std::string& text)
+void Idiot_Engine::TextObject::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
 
-void dae::TextObject::SetPosition(const float x, const float y)
+void Idiot_Engine::TextObject::SetPosition(const float x, const float y)
 {
 	m_Transform.SetPosition(x, y, 0.0f);
 }

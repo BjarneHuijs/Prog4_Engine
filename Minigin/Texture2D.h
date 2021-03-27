@@ -1,6 +1,6 @@
 #pragma once
 struct SDL_Texture;
-namespace dae
+namespace Idiot_Engine
 {
 	/**
 	 * Simple RAII wrapper for an SDL_Texture

@@ -1,97 +1,167 @@
 #include "MiniginPCH.h"
 #include "PlayerComponent.h"
 
-dae::PlayerComponent::PlayerComponent()
-	: m_Health(100)
+#include "GameObject.h"
+#include "SubjectComponent.h"
+
+using namespace Idiot_Engine;
+PlayerComponent::PlayerComponent(const std::string& name)
+	: BaseComponent(name)
+	, m_Health(100)
 	, m_NrLives(3)
 	, m_Score(0)
 	, m_NrOfDiscsRemaining(10)
 {}
 
-void dae::PlayerComponent::FixedUpdate(const float deltaTime)
+void PlayerComponent::FixedUpdate(const float)
 {
-	deltaTime;
+	//deltaTime;
 }
 
-void dae::PlayerComponent::Update(const float deltaTime)
+void PlayerComponent::Update(const float deltaTime)
 {
-	
-	deltaTime;
-	if (m_Health < 1)
+	std::shared_ptr<SubjectComponent> subject{nullptr};
+	if (m_pParent)
 	{
-		//std::cout << "player died" << std::endl;
-		m_Health += deltaTime;
-		NotifyObservers(*m_pParent, Event{ "PlayerDied", EventTypes::LivesChanged });
+		subject = m_pParent->GetComponentByType<SubjectComponent>();
+	
 
-	}
-	else{
-		m_Health = 1;
-
-		if (m_NrLives <= 0)
+		//deltaTime;
+		if (m_Health < 1)
 		{
-			NotifyObservers(*m_pParent, Event{ "Game Over", EventTypes::PlayerDeath });
+			//std::cout << "player died" << std::endl;
+			m_Health += deltaTime;
+
+
+			if (subject)
+			{
+				subject->NotifyObservers(*m_pParent, Event{ "PlayerDied", EventTypes::LivesChanged });
+			}
 		}
 		else
 		{
-			NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+			m_Health = 1;
 
+			if (m_NrLives <= 0)
+			{
+				if (subject)
+				{
+					subject->NotifyObservers(*m_pParent, Event{ "Game Over", EventTypes::PlayerDeath });
+				}
+			}
+			else
+			{
+				if (subject)
+				{
+					subject->NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+				}
+			}
 		}
 	}
 }
 
-void dae::PlayerComponent::LateUpdate(const float deltaTime)
+void PlayerComponent::LateUpdate(const float)
 {
-	deltaTime;
+	//deltaTime;
 
 }
 
-void dae::PlayerComponent::Render(const float nextFrame) const
+void PlayerComponent::Render(const float) const
 {
-	nextFrame;
+	//nextFrame;
 }
 
-void dae::PlayerComponent::Kill()
+void PlayerComponent::Kill()
 {
 	if (m_Health >= 1) 
 	{
 		m_Health = 0;
 		m_NrLives--;
-		//NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+
+		std::shared_ptr<SubjectComponent> subject{ nullptr };
+		if (m_pParent)
+		{
+			subject = m_pParent->GetComponentByType<SubjectComponent>();
+
+
+			if (subject)
+			{
+				subject->NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+			}
+		}
 	}
 
 }
 
-void dae::PlayerComponent::ChangeColor()
+void PlayerComponent::ChangeColor()
 {
 	m_Score += 25;
-	NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+	std::shared_ptr<SubjectComponent> subject{ nullptr };
+	if (m_pParent)
+	{
+		subject = m_pParent->GetComponentByType<SubjectComponent>();
 
+
+		if (subject)
+		{
+			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+		}
+	}
 }
 
-void dae::PlayerComponent::KillCoilyWithDisc()
+void PlayerComponent::KillCoilyWithDisc()
 {
 	if (m_NrOfDiscsRemaining > 0) 
 	{
 		m_Score += 500;
 		m_NrOfDiscsRemaining--;
 	}
-	NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 
+	std::shared_ptr<SubjectComponent> subject{ nullptr };
+	if (m_pParent)
+	{
+		subject = m_pParent->GetComponentByType<SubjectComponent>();
+
+
+		if (subject)
+		{
+			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+		}
+	}
 }
 
-void dae::PlayerComponent::RemainingDiscsScore()
+void PlayerComponent::RemainingDiscsScore()
 {
 	m_Score += 50 * m_NrOfDiscsRemaining;
 	m_NrOfDiscsRemaining = 0;
-	NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 
+	std::shared_ptr<SubjectComponent> subject{ nullptr };
+	if (m_pParent)
+	{
+		subject = m_pParent->GetComponentByType<SubjectComponent>();
+
+
+		if (subject)
+		{
+			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+		}
+	}
 }
 
-void dae::PlayerComponent::CatchNPC()
+void PlayerComponent::CatchNPC()
 {
 	m_Score += 300;
-	NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+	std::shared_ptr<SubjectComponent> subject{ nullptr };
+	if (m_pParent)
+	{
+		subject = m_pParent->GetComponentByType<SubjectComponent>();
 
+
+		if (subject)
+		{
+			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+		}
+	}
 }
 
 

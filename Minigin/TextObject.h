@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "Structs.h"
 
-namespace dae
+namespace Idiot_Engine
 {
 	class Font;
 	class Texture2D;

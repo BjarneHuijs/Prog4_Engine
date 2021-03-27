@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "PlayerComponent.h"
 
-namespace dae
+namespace Idiot_Engine
 {
 	class Command
 	{
@@ -22,34 +22,34 @@ namespace dae
 	{
 	public:
 		explicit Kill(GameObject* object) : Command(object){}
-		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->Kill(); }
+		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->Kill(); }
 	};
 
 	class KillCoily : public Command
 	{
 	public:
 		explicit KillCoily(GameObject* object) : Command(object){}
-		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->KillCoilyWithDisc(); }
+		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->KillCoilyWithDisc(); }
 	};
 
 	class ChangeColor : public Command
 	{
 	public:
 		explicit ChangeColor(GameObject* object) : Command(object){}
-		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->ChangeColor(); }
+		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->ChangeColor(); }
 	};
 
 	class CalculateRemainingDiscs : public Command
 	{
 	public:
 		explicit CalculateRemainingDiscs(GameObject* object) : Command(object) {}
-		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->RemainingDiscsScore(); }
+		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->RemainingDiscsScore(); }
 	};
 
 	class CatchNPC : public Command
 	{
 	public:
 		explicit CatchNPC(GameObject* object) : Command(object) {}
-		void Execute() override { GetActor()->GetComponent<PlayerComponent>()->CatchNPC(); }
+		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->CatchNPC(); }
 	};
 }

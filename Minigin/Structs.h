@@ -1,6 +1,6 @@
 #pragma once
 
-enum EventTypes
+enum class EventTypes
 {
 	PlayerDeath,
 	LivesChanged,

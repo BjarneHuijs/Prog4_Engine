@@ -1,10 +1,10 @@
 #pragma once
 #pragma warning(push)
 #pragma warning (disable:4201)
-#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 #pragma warning(pop)
 
-namespace dae
+namespace Idiot_Engine
 {
 	class Transform final
 	{

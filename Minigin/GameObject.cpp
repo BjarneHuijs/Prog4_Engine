@@ -5,9 +5,9 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::GameObject::~GameObject() = default;
+Idiot_Engine::GameObject::~GameObject() = default;
 
-void dae::GameObject::FixedUpdate(const float deltaTime)
+void Idiot_Engine::GameObject::FixedUpdate(const float deltaTime)
 {	
 	for (const std::pair<std::string, std::shared_ptr<BaseComponent>> pComponent : m_pComponents)
 	{
@@ -15,7 +15,7 @@ void dae::GameObject::FixedUpdate(const float deltaTime)
 	}
 }
 
-void dae::GameObject::Update(const float deltaTime) 
+void Idiot_Engine::GameObject::Update(const float deltaTime) 
 {
 	for (const std::pair<std::string, std::shared_ptr<BaseComponent>> pComponent : m_pComponents)
 	{
@@ -23,7 +23,7 @@ void dae::GameObject::Update(const float deltaTime)
 	}
 }
 
-void dae::GameObject::LateUpdate(const float deltaTime)
+void Idiot_Engine::GameObject::LateUpdate(const float deltaTime)
 {
 	for (const std::pair<std::string, std::shared_ptr<BaseComponent>> pComponent : m_pComponents)
 	{
@@ -31,14 +31,9 @@ void dae::GameObject::LateUpdate(const float deltaTime)
 	}
 }
 
-void dae::GameObject::Render(const float nextFrameTime) const
+void Idiot_Engine::GameObject::Render(const float nextFrameTime) const
 {
-	nextFrameTime;
-	const auto pos = m_Transform.GetPosition();
-	if(m_Texture)
-	{		
-		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
-	}
+	//nextFrameTime;
 
 	for (const std::pair<std::string, std::shared_ptr<BaseComponent>> pComponent : m_pComponents)
 	{
@@ -46,29 +41,29 @@ void dae::GameObject::Render(const float nextFrameTime) const
 	}
 }
 
-void dae::GameObject::SetTexture(const std::string& filename)
-{
-	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-}
+//void Idiot_Engine::GameObject::SetTexture(const std::string& filename)
+//{
+//	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+//}
 
-void dae::GameObject::SetPosition(const float x, const float y)
+void Idiot_Engine::GameObject::SetPosition(const float x, const float y)
 {
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
-const dae::Transform& dae::GameObject::GetPosition() const
+const Idiot_Engine::Transform& Idiot_Engine::GameObject::GetTransform() const
 {
 	return m_Transform;
 }
 
-void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> component, const std::string componentName)
+void Idiot_Engine::GameObject::AddComponent(std::shared_ptr<BaseComponent> component, const std::string componentName)
 {
 	//component->SetParent(weak_from_this());
 	component->SetParent(this);
 	m_pComponents.insert(std::make_pair(componentName, component));
 }
 
-void dae::GameObject::RemoveComponent(const std::string componentName)
+void Idiot_Engine::GameObject::RemoveComponent(const std::string componentName)
 {
 	m_pComponents.erase(componentName);
 }

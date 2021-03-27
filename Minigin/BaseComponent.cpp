@@ -1,15 +1,25 @@
 #include "MiniginPCH.h"
 #include "BaseComponent.h"
 
-dae::BaseComponent::~BaseComponent()
+using namespace Idiot_Engine;
+BaseComponent::~BaseComponent()
 {
 	m_pParent = nullptr;
 }
 
-void dae::BaseComponent::SetParent(GameObject* pParent)
+std::string BaseComponent::GetName() const
+{
+	return m_Name;
+}
+
+void BaseComponent::SetParent(GameObject* pParent)
 {
 	if(pParent)
 	{
 		m_pParent = pParent;
 	}
 }
+
+BaseComponent::BaseComponent(const std::string& name)
+	: m_Name(name)
+{}

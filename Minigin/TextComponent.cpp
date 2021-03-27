@@ -9,25 +9,25 @@
 #include "GameObject.h"
 #include "PlayerComponent.h"
 
-dae::TextComponent::TextComponent(const std::string& name, const std::string& text, const std::shared_ptr<Font>& font, const Color& color, EventTypes type)
-	: m_NeedsUpdate( true )
-	, m_Name( name )
+using namespace Idiot_Engine;
+
+TextComponent::TextComponent(const std::string& name, const std::string& text, const std::shared_ptr<Font>& font, const Color& color)
+	: BaseComponent(name)
+	, m_NeedsUpdate( true )
 	, m_Text( text )
 	, m_Font( font )
 	, m_Color( color )
 	, m_Texture(nullptr)
+{}
+
+void TextComponent::FixedUpdate(const float)
 {
-	m_Type = type;
+	//deltaTime;
 }
 
-void dae::TextComponent::FixedUpdate(const float deltaTime)
+void TextComponent::Update(const float)
 {
-	deltaTime;
-}
-
-void dae::TextComponent::Update(const float deltaTime)
-{
-	deltaTime;
+	//deltaTime;
 	if (m_NeedsUpdate)
 	{
 		//const SDL_Color color = { 255,255,255 }; // only white text is supported now
@@ -49,40 +49,41 @@ void dae::TextComponent::Update(const float deltaTime)
 	}
 }
 
-void dae::TextComponent::LateUpdate(const float deltaTime)
+void TextComponent::LateUpdate(const float)
 {
-	deltaTime;
+	//deltaTime;
 	
 }
 
-void dae::TextComponent::Render(const float nextFrameTime) const
+void TextComponent::Render(const float) const
 {
 	if (m_Texture != nullptr && m_pParent)
 	{
-		nextFrameTime;
-		//const auto pos = m_Transform.GetPosition();
-		const auto pos{ m_pParent->GetPosition().GetPosition() + m_Transform.GetPosition() };
+		//nextFrameTime;
+		//const auto pos = m_Transform.GetTransform();
+		const glm::vec2 parentPos{ m_pParent->GetTransform().GetPosition().x, m_pParent->GetTransform().GetPosition().y };
+		const glm::vec2 pos{ parentPos + m_RelativePosition };
 		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	}
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextComponent::SetText(const std::string& text)
+void TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::onNotify(const GameObject& object, Event event)
-{
-	object;
-	if (event.type == m_Type)
-	{
-		SetText(event.message);
-	}
-}
+//void TextComponent::onNotify(const GameObject&, Event event)
+//{
+//	//object;
+//	if (event.type == m_Type)
+//	{
+//		SetText(event.message);
+//	}
+//}
 
-//void dae::TextComponent::SetParent(GameObject* pParent)
+//void TextComponent::SetParent(GameObject* pParent)
 //{
 //	if(pParent)
 //	{
@@ -90,7 +91,7 @@ void dae::TextComponent::onNotify(const GameObject& object, Event event)
 //	}
 //}
 
-void dae::TextComponent::SetPosition(const float x, const float y)
+void TextComponent::SetRelativePosition(const float x, const float y)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	m_RelativePosition = { x, y };
 }

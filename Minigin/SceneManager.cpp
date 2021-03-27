@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::FixedUpdate(const float deltaTime)
+void Idiot_Engine::SceneManager::FixedUpdate(const float deltaTime)
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -10,7 +10,7 @@ void dae::SceneManager::FixedUpdate(const float deltaTime)
 	}
 }
 
-void dae::SceneManager::Update(const float deltaTime)
+void Idiot_Engine::SceneManager::Update(const float deltaTime)
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -18,7 +18,7 @@ void dae::SceneManager::Update(const float deltaTime)
 	}
 }
 
-void dae::SceneManager::LateUpdate(const float deltaTime)
+void Idiot_Engine::SceneManager::LateUpdate(const float deltaTime)
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -26,7 +26,7 @@ void dae::SceneManager::LateUpdate(const float deltaTime)
 	}
 }
 
-void dae::SceneManager::Render(const float nextFrameTime)
+void Idiot_Engine::SceneManager::Render(const float nextFrameTime)
 {
 	for (const auto& scene : m_Scenes)
 	{
@@ -34,12 +34,12 @@ void dae::SceneManager::Render(const float nextFrameTime)
 	}
 }
 
-std::shared_ptr<dae::Scene> dae::SceneManager::GetScene(const int index) const
+std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetScene(const int index) const
 {
 	return m_Scenes[index];
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+Idiot_Engine::Scene& Idiot_Engine::SceneManager::CreateScene(const std::string& name)
 {
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);

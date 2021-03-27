@@ -1,10 +1,9 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Subject.h"
 
-namespace dae
+namespace Idiot_Engine
 {
-	class PlayerComponent : public BaseComponent, public Subject
+	class PlayerComponent : public BaseComponent
 	{
 	public:
 		void FixedUpdate(const float deltaTime) override;
@@ -12,9 +11,9 @@ namespace dae
 		void LateUpdate(const float deltaTime) override;
 		void Render(const float nextFrame) const override;
 
-		//void SetParent(dae::GameObject* parent) override;
+		//void SetParent(Idiot_Engine::GameObject* parent) override;
 
-		explicit PlayerComponent();
+		explicit PlayerComponent(const std::string& name);
 		virtual ~PlayerComponent() = default;
 		PlayerComponent(const PlayerComponent& other) = delete;
 		PlayerComponent(PlayerComponent&& other) = delete;

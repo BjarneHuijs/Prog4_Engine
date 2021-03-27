@@ -10,7 +10,7 @@
 #include <SDL.h>
 #include <vector>
 
-namespace dae
+namespace Idiot_Engine
 {
 	enum ControllerButton
 	{

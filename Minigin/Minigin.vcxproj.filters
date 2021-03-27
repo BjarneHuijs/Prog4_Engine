@@ -85,15 +85,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{85472f94-87fb-40ba-9a7e-98537040e389}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine Files\Observer">
-      <UniqueIdentifier>{5f485803-f70a-4151-9bba-b776e98c1e29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine Files\Observer\Observer">
-      <UniqueIdentifier>{71750efd-1d48-454e-8be0-c71c7c9a7378}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine Files\Observer\Subject">
-      <UniqueIdentifier>{be511453-6e78-4548-9c9d-50df46ca53bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine Files\Managers\EventManager">
       <UniqueIdentifier>{88383d27-2ecd-40a4-ace9-28d4b02493cd}</UniqueIdentifier>
     </Filter>
@@ -102,6 +93,21 @@
     </Filter>
     <Filter Include="Engine Files\UI\Window">
       <UniqueIdentifier>{20bc0d2f-f1fb-410d-a135-b1a1a70e22a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Components\Observer">
+      <UniqueIdentifier>{5f485803-f70a-4151-9bba-b776e98c1e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Components\Observer\Observer">
+      <UniqueIdentifier>{71750efd-1d48-454e-8be0-c71c7c9a7378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Components\Observer\Subject">
+      <UniqueIdentifier>{be511453-6e78-4548-9c9d-50df46ca53bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Components\Observer\Observer\TextObserver">
+      <UniqueIdentifier>{b51e4cfb-ba65-4d74-93f3-687159bb0c11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Components\TextureComponent">
+      <UniqueIdentifier>{b3caf321-b941-462d-996b-c4aa7291700a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,14 +192,20 @@
     <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Engine Files\Observer\Observer</Filter>
+    <ClInclude Include="ObserverComponent.h">
+      <Filter>Engine Files\Components\Observer\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="Subject.h">
-      <Filter>Engine Files\Observer\Subject</Filter>
+    <ClInclude Include="SubjectComponent.h">
+      <Filter>Engine Files\Components\Observer\Subject</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Engine Files\Managers\EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextObserverComponent.h">
+      <Filter>Engine Files\Components\Observer\Observer\TextObserver</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Engine Files\Components\TextureComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,14 +284,20 @@
     <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Engine Files\Observer\Observer</Filter>
+    <ClCompile Include="ObserverComponent.cpp">
+      <Filter>Engine Files\Components\Observer\Observer</Filter>
     </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Engine Files\Observer\Subject</Filter>
+    <ClCompile Include="SubjectComponent.cpp">
+      <Filter>Engine Files\Components\Observer\Subject</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Engine Files\Managers\EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Engine Files\Components\TextureComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="TextObserverComponent.cpp">
+      <Filter>Engine Files\Components\Observer\Observer\TextObserver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

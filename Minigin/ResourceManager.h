@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-namespace dae
+namespace Idiot_Engine
 {
 	class Texture2D;
 	class Font;

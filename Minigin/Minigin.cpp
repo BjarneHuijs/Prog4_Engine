@@ -15,11 +15,14 @@
 #include "GameObject.h"
 #include "PlayerComponent.h"
 #include "Scene.h"
+#include "SubjectComponent.h"
+#include "TextObserverComponent.h"
+#include "TextureComponent.h"
 
 using namespace std;
 using namespace std::chrono;
 
-void dae::Minigin::Initialize()
+void Idiot_Engine::Minigin::Initialize()
 {
 	CoInitialize(nullptr);
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
@@ -35,16 +38,20 @@ void dae::Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void dae::Minigin::LoadGame()
+void Idiot_Engine::Minigin::LoadGame()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
 	auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
+	auto texComp = std::make_shared<TextureComponent>("Background");
+	texComp->SetTexture("background.jpg");
+	go->AddComponent(texComp, "BGTex");
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
+	texComp = std::make_shared<TextureComponent>("Logo");
+	texComp->SetTexture("logo.png");
+	go->AddComponent(texComp, "LogoTex");
 	go->SetPosition(216, 180);
 	scene.Add(go);
 
@@ -67,62 +74,80 @@ void dae::Minigin::LoadGame()
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text = std::make_shared<TextComponent>("Prefix", "P1 ", font, Color{ 0, 255, 0 });
 	go->AddComponent(text, "Prefix");
-	text->SetPosition(-15, 0);
-	text = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 }, EventTypes::LivesChanged);
-	text->SetPosition(15, 0);
+	text->SetRelativePosition(-15, 0);
+	text = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
+	text->SetRelativePosition(15, 0);
 	go->AddComponent(text, "LivesDisplay");
+	const auto p1LivesObserver = std::make_shared<TextObserverComponent>("Lives", EventTypes::LivesChanged);
+	go->AddComponent(p1LivesObserver, p1LivesObserver->GetName());
+	
 	// Score
-	auto score_1 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 }, EventTypes::ScoreChanged);
+	auto score_1 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 });
 	go->AddComponent(score_1, "ScoreDisplay");
-	score_1->SetPosition(-15, 40);
+	score_1->SetRelativePosition(-15, 40);
 	go->SetPosition(80, 110);
+	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", EventTypes::ScoreChanged);
+	go->AddComponent(p1ScoreObserver, p1ScoreObserver->GetName());
 	scene.Add(go);
 
 	m_pQBert_1 = std::make_shared<GameObject>();
-	const auto player_1 = std::make_shared<PlayerComponent>();
-	player_1->AddObserver(text.get());
-	player_1->AddObserver(score_1.get());
-	m_pQBert_1->AddComponent(player_1, "Player 1");
+	const auto player_1 = std::make_shared<PlayerComponent>("Player 1");
+	const auto p1Subject = std::make_shared<SubjectComponent>("Player 1 Subject");
+	p1Subject->AddObserver(p1LivesObserver.get());
+	p1Subject->AddObserver(p1ScoreObserver.get());
+	m_pQBert_1->AddComponent(player_1, player_1->GetName());
+	m_pQBert_1->AddComponent(p1Subject, p1Subject->GetName());
 	scene.Add(m_pQBert_1);
+
+	
 	//	P2
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text_2 = std::make_shared<TextComponent>("Prefix", "P2 ", font, Color{ 0, 255, 0 });
 	go->AddComponent(text_2, "Prefix");
-	text_2->SetPosition(-15, 0);
-	text_2 = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 }, EventTypes::LivesChanged);
-	text_2->SetPosition(15, 0);
+	text_2->SetRelativePosition(-15, 0);
+	text_2 = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
+	text_2->SetRelativePosition(15, 0);
 	go->AddComponent(text_2, "LivesDisplay");
+	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", EventTypes::LivesChanged);
+	go->AddComponent(p2LivesObserver, p2LivesObserver->GetName());
+	
 	// Score
-	auto score_2 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 }, EventTypes::ScoreChanged);
-	go->AddComponent(score_2, "ScoreDisplay");
-	score_2->SetPosition(-15, 40);
+	auto score_2 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 });
+	go->AddComponent(score_2, score_2->GetName());
+	score_2->SetRelativePosition(-15, 40);
 	go->SetPosition(80, 180);
+	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", EventTypes::ScoreChanged);
+	go->AddComponent(p2ScoreObserver, p2ScoreObserver->GetName());
 	scene.Add(go);
 
-
 	m_pQBert_2 = std::make_shared<GameObject>();
-	const auto player_2 = std::make_shared<PlayerComponent>();
-	player_2->AddObserver(text_2.get());
-	player_2->AddObserver(score_2.get());
-	m_pQBert_2->AddComponent(player_2, "Player 2");
+	const auto player_2 = std::make_shared<PlayerComponent>("Player 2");
+	const auto p2Subject = std::make_shared<SubjectComponent>("Player 2 Subject");
+	p2Subject->AddObserver(p2LivesObserver.get());
+	p2Subject->AddObserver(p2ScoreObserver.get());
+	m_pQBert_2->AddComponent(player_2, player_2->GetName());
+	m_pQBert_2->AddComponent(p2Subject, p2Subject->GetName());
 	scene.Add(m_pQBert_2);
 
+	
 	InputManager::GetInstance().InitDefaultInput(m_pQBert_1.get(), m_pQBert_2.get());
 
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
-	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 }, EventTypes::PlayerDeath);
-	go->AddComponent(gameEnder, "DeathText");
+	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
+	const auto endObserver = std::make_shared<TextObserverComponent>("Death", EventTypes::PlayerDeath);
+	go->AddComponent(gameEnder, gameEnder->GetName());
+	go->AddComponent(endObserver, endObserver->GetName());
 	go->SetPosition(180, 150);
 	scene.Add(go);
 
-	player_1->AddObserver(gameEnder.get());
-	player_2->AddObserver(gameEnder.get());
+	//p1Subject->AddObserver(endObserver.get());
+	//p2Subject->AddObserver(endObserver.get());
 
 }
 
-void dae::Minigin::Cleanup()
+void Idiot_Engine::Minigin::Cleanup()
 {
 	CoUninitialize();
 	Renderer::GetInstance().Destroy();
@@ -131,7 +156,7 @@ void dae::Minigin::Cleanup()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run()
+void Idiot_Engine::Minigin::Run()
 {
 	Initialize();
 

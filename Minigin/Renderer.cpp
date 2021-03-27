@@ -22,7 +22,7 @@ int GetOpenGLDriverIndex()
 	return openglIndex;
 }
 
-void dae::Renderer::Init(/*SDL_Window * window*/)
+void Idiot_Engine::Renderer::Init(/*SDL_Window * window*/)
 {
 	m_Window = SDL_CreateWindow(
 		"This engine doesn't know what it's doing",
@@ -50,7 +50,7 @@ void dae::Renderer::Init(/*SDL_Window * window*/)
 	ImGui_ImplOpenGL2_Init();
 }
 
-void dae::Renderer::Render(const float nextFrameTime) //const
+void Idiot_Engine::Renderer::Render(const float nextFrameTime) //const
 {
 	SDL_RenderClear(m_Renderer);
 
@@ -73,7 +73,7 @@ void dae::Renderer::Render(const float nextFrameTime) //const
 	SDL_RenderPresent(m_Renderer);
 }
 
-void dae::Renderer::Destroy()
+void Idiot_Engine::Renderer::Destroy()
 {
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -88,7 +88,7 @@ void dae::Renderer::Destroy()
 	m_Window = nullptr;
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void Idiot_Engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
 {
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);
@@ -97,7 +97,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+void Idiot_Engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);
@@ -107,7 +107,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void dae::Renderer::Player1Controls()
+void Idiot_Engine::Renderer::Player1Controls()
 {
 	// Player 1
 	ImGui::Begin("Player 1: Controller");
@@ -146,7 +146,7 @@ void dae::Renderer::Player1Controls()
 	ImGui::End();
 }
 
-void dae::Renderer::Player2Controls()
+void Idiot_Engine::Renderer::Player2Controls()
 {
 	// Player 2
 	ImGui::Begin("Player 2: Keyboard");

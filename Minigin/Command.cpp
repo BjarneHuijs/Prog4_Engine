@@ -1,11 +1,11 @@
 #include "MiniginPCH.h"
 #include "Command.h"
 
-dae::Command::Command(GameObject* object)
+Idiot_Engine::Command::Command(GameObject* object)
 	: m_pObject(object)
 {}
 
-dae::Command::~Command()
+Idiot_Engine::Command::~Command()
 {
 	m_pObject = nullptr;
 }
