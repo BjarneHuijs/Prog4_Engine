@@ -1,11 +1,13 @@
 #pragma once
 
-enum class EventTypes
+enum class EventTypes 
 {
 	PlayerDeath,
 	LivesChanged,
 	ScoreChanged,
-	All
+	All,
+	PlaySound,
+	PlayMusic,
 };
 
 struct Color
@@ -16,9 +18,30 @@ struct Color
 	uint8_t a{ 255 };
 };
 
-struct Event
+struct ObserverEvent
 {
 	std::string message;
 	EventTypes type;
 };
 
+using SoundID = int;
+using MusicID = int;
+struct QueuedSound
+{
+	SoundID id;
+	int volume;
+};
+
+struct QueuedMusic
+{
+	MusicID id;
+	int volume;
+};
+
+//struct Channel
+//{
+//	bool inUse;
+//	float expectedUsageTime;
+//	float timeInUse;
+//	int usingSoundID;
+//};

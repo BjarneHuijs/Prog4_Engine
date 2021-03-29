@@ -35,7 +35,7 @@ void PlayerComponent::Update(const float deltaTime)
 
 			if (subject)
 			{
-				subject->NotifyObservers(*m_pParent, Event{ "PlayerDied", EventTypes::LivesChanged });
+				subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
 			}
 		}
 		else
@@ -46,14 +46,14 @@ void PlayerComponent::Update(const float deltaTime)
 			{
 				if (subject)
 				{
-					subject->NotifyObservers(*m_pParent, Event{ "Game Over", EventTypes::PlayerDeath });
+					subject->NotifyObservers(*m_pParent, ObserverEvent{ "Game Over", EventTypes::PlayerDeath });
 				}
 			}
 			else
 			{
 				if (subject)
 				{
-					subject->NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+					subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
 				}
 			}
 		}
@@ -86,7 +86,7 @@ void PlayerComponent::Kill()
 
 			if (subject)
 			{
-				subject->NotifyObservers(*m_pParent, Event{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+				subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
 			}
 		}
 	}
@@ -104,7 +104,7 @@ void PlayerComponent::ChangeColor()
 
 		if (subject)
 		{
-			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 		}
 	}
 }
@@ -125,7 +125,7 @@ void PlayerComponent::KillCoilyWithDisc()
 
 		if (subject)
 		{
-			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 		}
 	}
 }
@@ -143,7 +143,7 @@ void PlayerComponent::RemainingDiscsScore()
 
 		if (subject)
 		{
-			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 		}
 	}
 }
@@ -159,7 +159,7 @@ void PlayerComponent::CatchNPC()
 
 		if (subject)
 		{
-			subject->NotifyObservers(*m_pParent, Event{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
+			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
 		}
 	}
 }

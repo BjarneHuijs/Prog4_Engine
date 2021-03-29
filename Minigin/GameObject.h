@@ -67,7 +67,7 @@ namespace Idiot_Engine
 		{
 			std::string compName{ pair.second->GetName() };
 			
-			if (typeid(*pair.second) == typeid(T) && compName._Equal(name))
+			if (typeid(*pair.second) == typeid(T) && compName.compare(name) == 0)
 			{
 				//std::shared_ptr<BaseComponent> pComponent = pair.second;
 				return std::static_pointer_cast<T>(pair.second);

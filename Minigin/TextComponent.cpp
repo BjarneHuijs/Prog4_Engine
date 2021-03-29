@@ -74,7 +74,7 @@ void TextComponent::SetText(const std::string& text)
 	m_NeedsUpdate = true;
 }
 
-//void TextComponent::onNotify(const GameObject&, Event event)
+//void TextComponent::onNotify(const GameObject&, ObserverEvent event)
 //{
 //	//object;
 //	if (event.type == m_Type)

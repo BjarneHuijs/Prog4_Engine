@@ -7,10 +7,10 @@ namespace Idiot_Engine
 	class ObserverComponent : public BaseComponent
 	{
 	public:
-		ObserverComponent(const std::string& name, EventTypes type);
+		ObserverComponent(const std::string& name, const std::string& linkedComponentName, EventTypes type);
 		//virtual ~ObserverComponent() = default;
 		
-		virtual void OnNotify(const GameObject& object, const Event& event) = 0;
+		virtual void OnNotify(const GameObject& object, const ObserverEvent& event) = 0;
 
 		void FixedUpdate(const float) override{}; //deltaTime
 		void Update(const float) override{}; //deltaTime
@@ -19,5 +19,6 @@ namespace Idiot_Engine
 	
 	protected:
 		EventTypes m_Type{};
+		std::string m_LinkedComponentName{};
 	};
 }

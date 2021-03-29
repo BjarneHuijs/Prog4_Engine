@@ -109,6 +109,21 @@
     <Filter Include="Engine Files\Components\TextureComponent">
       <UniqueIdentifier>{b3caf321-b941-462d-996b-c4aa7291700a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Managers\ServiceLocator">
+      <UniqueIdentifier>{be541097-c8de-45b8-9f5c-ba0175c9f8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Audio">
+      <UniqueIdentifier>{fc4be55b-4ff5-407a-9930-87718b4f9a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Audio\BaseSystem">
+      <UniqueIdentifier>{2415f6b6-59e0-4c8a-b532-f17526720c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Audio\SDLSystem">
+      <UniqueIdentifier>{57ff9fd5-a83b-44d7-8348-95251523a535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Audio\NullSoundSystem">
+      <UniqueIdentifier>{a055efa2-c786-4eef-b86a-6f3dc74fa3df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -207,6 +222,18 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>Engine Files\Components\TextureComponent</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Engine Files\Managers\ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Engine Files\Audio\BaseSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLSoundSystem.h">
+      <Filter>Engine Files\Audio\SDLSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NullSoundSystem.h">
+      <Filter>Engine Files\Audio\NullSoundSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -298,6 +325,18 @@
     </ClCompile>
     <ClCompile Include="TextObserverComponent.cpp">
       <Filter>Engine Files\Components\Observer\Observer\TextObserver</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Engine Files\Managers\ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Engine Files\Audio\BaseSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLSoundSystem.cpp">
+      <Filter>Engine Files\Audio\SDLSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NullSoundSystem.cpp">
+      <Filter>Engine Files\Audio\NullSoundSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

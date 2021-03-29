@@ -9,12 +9,13 @@
 #include <SDL.h>
 #include <objbase.h>
 
-#include "Font.h"
 #include "TextObject.h"
 #include "FPSComponent.h"
 #include "GameObject.h"
 #include "PlayerComponent.h"
 #include "Scene.h"
+#include "SDLSoundSystem.h"
+#include "ServiceLocator.h"
 #include "SubjectComponent.h"
 #include "TextObserverComponent.h"
 #include "TextureComponent.h"
@@ -25,11 +26,21 @@ using namespace std::chrono;
 void Idiot_Engine::Minigin::Initialize()
 {
 	CoInitialize(nullptr);
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
+	//basic default values (may/will change later) => might fail for specific audio files/formats
+	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 8, 2048);
+	const int mixerFlags{ MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG };
+	if ((Mix_Init(mixerFlags) & mixerFlags) != mixerFlags)
+	{
+		throw std::runtime_error(std::string("SDL_Mixer_Init Error: ") + SDL_GetError());
+	}
+
+	SDLSoundSystem* audioService = new SDLSoundSystem{};
+	ServiceLocator::RegisterAudioService(audioService);
 	
 	Renderer::GetInstance().Init();
 
@@ -45,13 +56,13 @@ void Idiot_Engine::Minigin::LoadGame()
 	auto go = std::make_shared<GameObject>();
 	auto texComp = std::make_shared<TextureComponent>("Background");
 	texComp->SetTexture("background.jpg");
-	go->AddComponent(texComp, "BGTex");
+	go->AddComponent(texComp, texComp->GetName());
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
 	texComp = std::make_shared<TextureComponent>("Logo");
 	texComp->SetTexture("logo.png");
-	go->AddComponent(texComp, "LogoTex");
+	go->AddComponent(texComp, texComp->GetName());
 	go->SetPosition(216, 180);
 	scene.Add(go);
 
@@ -64,7 +75,7 @@ void Idiot_Engine::Minigin::LoadGame()
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	const auto fps = std::make_shared<FPSComponent>("FpsCounter", "no fps", font, Color{ 255, 255, 0 });
-	go->AddComponent(fps, "FpsCounter");
+	go->AddComponent(fps, fps->GetName());
 	go->SetPosition(10, 5);
 	scene.Add(go);
 
@@ -73,20 +84,20 @@ void Idiot_Engine::Minigin::LoadGame()
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text = std::make_shared<TextComponent>("Prefix", "P1 ", font, Color{ 0, 255, 0 });
-	go->AddComponent(text, "Prefix");
+	go->AddComponent(text, text->GetName());
 	text->SetRelativePosition(-15, 0);
-	text = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
+	text = std::make_shared<TextComponent>("LivesText", "Lives: 3", font, Color{ 0, 255, 0 });
 	text->SetRelativePosition(15, 0);
-	go->AddComponent(text, "LivesDisplay");
-	const auto p1LivesObserver = std::make_shared<TextObserverComponent>("Lives", EventTypes::LivesChanged);
+	go->AddComponent(text, text->GetName());
+	const auto p1LivesObserver = std::make_shared<TextObserverComponent>("Lives", text->GetName(), EventTypes::LivesChanged);
 	go->AddComponent(p1LivesObserver, p1LivesObserver->GetName());
 	
 	// Score
-	auto score_1 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 });
-	go->AddComponent(score_1, "ScoreDisplay");
+	auto score_1 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
+	go->AddComponent(score_1, score_1->GetName());
 	score_1->SetRelativePosition(-15, 40);
 	go->SetPosition(80, 110);
-	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", EventTypes::ScoreChanged);
+	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_1->GetName(), EventTypes::ScoreChanged);
 	go->AddComponent(p1ScoreObserver, p1ScoreObserver->GetName());
 	scene.Add(go);
 
@@ -104,20 +115,20 @@ void Idiot_Engine::Minigin::LoadGame()
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text_2 = std::make_shared<TextComponent>("Prefix", "P2 ", font, Color{ 0, 255, 0 });
-	go->AddComponent(text_2, "Prefix");
+	go->AddComponent(text_2, text_2->GetName());
 	text_2->SetRelativePosition(-15, 0);
 	text_2 = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
 	text_2->SetRelativePosition(15, 0);
-	go->AddComponent(text_2, "LivesDisplay");
-	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", EventTypes::LivesChanged);
+	go->AddComponent(text_2, text_2->GetName());
+	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", text_2->GetName(), EventTypes::LivesChanged);
 	go->AddComponent(p2LivesObserver, p2LivesObserver->GetName());
 	
 	// Score
-	auto score_2 = std::make_shared<TextComponent>("Score", "Score: 0", font, Color{ 0, 255, 0 });
+	auto score_2 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
 	go->AddComponent(score_2, score_2->GetName());
 	score_2->SetRelativePosition(-15, 40);
 	go->SetPosition(80, 180);
-	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", EventTypes::ScoreChanged);
+	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_2->GetName(), EventTypes::ScoreChanged);
 	go->AddComponent(p2ScoreObserver, p2ScoreObserver->GetName());
 	scene.Add(go);
 
@@ -136,20 +147,34 @@ void Idiot_Engine::Minigin::LoadGame()
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
 	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
-	const auto endObserver = std::make_shared<TextObserverComponent>("Death", EventTypes::PlayerDeath);
+	const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), EventTypes::PlayerDeath);
 	go->AddComponent(gameEnder, gameEnder->GetName());
 	go->AddComponent(endObserver, endObserver->GetName());
 	go->SetPosition(180, 150);
 	scene.Add(go);
 
-	//p1Subject->AddObserver(endObserver.get());
-	//p2Subject->AddObserver(endObserver.get());
+	p1Subject->AddObserver(endObserver.get());
+	p2Subject->AddObserver(endObserver.get());
 
+	// TODO: add more dynamic method to use sound
+	auto* audio = ServiceLocator::GetAudio();
+	audio->AddMusic("../Data/Star Commander1.wav");
+	audio->AddSound("../Data/WilhelmScream.WAV");
+	audio->AddSound("../Data/blaster-shot-single-5.WAV");
+
+	audio->QueueMusic(0);
 }
 
 void Idiot_Engine::Minigin::Cleanup()
 {
 	CoUninitialize();
+
+	// Safe shutdown for audio
+	Mix_CloseAudio();
+	Mix_Quit();
+	
+	ServiceLocator::Cleanup();
+	//InputManager::GetInstance().Clean();
 	Renderer::GetInstance().Destroy();
 	//SDL_DestroyWindow(m_Window);
 	//m_Window = nullptr;
@@ -168,6 +193,7 @@ void Idiot_Engine::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+
 		
 		bool doContinue = true;
 		auto lastTime = high_resolution_clock::now();
@@ -182,19 +208,19 @@ void Idiot_Engine::Minigin::Run()
 
 			while(lag >= MsPerFrame)
 			{
-				sceneManager.FixedUpdate(deltaTime);
+				sceneManager.FixedUpdate(MsPerFrame);
 				lag -= MsPerFrame;
 			}
+			
 			doContinue = input.ProcessInput();
 			
 			sceneManager.Update(deltaTime);
 			sceneManager.LateUpdate(deltaTime);
 			
-			renderer.Render(lag / deltaTime);
+			renderer.Render(deltaTime);
 			
 		}
 
-		input.Clean();
 	}
 
 	Cleanup();

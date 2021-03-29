@@ -18,7 +18,7 @@ namespace Idiot_Engine
 		void SetText(const std::string& text);
 		void SetRelativePosition(const float x, const float y);
 
-		//void onNotify(const GameObject& object, Event event) override;
+		//void onNotify(const GameObject& object, ObserverEvent event) override;
 		
 		//void SetParent(GameObject* parent) override;
 

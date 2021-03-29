@@ -17,7 +17,7 @@ namespace Idiot_Engine
 		void AddObserver(ObserverComponent* pObserver);
 		void RemoveObserver(ObserverComponent* pObserver);
 	//protected:
-		void NotifyObservers(const GameObject& object, const Event& event);
+		void NotifyObservers(const GameObject& object, const ObserverEvent& event);
 
 		void FixedUpdate(const float) override {}; //deltaTime
 		void Update(const float) override{}; //deltaTime

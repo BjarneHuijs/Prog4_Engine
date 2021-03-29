@@ -8,6 +8,7 @@ namespace Idiot_Engine
 	class Minigin
 	{
 	public:
+		
 		void Initialize();
 		void LoadGame();
 		void Cleanup();

@@ -53,12 +53,13 @@ void SubjectComponent::RemoveObserver(ObserverComponent* pObserver)
 	}
 }
 
-void SubjectComponent::NotifyObservers(const GameObject& object, const Event& event)
+void SubjectComponent::NotifyObservers(const GameObject& object, const ObserverEvent& event)
 {
 
 	for (ObserverComponent* observer : m_pObservers)
 	{
-		if(observer) observer->OnNotify(object, event);
+		if(observer)
+			observer->OnNotify(object, event);
 	}
 
 }

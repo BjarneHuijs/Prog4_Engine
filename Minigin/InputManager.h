@@ -39,6 +39,8 @@ namespace Idiot_Engine
 	public:
 		using CommandsMap = std::map<DWORD, Command*>;
 		
+		~InputManager();
+
 		void InitDefaultInput(GameObject* controllerObject, GameObject* keyboardObject);
 		bool ProcessInput();
 		bool IsPressed(const ControllerButton& button) const;
@@ -49,7 +51,6 @@ namespace Idiot_Engine
 		Command* GetCommand(const ControllerButton& button);
 		Command* GetCommand(const SDL_Keycode& button);
 
-		void Clean();
 	private:
 		XINPUT_STATE m_GamePadState{};
 		XINPUT_KEYSTROKE m_Keystroke{};

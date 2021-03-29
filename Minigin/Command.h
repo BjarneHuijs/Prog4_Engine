@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "PlayerComponent.h"
+#include "ServiceLocator.h"
 
 namespace Idiot_Engine
 {
@@ -18,18 +19,27 @@ namespace Idiot_Engine
 
 	};
 
+	
 	class Kill : public Command
 	{
 	public:
 		explicit Kill(GameObject* object) : Command(object){}
-		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->Kill(); }
+		void Execute() override
+		{
+			GetActor()->GetComponentByType<PlayerComponent>()->Kill();
+			ServiceLocator::GetAudio()->QueueSound(0); // id 0 = kill player
+		}
 	};
 
 	class KillCoily : public Command
 	{
 	public:
 		explicit KillCoily(GameObject* object) : Command(object){}
-		void Execute() override { GetActor()->GetComponentByType<PlayerComponent>()->KillCoilyWithDisc(); }
+		void Execute() override
+		{
+			GetActor()->GetComponentByType<PlayerComponent>()->KillCoilyWithDisc();
+			ServiceLocator::GetAudio()->QueueSound(1); // id 1 = kill coily
+		}
 	};
 
 	class ChangeColor : public Command
