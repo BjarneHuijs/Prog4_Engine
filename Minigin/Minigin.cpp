@@ -183,11 +183,10 @@ void Idiot_Engine::Minigin::Cleanup()
 
 void Idiot_Engine::Minigin::Run()
 {
-	Initialize();
-
+	//Initialize();
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
-	LoadGame();
+	//ResourceManager::GetInstance().Init("../Data/");
+	//LoadGame();
 	
 	{
 		auto& renderer = Renderer::GetInstance();

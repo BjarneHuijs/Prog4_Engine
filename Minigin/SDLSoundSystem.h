@@ -47,7 +47,7 @@ namespace Idiot_Engine
 
 		Mix_Music* m_pCurrentMusic = nullptr;
 		bool m_Muted;
-		std::atomic<bool> m_AudioPlaying;
+		std::atomic<bool> m_AudioPlaying{};
 		std::thread m_AudioServiceThread;
 
 		std::queue<QueuedSound> m_SoundQueue{};

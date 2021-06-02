@@ -133,7 +133,7 @@ bool InputManager::HandleControllerInput()
         const auto command = GetCommand(button);
         if (command == nullptr)
         {
-            std::cout << "nullptr command" << std::endl;
+            std::cout << "Controller nullptr command" << std::endl;
             m_Keystroke = XINPUT_KEYSTROKE{};
 
             return true;
@@ -164,7 +164,7 @@ bool InputManager::HandleKeyboardInput()
             const auto command = GetCommand(e.key.keysym.sym);
             if (command == nullptr)
             {
-                std::cout << "nullptr command" << std::endl;
+                std::cout << "Keyboard nullptr command" << std::endl;
                 m_Keystroke = XINPUT_KEYSTROKE{};
 
                 return true;
