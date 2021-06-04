@@ -9,17 +9,17 @@
 
 #include "Minigin.h"
 #include "ResourceManager.h"
-#include "Level/Test.h"
+#include "Level/Demo/DemoLevel.h"
+#include "Level/Level_1/Level_1.h"
 
 void LoadGame();
 
 
 int main(int, char* [])
 {
-
-	
 	Idiot_Engine::Minigin engine;
 	engine.Initialize();
+	
 	// tell the resource manager where he can find the game data
 	// 
 #ifdef VS
@@ -42,7 +42,8 @@ int main(int, char* [])
 
 void LoadGame()
 {
-	Test t{};
+	//DemoLevel t{};
+	Level_1 t{};
 	t.Load();
 	//t.Load2();
 }

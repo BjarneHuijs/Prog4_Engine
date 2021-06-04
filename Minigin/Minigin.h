@@ -19,7 +19,7 @@ namespace Idiot_Engine
 		//SDL_Window* m_Window{};
 
 	private:
-		std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_1{};
-		std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_2{};
+		//std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_1{};
+		//std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_2{};
 	};
 }

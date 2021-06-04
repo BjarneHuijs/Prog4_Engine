@@ -1,4 +1,6 @@
 #pragma once
+#include <SDL_rect.h>
+
 #include "Singleton.h"
 
 struct SDL_Window;
@@ -19,7 +21,8 @@ namespace Idiot_Engine
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
-
+		void RenderTexture(const Texture2D& texture, const float x, const float y, SDL_Rect source, SDL_Rect destination) const;
+		SDL_Window* GetWindow() const { return m_Window; }
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 	private:
 		SDL_Renderer* m_Renderer{};

@@ -1,11 +1,15 @@
 #include "QBertGamePCH.h"
-#include "../BuildTypeSelector.h"
+#include "Level_1.h"
 
-#include "Test.h"
+#include <fstream>
+
+#include "../../BuildTypeSelector.h"
+
 #include "FPSComponent.h"
 #include "GameObject.h"
 #include "InputManager.h"
 #include "PlayerComponent.h"
+#include "Renderer.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -15,12 +19,17 @@
 #include "TextObject.h"
 #include "TextObserverComponent.h"
 #include "TextureComponent.h"
+#include "../Tile/Tile.h"
 
-void Test::Load()
+#include "rapidjson.h"
+#include "document.h"
+#include "reader.h"
+
+void Level_1::Load()
 {
 	using namespace Idiot_Engine;
 
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = SceneManager::GetInstance().CreateScene("Level_1");
 
 	auto go = std::make_shared<GameObject>();
 	auto texComp = std::make_shared<TextureComponent>("Background");
@@ -28,18 +37,8 @@ void Test::Load()
 	go->AddComponent(texComp, texComp->GetName());
 	scene.Add(go);
 
-	go = std::make_shared<GameObject>();
-	texComp = std::make_shared<TextureComponent>("Logo");
-	texComp->SetTexture("logo.png");
-	go->AddComponent(texComp, texComp->GetName());
-	go->SetPosition(216, 180);
-	scene.Add(go);
-
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font, Color{ 255, 0, 0 });
-	to->SetPosition(80, 20);
-	scene.Add(to);
-
+	
 	// FPS
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
@@ -48,6 +47,18 @@ void Test::Load()
 	go->SetPosition(10, 5);
 	scene.Add(go);
 
+	SDL_Window* window{ Renderer::GetInstance().GetWindow() };
+	int xSize{};
+	int ySize{};
+	SDL_GetWindowSize(window, &xSize, &ySize);
+
+	m_StartLocation = glm::vec2{ xSize  * 0.45f, ySize / 5 };
+	LoadTiles();
+	for (const auto tile : m_pTiles)
+	{
+		scene.Add(tile->GetTileObject());
+	}
+	
 	// Lives + Scores
 	//	P1
 	go = std::make_shared<GameObject>();
@@ -65,7 +76,7 @@ void Test::Load()
 	auto score_1 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
 	go->AddComponent(score_1, score_1->GetName());
 	score_1->SetRelativePosition(-15, 40);
-	go->SetPosition(80, 110);
+	go->SetPosition(20, 110);
 	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_1->GetName(), EventTypes::ScoreChanged);
 	go->AddComponent(p1ScoreObserver, p1ScoreObserver->GetName());
 	scene.Add(go);
@@ -80,38 +91,7 @@ void Test::Load()
 	scene.Add(m_pQBert_1);
 
 
-	//	P2
-	go = std::make_shared<GameObject>();
-	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	auto text_2 = std::make_shared<TextComponent>("Prefix", "P2 ", font, Color{ 0, 255, 0 });
-	go->AddComponent(text_2, text_2->GetName());
-	text_2->SetRelativePosition(-15, 0);
-	text_2 = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
-	text_2->SetRelativePosition(15, 0);
-	go->AddComponent(text_2, text_2->GetName());
-	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", text_2->GetName(), EventTypes::LivesChanged);
-	go->AddComponent(p2LivesObserver, p2LivesObserver->GetName());
-
-	// Score
-	auto score_2 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
-	go->AddComponent(score_2, score_2->GetName());
-	score_2->SetRelativePosition(-15, 40);
-	go->SetPosition(80, 180);
-	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_2->GetName(), EventTypes::ScoreChanged);
-	go->AddComponent(p2ScoreObserver, p2ScoreObserver->GetName());
-	scene.Add(go);
-
-	m_pQBert_2 = std::make_shared<GameObject>();
-	const auto player_2 = std::make_shared<PlayerComponent>("Player 2");
-	const auto p2Subject = std::make_shared<SubjectComponent>("Player 2 Subject");
-	p2Subject->AddObserver(p2LivesObserver.get());
-	p2Subject->AddObserver(p2ScoreObserver.get());
-	m_pQBert_2->AddComponent(player_2, player_2->GetName());
-	m_pQBert_2->AddComponent(p2Subject, p2Subject->GetName());
-	scene.Add(m_pQBert_2);
-
-
-	InputManager::GetInstance().InitDefaultInput(m_pQBert_1.get(), m_pQBert_2.get());
+	InputManager::GetInstance().InitDefaultInput(m_pQBert_1.get(), m_pQBert_1.get());
 
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
@@ -123,8 +103,7 @@ void Test::Load()
 	scene.Add(go);
 
 	p1Subject->AddObserver(endObserver.get());
-	p2Subject->AddObserver(endObserver.get());
-
+	
 	// TODO: add more dynamic method to use sound
 	auto* audio = ServiceLocator::GetAudio();
 #ifdef BUILD
@@ -138,10 +117,72 @@ void Test::Load()
 	audio->AddSound("../Data/WilhelmScream.WAV");
 	audio->AddSound("../Data/blaster-shot-single-5.WAV");
 	audio->QueueMusic(0);
-#endif
+#endif   
 }
 
-void Test::Load2()
+void Level_1::LoadTiles()
 {
-	std::cout << "hahahahahahahahaahahahahahahahaahahahahahahahaah" << std::endl;
+	using namespace rapidjson;
+	Document jsonDoc;
+#ifdef BUILD
+	std::ifstream file("Data/Level_1.json");
+#endif
+#ifdef VS
+	std::ifstream file("../Data/Level_1.json");
+#endif
+	std::stringstream buffer{};
+	buffer << file.rdbuf();
+
+	jsonDoc.Parse(std::string(buffer.str()).c_str());
+	if (jsonDoc.HasMember("tiles"))
+	{
+		
+		const Value& tiles = jsonDoc["tiles"];
+
+
+		//Check if the data we got has an array
+		if (tiles.IsArray())
+		{
+			//auto size = tiles.Size();
+			//auto pos{ m_pTiles.back()->GetTransform().GetPosition() };
+			for (Value::ConstValueIterator itr = tiles.Begin(); itr != tiles.End(); ++itr)
+			{
+				const Value& val = *itr;
+				auto idx = val["id"].GetInt();
+				std::shared_ptr<Tile> tile = std::make_shared<Tile>(idx);
+				m_pTiles.push_back(tile);
+			}
+
+		}
+		else
+		{
+			std::cout << "FILE NOT FOUND" << std::endl;
+		}
+
+		int rows{ 7 };
+		int index{ 0 };
+		float xPos{ m_StartLocation.x };
+		float yPos{ m_StartLocation.y };
+		for (int i{ 1 }; i <= rows; ++i)
+		{
+			for (int j{ 1 }; j <= i; ++j)
+			{
+				m_pTiles[index]->SetPosition(xPos, yPos);
+				xPos += m_pTiles[0]->GetSize();
+				index++;
+			}
+
+			if (i % 2 == 0) {
+				xPos -= (i + 1) * m_pTiles[0]->GetSize();
+				xPos += m_pTiles[0]->GetSize() / 2;
+			}
+			else 
+			{
+				xPos -= i * m_pTiles[0]->GetSize();
+				xPos -= m_pTiles[0]->GetSize() / 2;
+			}
+			
+			yPos += m_pTiles[0]->GetSize() * 0.85f;
+		}
+	}
 }

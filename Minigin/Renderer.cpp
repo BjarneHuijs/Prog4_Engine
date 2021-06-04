@@ -107,6 +107,13 @@ void Idiot_Engine::Renderer::RenderTexture(const Texture2D& texture, const float
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void Idiot_Engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, SDL_Rect source, SDL_Rect destination) const
+{
+	destination.x += (int)x;
+	destination.y += (int)y;
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &source, &destination);
+}
+
 void Idiot_Engine::Renderer::Player1Controls()
 {
 	// Player 1

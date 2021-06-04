@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -132,7 +132,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -160,7 +160,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -188,7 +188,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -211,6 +211,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Level\Level_1\Level_1.cpp" />
     <ClCompile Include="QBertGame.cpp" />
     <ClCompile Include="QBertGamePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -218,7 +219,8 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Level\Test.cpp" />
+    <ClCompile Include="Level\Demo\DemoLevel.cpp" />
+    <ClCompile Include="Level\Tile\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">
@@ -227,8 +229,10 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildTypeSelector.h" />
+    <ClInclude Include="Level\Level_1\Level_1.h" />
     <ClInclude Include="QBertGamePCH.h" />
-    <ClInclude Include="Level\Test.h" />
+    <ClInclude Include="Level\Demo\DemoLevel.h" />
+    <ClInclude Include="Level\Tile\Tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

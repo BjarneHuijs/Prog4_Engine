@@ -16,4 +16,8 @@
 #pragma comment(lib, "SDL2_ttf.lib")
 #pragma comment(lib, "SDL2.lib")
 
+#pragma warning (disable:4201)
+#pragma warning (disable:4189)
+#include <glm/vec2.hpp>
+
 #define Safe_Delete(p) if ((p) != NULL) { delete (p); (p) = NULL; }

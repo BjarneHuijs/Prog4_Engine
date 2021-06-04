@@ -4,39 +4,62 @@
 
 void Idiot_Engine::SceneManager::FixedUpdate(const float deltaTime)
 {
-	for (auto& scene : m_Scenes)
+	const size_t size{ m_Scenes.size() };
+	for (size_t i{}; i < size; i++)
 	{
-		scene->FixedUpdate(deltaTime);
+		if(i == m_ActiveScene)
+			m_Scenes[i]->FixedUpdate(deltaTime);
 	}
 }
 
 void Idiot_Engine::SceneManager::Update(const float deltaTime)
 {
-	for (auto& scene : m_Scenes)
+	const size_t size{ m_Scenes.size() };
+	for (size_t i{}; i < size; i++)
 	{
-		scene->Update(deltaTime);
+		if (i == m_ActiveScene)
+			m_Scenes[i]->Update(deltaTime);
 	}
 }
 
 void Idiot_Engine::SceneManager::LateUpdate(const float deltaTime)
 {
-	for (auto& scene : m_Scenes)
+	const size_t size{ m_Scenes.size() };
+	for (size_t i{}; i < size; i++)
 	{
-		scene->LateUpdate(deltaTime);
+		if (i == m_ActiveScene)
+			m_Scenes[i]->LateUpdate(deltaTime);
 	}
 }
 
 void Idiot_Engine::SceneManager::Render(const float nextFrameTime)
 {
-	for (const auto& scene : m_Scenes)
+	const size_t size{ m_Scenes.size() };
+	for (size_t i{}; i < size; i++)
 	{
-		scene->Render(nextFrameTime);
+		if (i == m_ActiveScene)
+			m_Scenes[i]->Render(nextFrameTime);
 	}
 }
 
 std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetScene(const int index) const
 {
 	return m_Scenes[index];
+}
+
+void Idiot_Engine::SceneManager::SetActiveScene(int sceneIndex)
+{
+	m_ActiveScene = sceneIndex;
+}
+
+int Idiot_Engine::SceneManager::GetActiveSceneIndex() const
+{
+	return m_ActiveScene;
+}
+
+std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetActiveScene() const
+{
+	return m_Scenes.at(m_ActiveScene);
 }
 
 Idiot_Engine::Scene& Idiot_Engine::SceneManager::CreateScene(const std::string& name)

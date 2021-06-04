@@ -24,7 +24,13 @@
     <ClCompile Include="QBertGamePCH.cpp">
       <Filter>Header Files\pch</Filter>
     </ClCompile>
-    <ClCompile Include="Level\Test.cpp">
+    <ClCompile Include="Level\Demo\DemoLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\Tile\Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\Level_1\Level_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +38,16 @@
     <ClInclude Include="QBertGamePCH.h">
       <Filter>Header Files\pch</Filter>
     </ClInclude>
-    <ClInclude Include="Level\Test.h">
+    <ClInclude Include="Level\Demo\DemoLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BuildTypeSelector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Tile\Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Level_1\Level_1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

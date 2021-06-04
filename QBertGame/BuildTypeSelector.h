@@ -1,3 +1,8 @@
 #pragma once
-//#define VS
+//# define BUILDMODE;
+
+#ifdef BUILDMODE
 #define BUILD
+#else
+#define VS
+#endif
