@@ -7,7 +7,7 @@ namespace Idiot_Engine
 	class ObserverComponent : public BaseComponent
 	{
 	public:
-		ObserverComponent(const std::string& name, const std::string& linkedComponentName, EventTypes type);
+		ObserverComponent(const std::string& name, const std::string& linkedComponentName, const std::vector<EventTypes>& types = {std::vector<EventTypes>()});
 		//virtual ~ObserverComponent() = default;
 		
 		virtual void OnNotify(const GameObject& object, const ObserverEvent& event) = 0;
@@ -18,7 +18,7 @@ namespace Idiot_Engine
 		void Render(const float) const override {}; //nextFrame
 	
 	protected:
-		EventTypes m_Type{};
+		std::vector<EventTypes> m_Types{};
 		std::string m_LinkedComponentName{};
 	};
 }

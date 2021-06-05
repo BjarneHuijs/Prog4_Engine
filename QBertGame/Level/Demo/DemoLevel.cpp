@@ -15,6 +15,7 @@
 #include "TextObject.h"
 #include "TextObserverComponent.h"
 #include "TextureComponent.h"
+#include "../../Player/Commands/QBertCommands.h"
 
 void DemoLevel::Load()
 {
@@ -58,15 +59,17 @@ void DemoLevel::Load()
 	text = std::make_shared<TextComponent>("LivesText", "Lives: 3", font, Color{ 0, 255, 0 });
 	text->SetRelativePosition(15, 0);
 	go->AddComponent(text, text->GetName());
-	const auto p1LivesObserver = std::make_shared<TextObserverComponent>("Lives", text->GetName(), EventTypes::LivesChanged);
+	std::vector<EventTypes> lives{ std::vector<EventTypes>{ EventTypes::LivesChanged } };
+	const auto p1LivesObserver = std::make_shared<TextObserverComponent>("Lives", text->GetName(), lives);
 	go->AddComponent(p1LivesObserver, p1LivesObserver->GetName());
 
 	// Score
 	auto score_1 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
 	go->AddComponent(score_1, score_1->GetName());
 	score_1->SetRelativePosition(-15, 40);
-	go->SetPosition(80, 110);
-	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_1->GetName(), EventTypes::ScoreChanged);
+	go->SetPosition(20, 110);
+	std::vector<EventTypes> score{ std::vector<EventTypes>{ EventTypes::ScoreChanged } };
+	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_1->GetName(), score);
 	go->AddComponent(p1ScoreObserver, p1ScoreObserver->GetName());
 	scene.Add(go);
 
@@ -89,7 +92,7 @@ void DemoLevel::Load()
 	text_2 = std::make_shared<TextComponent>("LivesDisplay", "Lives: 3", font, Color{ 0, 255, 0 });
 	text_2->SetRelativePosition(15, 0);
 	go->AddComponent(text_2, text_2->GetName());
-	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", text_2->GetName(), EventTypes::LivesChanged);
+	const auto p2LivesObserver = std::make_shared<TextObserverComponent>("Lives", text_2->GetName(), lives);
 	go->AddComponent(p2LivesObserver, p2LivesObserver->GetName());
 
 	// Score
@@ -97,7 +100,7 @@ void DemoLevel::Load()
 	go->AddComponent(score_2, score_2->GetName());
 	score_2->SetRelativePosition(-15, 40);
 	go->SetPosition(80, 180);
-	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_2->GetName(), EventTypes::ScoreChanged);
+	const auto p2ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_2->GetName(), score);
 	go->AddComponent(p2ScoreObserver, p2ScoreObserver->GetName());
 	scene.Add(go);
 
@@ -111,12 +114,13 @@ void DemoLevel::Load()
 	scene.Add(m_pQBert_2);
 
 
-	InputManager::GetInstance().InitDefaultInput(m_pQBert_1.get(), m_pQBert_2.get());
+	InitDemoInput(m_pQBert_1.get(), m_pQBert_2.get());
 
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
 	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
-	const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), EventTypes::PlayerDeath);
+	std::vector<EventTypes> death{ std::vector<EventTypes>{ EventTypes::PlayerDeath } };
+	const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), death);
 	go->AddComponent(gameEnder, gameEnder->GetName());
 	go->AddComponent(endObserver, endObserver->GetName());
 	go->SetPosition(180, 150);
@@ -141,3 +145,22 @@ void DemoLevel::Load()
 #endif
 }
 
+void DemoLevel::InitDemoInput(Idiot_Engine::GameObject* controllerObject, Idiot_Engine::GameObject* keyboardObject)
+{
+	// Init default controller commands
+	InputManager::GetInstance().AddCommand(ControllerButton::ButtonA, new KillCoily(controllerObject));
+	InputManager::GetInstance().AddCommand(ControllerButton::ButtonX, new ChangeColor(controllerObject));
+	InputManager::GetInstance().AddCommand(ControllerButton::ButtonY, new Kill(controllerObject));
+	InputManager::GetInstance().AddCommand(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject));
+	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonB, std::make_unique<Fire>(Fire())));
+	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonX, std::make_unique<Duck>(Duck())));
+	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonY, std::make_unique<Fart>(Fart())));
+
+	// Init default keyboard commands
+	//m_KeyboardCommands.insert(std::make_pair('E', std::make_unique<Kill>(Kill(controllerObject))));
+	InputManager::GetInstance().AddCommand(SDLK_1, new KillCoily(keyboardObject));
+	InputManager::GetInstance().AddCommand(SDLK_2, new ChangeColor(keyboardObject));
+	InputManager::GetInstance().AddCommand(SDLK_3, new CatchNPC(keyboardObject));
+	InputManager::GetInstance().AddCommand(SDLK_4, new CalculateRemainingDiscs(keyboardObject));
+	InputManager::GetInstance().AddCommand(SDLK_e, new Kill(keyboardObject));
+}

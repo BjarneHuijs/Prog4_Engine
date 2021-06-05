@@ -5,12 +5,10 @@
 #include "SubjectComponent.h"
 
 using namespace Idiot_Engine;
-PlayerComponent::PlayerComponent(const std::string& name)
+PlayerComponent::PlayerComponent(const std::string& name, int health, int maxHealth)
 	: BaseComponent(name)
-	, m_Health(100)
-	, m_NrLives(3)
-	, m_Score(0)
-	, m_NrOfDiscsRemaining(10)
+	, m_Health(static_cast<float>(health))
+	, m_MaxHealth(static_cast<float>(maxHealth))
 {}
 
 void PlayerComponent::FixedUpdate(const float)
@@ -38,7 +36,7 @@ void PlayerComponent::Update(const float deltaTime)
 				subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
 			}
 		}
-		else
+		/*else
 		{
 			m_Health = 1;
 
@@ -56,7 +54,7 @@ void PlayerComponent::Update(const float deltaTime)
 					subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
 				}
 			}
-		}
+		}*/
 	}
 }
 
@@ -73,10 +71,10 @@ void PlayerComponent::Render(const float) const
 
 void PlayerComponent::Kill()
 {
-	if (m_Health >= 1) 
+	if (m_Health >= m_MaxHealth) 
 	{
 		m_Health = 0;
-		m_NrLives--;
+		//m_NrLives--;
 
 		std::shared_ptr<SubjectComponent> subject{ nullptr };
 		if (m_pParent)
@@ -86,82 +84,9 @@ void PlayerComponent::Kill()
 
 			if (subject)
 			{
-				subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+				subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Player died"), EventTypes::LivesChanged });
 			}
 		}
 	}
 
 }
-
-void PlayerComponent::ChangeColor()
-{
-	m_Score += 25;
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	if (m_pParent)
-	{
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-
-
-		if (subject)
-		{
-			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
-		}
-	}
-}
-
-void PlayerComponent::KillCoilyWithDisc()
-{
-	if (m_NrOfDiscsRemaining > 0) 
-	{
-		m_Score += 500;
-		m_NrOfDiscsRemaining--;
-	}
-
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	if (m_pParent)
-	{
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-
-
-		if (subject)
-		{
-			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
-		}
-	}
-}
-
-void PlayerComponent::RemainingDiscsScore()
-{
-	m_Score += 50 * m_NrOfDiscsRemaining;
-	m_NrOfDiscsRemaining = 0;
-
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	if (m_pParent)
-	{
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-
-
-		if (subject)
-		{
-			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
-		}
-	}
-}
-
-void PlayerComponent::CatchNPC()
-{
-	m_Score += 300;
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	if (m_pParent)
-	{
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-
-
-		if (subject)
-		{
-			subject->NotifyObservers(*m_pParent, ObserverEvent{ "Score: " + std::to_string(m_Score), EventTypes::ScoreChanged });
-		}
-	}
-}
-
-

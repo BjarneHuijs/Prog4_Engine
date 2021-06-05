@@ -10,6 +10,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "Structs.h"
+
 namespace Idiot_Engine
 {
 	enum ControllerButton
@@ -21,7 +23,7 @@ namespace Idiot_Engine
 		DPadUp = VK_PAD_DPAD_UP,
 		DPadLeft = VK_PAD_DPAD_LEFT,
 		DPadRight = VK_PAD_DPAD_RIGHT,
-		DPadDOWN = VK_PAD_DPAD_DOWN,
+		DPadDown = VK_PAD_DPAD_DOWN,
 		Start = VK_PAD_START,
 		Select = VK_PAD_BACK,
 		LeftStick = VK_PAD_LTHUMB_PRESS,
@@ -41,7 +43,7 @@ namespace Idiot_Engine
 		
 		~InputManager();
 
-		void InitDefaultInput(GameObject* controllerObject, GameObject* keyboardObject);
+		//void InitDemoInput(GameObject* controllerObject, GameObject* keyboardObject);
 		bool ProcessInput();
 		bool IsPressed(const ControllerButton& button) const;
 		bool IsPressed(const SDL_Event& button) const;
@@ -51,6 +53,8 @@ namespace Idiot_Engine
 		Command* GetCommand(const ControllerButton& button);
 		Command* GetCommand(const SDL_Keycode& button);
 
+		void AddCommand(DWORD inputValue, Command* command);
+	
 	private:
 		XINPUT_STATE m_GamePadState{};
 		XINPUT_KEYSTROKE m_Keystroke{};

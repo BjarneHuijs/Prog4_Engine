@@ -142,7 +142,7 @@ void Idiot_Engine::Minigin::LoadGame()
 	//scene.Add(m_pQBert_2);
 
 	//
-	//InputManager::GetInstance().InitDefaultInput(m_pQBert_1.get(), m_pQBert_2.get());
+	//InputManager::GetInstance().InitDemoInput(m_pQBert_1.get(), m_pQBert_2.get());
 
 	//go = std::make_shared<GameObject>();
 	//font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);

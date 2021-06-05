@@ -5,18 +5,23 @@
 #include "TextComponent.h"
 
 using namespace Idiot_Engine;
-TextObserverComponent::TextObserverComponent(const std::string& name, const std::string& linkedComponentName, EventTypes type)
-	: ObserverComponent(name, linkedComponentName, type)
-{}
+TextObserverComponent::TextObserverComponent(const std::string& name, const std::string& linkedComponentName, const std::vector<EventTypes>& types)
+	: ObserverComponent(name, linkedComponentName, types)
+{
+	UNREFERENCED_PARAMETER(types);
+}
 
 void TextObserverComponent::OnNotify(const GameObject&, const ObserverEvent& event) // object
 {
-	if (m_pParent && event.type == m_Type)
+	for (const EventTypes& type : m_Types) 
 	{
-		
-		auto component{ m_pParent->GetComponentByName<TextComponent>(m_LinkedComponentName) };
-		
-		if(component)
-			component->SetText(event.message);
+		if (m_pParent && event.type == type)
+		{
+
+			auto component{ m_pParent->GetComponentByName<TextComponent>(m_LinkedComponentName) };
+
+			if (component)
+				component->SetText(event.message);
+		}
 	}
 }

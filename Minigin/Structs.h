@@ -8,6 +8,10 @@ enum class EventTypes
 	All,
 	PlaySound,
 	PlayMusic,
+	MoveTopLeft,
+	MoveTopRight,
+	MoveBotLeft,
+	MoveBotRight,
 };
 
 struct Color

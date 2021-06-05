@@ -201,6 +201,7 @@ Command* InputManager::GetCommand(const SDL_Keycode& button)
 }
 
 
+
 InputManager::~InputManager()
 {
     for (std::pair<DWORD, Command*> pair : m_Commands)
@@ -210,23 +211,49 @@ InputManager::~InputManager()
     }
 }
 
-void InputManager::InitDefaultInput(GameObject* controllerObject, GameObject* keyboardObject)
+void InputManager::AddCommand(DWORD inputValue, Command* command)
 {
-    // Init default controller commands
-	m_Commands.insert(std::make_pair(ControllerButton::ButtonA, new KillCoily(controllerObject)));
-	m_Commands.insert(std::make_pair(ControllerButton::ButtonX, new ChangeColor(controllerObject)));
-	m_Commands.insert(std::make_pair(ControllerButton::ButtonB, new CatchNPC(controllerObject)));
-	m_Commands.insert(std::make_pair(ControllerButton::ButtonY, new Kill(controllerObject)));
-	m_Commands.insert(std::make_pair(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject)));
-	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonB, std::make_unique<Fire>(Fire())));
-	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonX, std::make_unique<Duck>(Duck())));
-	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonY, std::make_unique<Fart>(Fart())));
-
-	// Init default keyboard commands
-	//m_KeyboardCommands.insert(std::make_pair('E', std::make_unique<Kill>(Kill(controllerObject))));
-	m_Commands.insert(std::make_pair(SDLK_1, new KillCoily(keyboardObject)));
-	m_Commands.insert(std::make_pair(SDLK_2, new ChangeColor(keyboardObject)));
-	m_Commands.insert(std::make_pair(SDLK_3, new CatchNPC(keyboardObject)));
-	m_Commands.insert(std::make_pair(SDLK_4, new CalculateRemainingDiscs(keyboardObject)));
-	m_Commands.insert(std::make_pair(SDLK_e, new Kill(keyboardObject)));
+	m_Commands.insert(std::make_pair(inputValue, command));
+	//switch (inputEvent)
+	//{
+	//case EventTypes::MoveTopLeft: 
+ //       m_Commands.insert(std::make_pair(ControllerButton::DPadUp, new MoveTopLeft(target)));
+ //       m_Commands.insert(std::make_pair(SDLK_w, new MoveTopLeft(target)));
+ //       break;
+	//case EventTypes::MoveTopRight: 
+ //       m_Commands.insert(std::make_pair(ControllerButton::DPadRight, new MoveTopRight(target)));
+ //       m_Commands.insert(std::make_pair(SDLK_d, new MoveTopRight(target)));
+ //       break;
+	//case EventTypes::MoveBotLeft: 
+ //       m_Commands.insert(std::make_pair(ControllerButton::DPadLeft, new MoveBotLeft(target)));
+ //       m_Commands.insert(std::make_pair(SDLK_a, new MoveBotLeft(target)));
+ //       break;
+	//case EventTypes::MoveBotRight: 
+ //       m_Commands.insert(std::make_pair(ControllerButton::DPadDOWN, new MoveBotRight(target)));
+ //       m_Commands.insert(std::make_pair(SDLK_s, new MoveBotRight(target)));
+ //       break;
+	//default: 
+ //       break;
+	//}
 }
+
+//void InputManager::InitDemoInput(GameObject* controllerObject, GameObject* keyboardObject)
+//{
+//    // Init default controller commands
+//	m_Commands.insert(std::make_pair(ControllerButton::ButtonA, new KillCoily(controllerObject)));
+//	m_Commands.insert(std::make_pair(ControllerButton::ButtonX, new ChangeColor(controllerObject)));
+//	m_Commands.insert(std::make_pair(ControllerButton::ButtonB, new CatchNPC(controllerObject)));
+//	m_Commands.insert(std::make_pair(ControllerButton::ButtonY, new Kill(controllerObject)));
+//	m_Commands.insert(std::make_pair(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject)));
+//	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonB, std::make_unique<Fire>(Fire())));
+//	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonX, std::make_unique<Duck>(Duck())));
+//	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonY, std::make_unique<Fart>(Fart())));
+//
+//	// Init default keyboard commands
+//	//m_KeyboardCommands.insert(std::make_pair('E', std::make_unique<Kill>(Kill(controllerObject))));
+//	m_Commands.insert(std::make_pair(SDLK_1, new KillCoily(keyboardObject)));
+//	m_Commands.insert(std::make_pair(SDLK_2, new ChangeColor(keyboardObject)));
+//	m_Commands.insert(std::make_pair(SDLK_3, new CatchNPC(keyboardObject)));
+//	m_Commands.insert(std::make_pair(SDLK_4, new CalculateRemainingDiscs(keyboardObject)));
+//	m_Commands.insert(std::make_pair(SDLK_e, new Kill(keyboardObject)));
+//}

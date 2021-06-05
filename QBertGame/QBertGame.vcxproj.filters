@@ -27,10 +27,19 @@
     <ClCompile Include="Level\Demo\DemoLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\Tile\Tile.cpp">
+    <ClCompile Include="Level\Tile\TileComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Level\Level_1\Level_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Observer\PlayerObserverComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\QBertComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,10 +53,25 @@
     <ClInclude Include="BuildTypeSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\Tile\Tile.h">
+    <ClInclude Include="Level\Tile\TileComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level\Level_1\Level_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Observer\PlayerObserverComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Commands\QBertCommands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\QBertComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\QBertStructs\QBertStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -124,6 +124,9 @@
     <Filter Include="Engine Files\Audio\NullSoundSystem">
       <UniqueIdentifier>{a055efa2-c786-4eef-b86a-6f3dc74fa3df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Components\SpriteComponent">
+      <UniqueIdentifier>{880e5e30-f083-4d61-83c6-6273af27e39a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -234,6 +237,9 @@
     <ClInclude Include="NullSoundSystem.h">
       <Filter>Engine Files\Audio\NullSoundSystem</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Engine Files\Components\SpriteComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -337,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="NullSoundSystem.cpp">
       <Filter>Engine Files\Audio\NullSoundSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Engine Files\Components\SpriteComponent</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

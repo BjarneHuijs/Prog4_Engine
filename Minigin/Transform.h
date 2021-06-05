@@ -10,6 +10,7 @@ namespace Idiot_Engine
 	{
 	public:
 		const glm::vec3& GetPosition() const { return m_Position; }
+		glm::vec2 GetPosition2D() const { return {m_Position.x, m_Position.y}; }
 		void SetPosition(float x, float y, float z);
 	private:
 		glm::vec3 m_Position;

@@ -32,8 +32,10 @@ int main(int, char* [])
 	//TODO 1: make menu scene and menu nav
 	//TODO 2: make Level scene accessed from menu (read from file)
 	//TODO 3: back to menu scene after game
-	LoadGame();
-
+	//LoadGame();
+	Level_1 t{};
+	t.Load();
+	
 	engine.Run();
 
 	
@@ -43,7 +45,6 @@ int main(int, char* [])
 void LoadGame()
 {
 	//DemoLevel t{};
-	Level_1 t{};
-	t.Load();
+
 	//t.Load2();
 }
