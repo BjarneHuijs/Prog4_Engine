@@ -9,7 +9,7 @@ public:
 	void Execute() override
 	{
 		GetActor()->GetComponentByType<QBertComponent>()->Kill();
-		ServiceLocator::GetAudio()->QueueSound(0); // id 0 = kill player
+		//ServiceLocator::GetAudio()->QueueSound(0); // id 0 = kill player
 	}
 };
 
@@ -30,7 +30,7 @@ public:
 	explicit ChangeColor(GameObject* object) : Command(object) {}
 	void Execute() override
 	{
-		GetActor()->GetComponentByType<QBertComponent>()->ChangeColor();
+		GetActor()->GetComponentByType<QBertComponent>()->ChangeColor(0);
 	}
 };
 

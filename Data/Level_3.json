@@ -1,0 +1,169 @@
+{
+	"LevelNr": 3,
+	"NrOfColors": 2,
+	"Tiles": [
+		{
+			"Id": 0,
+			"LinkedPlayTiles": [ -1, -1, 1, 2 ],
+			"LinkedSideTiles": [ -1, -1 ]
+		},
+		{
+			"Id": 1,
+			"LinkedPlayTiles": [ -1, 0, 3, 4 ],
+			"LinkedSideTiles": [ -1, 2 ]
+		},
+		{
+			"Id": 2,
+			"LinkedPlayTiles": [ 0, -1, 4, 5 ],
+			"LinkedSideTiles": [ 1, -1 ]
+		},
+		{
+			"Id": 3,
+			"LinkedPlayTiles": [ -1, 1, 6, 7 ],
+			"LinkedSideTiles": [ -1, 4 ]
+
+		},
+		{
+			"Id": 4,
+			"LinkedPlayTiles": [ 1, 2, 7, 8 ],
+			"LinkedSideTiles": [ 3, 5 ]
+		},
+		{
+			"Id": 5,
+			"LinkedPlayTiles": [ 2, -1, 8, 9 ],
+			"LinkedSideTiles": [ 4, -1 ]
+		},
+		{
+			"Id": 6,
+			"LinkedPlayTiles": [ -1, 3, 10, 11 ],
+			"LinkedSideTiles": [ -1, 7 ]
+		},
+		{
+			"Id": 7,
+			"LinkedPlayTiles": [ 3, 4, 11, 12 ],
+			"LinkedSideTiles": [ 6, 8 ]
+		},
+		{
+			"Id": 8,
+			"LinkedPlayTiles": [ 4, 5, 12, 13 ],
+			"LinkedSideTiles": [ 7, 9 ]
+		},
+		{
+			"Id": 9,
+			"LinkedPlayTiles": [ 5, -1, 13, 14 ],
+			"LinkedSideTiles": [ 8, -1 ]
+		},
+		{
+			"Id": 10,
+			"LinkedPlayTiles": [ -1, 6, 15, 16 ],
+			"LinkedSideTiles": [ -1, 11 ]
+		},
+		{
+			"Id": 11,
+			"LinkedPlayTiles": [ 6, 7, 16, 17 ],
+			"LinkedSideTiles": [ 10, 12 ]
+		},
+		{
+			"Id": 12,
+			"LinkedPlayTiles": [ 7, 8, 17, 18 ],
+			"LinkedSideTiles": [ 11, 13 ]
+		},
+		{
+			"Id": 13,
+			"LinkedPlayTiles": [ 8, 9, 18, 19 ],
+			"LinkedSideTiles": [ 12, 14 ]
+		},
+		{
+			"Id": 14,
+			"LinkedPlayTiles": [ 9, -1, 19, 20 ],
+			"LinkedSideTiles": [ 13, -1 ]
+		},
+		{
+			"Id": 15,
+			"LinkedPlayTiles": [ -1, 10, 21, 22 ],
+			"LinkedSideTiles": [ -1, 16 ]
+		},
+		{
+			"Id": 16,
+			"LinkedPlayTiles": [ 10, 11, 22, 23 ],
+			"LinkedSideTiles": [ 15, 17 ]
+		},
+		{
+			"Id": 17,
+			"LinkedPlayTiles": [ 11, 12, 23, 24 ],
+			"LinkedSideTiles": [ 16, 18 ]
+		},
+		{
+			"Id": 18,
+			"LinkedPlayTiles": [ 12, 13, 24, 25 ],
+			"LinkedSideTiles": [ 17, 19 ]
+		},
+		{
+			"Id": 19,
+			"LinkedPlayTiles": [ 13, 14, 25, 26 ],
+			"LinkedSideTiles": [ 18, 20 ]
+		},
+		{
+			"Id": 20,
+			"LinkedPlayTiles": [ 14, -1, 26, 27 ],
+			"LinkedSideTiles": [ 19, -1 ]
+		},
+		{
+			"Id": 21,
+			"LinkedPlayTiles": [ -1, 15, -1, -1 ],
+			"LinkedSideTiles": [ -1, 22 ]
+		},
+		{
+			"Id": 22,
+			"LinkedPlayTiles": [ 15, 16, -1, -1 ],
+			"LinkedSideTiles": [ 21, 23 ]
+		},
+		{
+			"Id": 23,
+			"LinkedPlayTiles": [ 16, 17, -1, -1 ],
+			"LinkedSideTiles": [ 22, 24 ]
+		},
+		{
+			"Id": 24,
+			"LinkedPlayTiles": [ 17, 18, -1, -1 ],
+			"LinkedSideTiles": [ 23, 25 ]
+		},
+		{
+			"Id": 25,
+			"LinkedPlayTiles": [ 18, 19, -1, -1 ],
+			"LinkedSideTiles": [ 24, 26 ]
+		},
+		{
+			"Id": 26,
+			"LinkedPlayTiles": [ 19, 20, -1, -1 ],
+			"LinkedSideTiles": [ 25, 27 ]
+		},
+		{
+			"Id": 27,
+			"LinkedPlayTiles": [ 20, -1, -1, -1 ],
+			"LinkedSideTiles": [ 26, -1 ]
+		}
+	],
+  "Discs": [
+    {
+      "Id": 0,
+      "ConnectedTile": 6,
+      "TargetTile": 0
+    },
+		{
+			"Id": 1,
+			"ConnectedTile": 9,
+			"TargetTile": 0
+		},
+    {
+      "Id": 2,
+      "ConnectedTile": 15,
+      "TargetTile": 0
+    },
+    {
+      "Id": 3,
+      "ConnectedTile": 20,
+      "TargetTile": 0
+    }
+  ]
+}

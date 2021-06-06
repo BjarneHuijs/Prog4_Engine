@@ -6,9 +6,13 @@ using namespace Idiot_Engine;
 
 unsigned int Scene::m_IdCounter = 0;
 
+std::string Scene::GetName() const
+{
+	return m_Name;
+}
+
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
-Scene::~Scene() = default;
 
 void Scene::Add(const std::shared_ptr<SceneObject>& object)
 {

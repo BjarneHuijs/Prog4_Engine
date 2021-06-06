@@ -224,6 +224,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     </ClCompile>
     <ClCompile Include="Level\Demo\DemoLevel.cpp" />
     <ClCompile Include="Level\Tile\TileComponent.cpp" />
+    <ClCompile Include="Level\Tile\Manager\TileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">
@@ -241,6 +242,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     <ClInclude Include="QBertGamePCH.h" />
     <ClInclude Include="Level\Demo\DemoLevel.h" />
     <ClInclude Include="Level\Tile\TileComponent.h" />
+    <ClInclude Include="Level\Tile\Manager\TileManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

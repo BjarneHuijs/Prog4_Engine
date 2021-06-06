@@ -42,6 +42,9 @@
     <ClCompile Include="Player\QBertComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Level\Tile\Manager\TileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QBertGamePCH.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level\QBertStructs\QBertStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Tile\Manager\TileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

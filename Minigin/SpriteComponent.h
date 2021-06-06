@@ -21,6 +21,7 @@ namespace Idiot_Engine
 		void SetTexture(const std::string& filename);
 		void SetScale(float xScale, float yScale);
 		void ToNextFrame();
+		void ToTargetFrame(int frameIndex);
 	private:
 		std::shared_ptr<Texture2D> m_Texture{};
 		SDL_Rect m_Source, m_Destination;

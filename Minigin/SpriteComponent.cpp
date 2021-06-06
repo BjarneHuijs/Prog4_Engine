@@ -55,3 +55,12 @@ void SpriteComponent::ToNextFrame()
 		m_Source.x = 0;
 	}
 }
+
+void SpriteComponent::ToTargetFrame(int frameIndex)
+{
+	m_Source.x = frameIndex * m_Source.w;
+	if (m_Source.x >= m_Source.w * m_NrOfFrames)
+	{
+		m_Source.x = 0;
+	}
+}

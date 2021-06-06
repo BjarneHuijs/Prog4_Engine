@@ -13,7 +13,7 @@ namespace Idiot_Engine
 
 		//void SetParent(Idiot_Engine::GameObject* parent) override;
 
-		explicit PlayerComponent(const std::string& name, int health = 100, int maxHealth = 100);
+		explicit PlayerComponent(const std::string& name, int health = 1, int maxHealth = 1);
 		virtual ~PlayerComponent() = default;
 		PlayerComponent(const PlayerComponent& other) = delete;
 		PlayerComponent(PlayerComponent&& other) = delete;

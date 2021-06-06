@@ -47,9 +47,33 @@ std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetScene(const 
 	return m_Scenes[index];
 }
 
+std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetScene(const std::string& name) const
+{
+	for (int i{}; i < m_Scenes.size(); i++)
+	{
+		if (m_Scenes[i]->GetName()._Equal(name))
+		{
+			return m_Scenes[i];
+		}
+	}
+	return nullptr;
+}
+
 void Idiot_Engine::SceneManager::SetActiveScene(int sceneIndex)
 {
 	m_ActiveScene = sceneIndex;
+}
+
+void Idiot_Engine::SceneManager::SetActiveScene(const std::string& name)
+{
+	for(int i{}; i < m_Scenes.size(); i++)
+	{
+		if(m_Scenes[i]->GetName()._Equal(name))
+		{
+			m_ActiveScene = i;
+			return;
+		}
+	}
 }
 
 int Idiot_Engine::SceneManager::GetActiveSceneIndex() const
@@ -60,6 +84,17 @@ int Idiot_Engine::SceneManager::GetActiveSceneIndex() const
 std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetActiveScene() const
 {
 	return m_Scenes.at(m_ActiveScene);
+}
+
+Idiot_Engine::SceneManager::~SceneManager()
+{
+	for(std::shared_ptr<Scene> scene : m_Scenes)
+	{
+		scene.reset();
+		scene = nullptr;
+	}
+	
+	m_Scenes.clear();
 }
 
 Idiot_Engine::Scene& Idiot_Engine::SceneManager::CreateScene(const std::string& name)

@@ -200,8 +200,6 @@ Command* InputManager::GetCommand(const SDL_Keycode& button)
     return nullptr;
 }
 
-
-
 InputManager::~InputManager()
 {
     for (std::pair<DWORD, Command*> pair : m_Commands)

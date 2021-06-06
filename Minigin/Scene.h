@@ -15,12 +15,13 @@ namespace Idiot_Engine
 		void LateUpdate(float deltaTime);
 		void Render(float nextFrameTime) const;
 
-		~Scene();
+		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
-
+		
+		std::string GetName() const;
 	private: 
 		explicit Scene(const std::string& name);
 

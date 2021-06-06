@@ -9,6 +9,7 @@
 
 #include "Minigin.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
 #include "Level/Demo/DemoLevel.h"
 #include "Level/Level_1/Level_1.h"
 
@@ -34,17 +35,10 @@ int main(int, char* [])
 	//TODO 3: back to menu scene after game
 	//LoadGame();
 	Level_1 t{};
-	t.Load();
-	
+	Idiot_Engine::SceneManager::GetInstance().SetActiveScene("Level_1");
+
 	engine.Run();
 
 	
 	return 0;
-}
-
-void LoadGame()
-{
-	//DemoLevel t{};
-
-	//t.Load2();
 }
