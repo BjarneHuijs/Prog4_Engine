@@ -30,7 +30,6 @@ void TextComponent::Update(const float)
 	//deltaTime;
 	if (m_NeedsUpdate)
 	{
-		//const SDL_Color color = { 255,255,255 }; // only white text is supported now
 		const SDL_Color color = { m_Color.r ,m_Color.g ,m_Color.b };
 		
 		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
@@ -60,7 +59,6 @@ void TextComponent::Render(const float) const
 	if (m_Texture != nullptr && m_pParent)
 	{
 		//nextFrameTime;
-		//const auto pos = m_Transform.GetTransform();
 		const glm::vec2 parentPos{ m_pParent->GetTransform().GetPosition().x, m_pParent->GetTransform().GetPosition().y };
 		const glm::vec2 pos{ parentPos + m_RelativePosition };
 		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
@@ -73,23 +71,6 @@ void TextComponent::SetText(const std::string& text)
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
-
-//void TextComponent::onNotify(const GameObject&, ObserverEvent event)
-//{
-//	//object;
-//	if (event.type == m_Type)
-//	{
-//		SetText(event.message);
-//	}
-//}
-
-//void TextComponent::SetParent(GameObject* pParent)
-//{
-//	if(pParent)
-//	{
-//		m_pParent = pParent;
-//	}
-//}
 
 void TextComponent::SetRelativePosition(const float x, const float y)
 {

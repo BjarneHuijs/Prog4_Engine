@@ -7,9 +7,7 @@
 using namespace Idiot_Engine;
 TextObserverComponent::TextObserverComponent(const std::string& name, const std::string& linkedComponentName, const std::vector<EventTypes>& types)
 	: ObserverComponent(name, linkedComponentName, types)
-{
-	UNREFERENCED_PARAMETER(types);
-}
+{}
 
 void TextObserverComponent::OnNotify(const GameObject&, const ObserverEvent& event) // object
 {

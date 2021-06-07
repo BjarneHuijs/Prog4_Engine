@@ -34,5 +34,6 @@ private:
 	void SpawnSlime();
 	void SpawnSlickSam();
 	void SpawnCoily();
+	void SpawnUggWrong();
 };
 

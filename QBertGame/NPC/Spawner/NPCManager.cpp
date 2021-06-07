@@ -12,6 +12,7 @@
 #include "../../Level/Tile/TileManager.h"
 #include "../Coily/CoilyComponent.h"
 #include "../Slick_Sam/SlickSamComponent.h"
+#include "../UggWrong/UggWrongComponent.h"
 
 NPCManager::NPCManager()
 	: m_CurrentLevel(1)
@@ -37,13 +38,12 @@ void NPCManager::SpawnNpc(const std::vector<NPCTypes>& types)
 				SpawnSlickSam();
 				break;
 			case NPCTypes::UggWrong:
-				SpawnSlickSam();
+				SpawnUggWrong();
 				break;
 			default:
 				SpawnSlime();
 				break;;
 			}
-
 		}
 		else
 		{
@@ -193,7 +193,7 @@ void NPCManager::SpawnSlime()
 
 	bool redSlime = (rand() % 4) != 0;
 	int spawnTile = (rand() % 2) + 1;
-	// spawn other npc's
+
 	std::shared_ptr<Idiot_Engine::GameObject> npcObj = std::make_shared<Idiot_Engine::GameObject>();
 	std::shared_ptr<SlimeComponent> slime = std::make_shared<SlimeComponent>("slime_" + std::to_string(m_HighestId), redSlime, m_HighestId, spawnTile, m_CurrentLevel);
 	const auto slimeSprite = std::make_shared<Idiot_Engine::SpriteComponent>("Slime_" + std::to_string(m_HighestId) + " Sprite", 1);
@@ -220,7 +220,7 @@ void NPCManager::SpawnSlickSam()
 
 	bool slick = (rand() % 2) != 0;
 	int spawnTile = (rand() % 2) + 1;
-	// spawn other npc's
+
 	std::shared_ptr<Idiot_Engine::GameObject> npcObj = std::make_shared<Idiot_Engine::GameObject>();
 	std::shared_ptr<SlickSamComponent> slickSam = std::make_shared<SlickSamComponent>("SlickSam_" + std::to_string(m_HighestId), m_HighestId, slick, spawnTile, m_CurrentLevel);
 	const auto slickSamSprite = std::make_shared<Idiot_Engine::SpriteComponent>("SlickSam_" + std::to_string(m_HighestId) + " Sprite", 1);
@@ -246,7 +246,7 @@ void NPCManager::SpawnCoily()
 	const float posOffset{ TileManager::GetInstance().GetTile(m_CurrentLevel - 1, 0)->size * 0.25f };
 
 	int spawnTile = (rand() % 2) + 1;
-	// spawn other npc's
+
 	std::shared_ptr<Idiot_Engine::GameObject> npcObj = std::make_shared<Idiot_Engine::GameObject>();
 	std::shared_ptr<CoilyComponent> coily = std::make_shared<CoilyComponent>("Coily_" + std::to_string(m_HighestId), m_HighestId, spawnTile, m_CurrentLevel);
 	const auto coilySprite = std::make_shared<Idiot_Engine::SpriteComponent>("Coily_" + std::to_string(m_HighestId) + " Sprite", 1);
@@ -264,4 +264,40 @@ void NPCManager::SpawnCoily()
 	npcObj->SetPosition(startLocation.x + posOffset, startLocation.y - (posOffset));
 
 	m_bCoilyActive = true;
+}
+
+void NPCManager::SpawnUggWrong()
+{
+	auto scene = Idiot_Engine::SceneManager::GetInstance().GetActiveScene();
+	const float posOffset{ TileManager::GetInstance().GetTile(m_CurrentLevel - 1, 0)->size * 0.5f };
+
+	bool isUgg = (rand() % 2) != 0;
+	int spawnTile;
+
+	// Manually defined bottom left/bottom right tile Id's here since the level is always the same size
+	if (isUgg)
+		spawnTile = 27;
+	else
+		spawnTile = 21;
+	
+	std::shared_ptr<Idiot_Engine::GameObject> npcObj = std::make_shared<Idiot_Engine::GameObject>();
+	std::shared_ptr<UggWrongComponent> uggWrong = std::make_shared<UggWrongComponent>("UggWrong_" + std::to_string(m_HighestId), isUgg, m_HighestId, spawnTile, m_CurrentLevel);
+	const auto uggWrongSprite = std::make_shared<Idiot_Engine::SpriteComponent>("UggWrong_" + std::to_string(m_HighestId) + " Sprite", 1);
+	m_HighestId++;
+	uggWrongSprite->SetScale(2, 2);
+	if (isUgg)
+		uggWrongSprite->SetTexture("Ugg.png");
+	else
+		uggWrongSprite->SetTexture("WrongWay.png");
+
+	npcObj->AddComponent(uggWrong, uggWrong->GetName());
+	npcObj->AddComponent(uggWrongSprite, uggWrongSprite->GetName());
+	m_pNPCs.push_back(npcObj);
+	scene->Add(npcObj);
+	uggWrong->SetPosOffset(posOffset);
+	const auto startLocation = TileManager::GetInstance().GetTile(m_CurrentLevel - 1, spawnTile)->Position.GetPosition2D();
+	if(isUgg)
+		npcObj->SetPosition(startLocation.x + posOffset, startLocation.y + (posOffset));
+	else
+		npcObj->SetPosition(startLocation.x - posOffset, startLocation.y + (posOffset));
 }
