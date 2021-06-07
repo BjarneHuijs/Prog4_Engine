@@ -123,7 +123,6 @@ public:
 		else if(selectedButton._Equal("MainMenuButton"))
 		{
 			SceneManager::GetInstance().SetActiveScene("MainMenu");
-			GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->DeSelect();
 		}
 		else if(selectedButton._Equal("CoopButton"))
 		{
