@@ -34,6 +34,7 @@ void QBertComponent::FixedUpdate(const float)
 
 void QBertComponent::Update(const float deltaTime)
 {
+
 	std::shared_ptr<SubjectComponent> subject{ nullptr };
 	const Transform transform{ m_pParent->GetTransform() };
 	if (m_pParent)
@@ -141,8 +142,7 @@ void QBertComponent::Update(const float deltaTime)
 }
 
 void QBertComponent::LateUpdate(const float)
-{
-}
+{}
 
 void QBertComponent::Render(const float) const
 {
@@ -150,6 +150,11 @@ void QBertComponent::Render(const float) const
 
 void QBertComponent::Kill()
 {
+	if(!m_bMoving)
+	{
+		ServiceLocator::GetAudio()->QueueSound(8); // id 8 = swear
+	}
+	
 	if (m_Health >= m_MaxHealth)
 	{
 		m_Health = 0;
@@ -190,12 +195,8 @@ void QBertComponent::ChangeColor(int index)
 
 void QBertComponent::KillCoilyWithDisc()
 {
-	if (m_NrOfDiscsRemaining > 0)
-	{
-		m_Score += 500;
-		m_NrOfDiscsRemaining--;
-	}
-	\
+	m_Score += 500;
+
 	std::shared_ptr<SubjectComponent> subject{ nullptr };
 	if (m_pParent)
 	{
@@ -482,6 +483,7 @@ bool QBertComponent::CheckForDisc(const int)
 			m_DiscTarget = disc->TargetTile;
 			m_bOnDisc = true;
 			m_DiscId = disc->DiscID;
+			NPCManager::GetInstance().ClearAllButCoily();
 			return true;
 		}
 	}

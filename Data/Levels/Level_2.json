@@ -1,7 +1,8 @@
 {
 	"LevelNr": 2,
 	"NrOfColors": 3,
-  "SpawnInterval": 3,
+	"SpawnInterval": 3,
+  "NrOfNPCtypes": 4,
   "Tiles": [
 		{
 			"Id": 0,

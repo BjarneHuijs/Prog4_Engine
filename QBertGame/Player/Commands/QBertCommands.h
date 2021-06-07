@@ -1,7 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "../QBertComponent.h"
-#include "../../ButtonComponent.h"
+#include "../../Structs_And_Menu/ButtonComponent/ButtonComponent.h"
 using namespace Idiot_Engine;
 class Kill : public Command
 {

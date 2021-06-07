@@ -20,6 +20,7 @@ namespace Idiot_Engine
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 		std::string GetName() const;
+		GameObject* GetParent() const;
 	protected:
 		GameObject* m_pParent { nullptr };
 		std::string m_Name{};

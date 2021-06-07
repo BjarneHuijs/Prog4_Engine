@@ -9,6 +9,14 @@ enum class TileStates
 	Target,
 };
 
+enum class NPCTypes
+{
+	Slime,
+	SlickSam,
+	Coily,
+	UggWrong,
+};
+
 struct TileData
 {
 	int TileID;
@@ -27,6 +35,7 @@ struct TileData
 	int NrOfColors = 2;
 	float size = 50.f;
 	bool cleared = false;
+	bool npcHostileOnTile = false;
 	bool npcOnTile = false;
 	
 	// sprite has 3 frames per level -> some empty for spacing when less than 3 colors
@@ -38,7 +47,7 @@ struct TileData
 		{
 			case TileStates::Base: break;
 			case TileStates::Intermediate:
-				if(NrOfColors > 2)
+				if(NrOfColors <= 2)
 					CurrentState = TileStates::Base;
 				break;
 			case TileStates::Target: 
