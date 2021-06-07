@@ -7,14 +7,12 @@
 
 #include "BuildTypeSelector.h"
 
+#include "SDL.h"
 #include "Minigin.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Level/Demo/DemoLevel.h"
 #include "Level/Levels/GameLevels.h"
-
-void LoadGame();
-
 
 int main(int, char* [])
 {
@@ -33,11 +31,9 @@ int main(int, char* [])
 	//TODO 1: make menu scene and menu nav
 	//TODO 2: make Level scene accessed from menu (read from file)
 	//TODO 3: back to menu scene after game
-	//LoadGame();
 	GameLevels levels{};
 
 	engine.Run();
 
-	
 	return 0;
 }

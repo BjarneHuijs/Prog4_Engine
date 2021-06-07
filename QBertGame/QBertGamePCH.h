@@ -13,8 +13,11 @@
 #pragma comment(lib, "SDL2_mixer.lib")
 #include <SDL_mixer.h>
 #pragma comment(lib, "SDL2_image.lib")
+#include <SDL_image.h>
 #pragma comment(lib, "SDL2_ttf.lib")
+#include <SDL_ttf.h>
 #pragma comment(lib, "SDL2.lib")
+#include <SDL.h>
 
 #pragma warning (disable:4201)
 #pragma warning (disable:4189)

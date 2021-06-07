@@ -96,7 +96,7 @@ void Idiot_Engine::SceneManager::SetActiveScene(const std::string& name)
 		if(m_Scenes[i]->GetName()._Equal(name))
 		{
 			m_bSwapped = true;
-			m_ActiveScene = i;
+			m_ActiveScene = static_cast<int>(i);
 			InputManager::GetInstance().SetCurrentLevel(name);
 			return;
 		}
