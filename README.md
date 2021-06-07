@@ -30,6 +30,7 @@ For other smaller bits of code I have placed comments above them when I did not 
 My project executables all will open the console as when I tried to disable the console it kept throwing Linker errors
 
 The assets, sprites, textures and audio were all sourced from free to use platforms.
+
 audio effects link (not the background music file): https://www.101soundboards.com/boards/10365-qbert-sounds
 
 sprite sheet: https://www.spriters-resource.com/arcade/qbert/sheet/60496/
