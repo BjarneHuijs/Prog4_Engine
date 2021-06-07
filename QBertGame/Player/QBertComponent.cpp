@@ -1,13 +1,14 @@
 #include "QBertGamePCH.h"
 #include "QBertComponent.h"
 
-#include "../Level/Level_1/Level_1.h"
+#include "../Level/Levels/GameLevels.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Structs.h"
 #include "SubjectComponent.h"
-#include "../Level/Tile/TileComponent.h"
+#include "../Level/Tile/TileManager.h"
+#include "../NPC/Spawner/NPCManager.h"
 
 using namespace Idiot_Engine;
 QBertComponent::QBertComponent(const std::string& name, int level, float movementSpeed)
@@ -54,18 +55,23 @@ void QBertComponent::Update(const float deltaTime)
 			}
 			else
 			{
-				std::cout << "Lvl 3 cleared -> Game Over!!!!!" << std::endl;
-				m_Score = 0;
+				//std::cout << "Lvl 3 cleared -> Game Over!!!!!" << std::endl;
+				if (subject)
+				{
+					subject->NotifyObservers(*m_pParent, ObserverEvent{ "You Win !!!!!", EventTypes::PlayerDeath });
+				}
+				//m_Score = 0;
 				m_CurrentLevel = 1;
 				ResetLevels();
 				SetCurrentLevel(m_CurrentLevel);
-				SceneManager::GetInstance().SetActiveScene("Level_1");
+				SceneManager::GetInstance().SetActiveScene("EndMenu");
 			}
 		}
 
 		subject = m_pParent->GetComponentByType<SubjectComponent>();
 		if (m_bMoving) 
 		{
+			// Base logic for the lerp to target given to me by Martijn
 			const glm::vec2 movement = (transform.GetPosition2D() + (m_TargetPos - transform.GetPosition2D()) * deltaTime * m_CurrentMovementSpeed);
 
 			if (glm::length(m_TargetPos - movement) < 3.0f)
@@ -102,8 +108,7 @@ void QBertComponent::Update(const float deltaTime)
 			{
 				subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
 			}
-			
-			m_CurrentTile = 0;
+		
 		}
 		else
 		{
@@ -111,17 +116,14 @@ void QBertComponent::Update(const float deltaTime)
 
 			if (m_NrLives <= 0)
 			{
+				SceneManager::GetInstance().SetActiveScene("EndMenu");
 				if (subject)
 				{
 					subject->NotifyObservers(*m_pParent, ObserverEvent{ "Game Over", EventTypes::PlayerDeath });
 				}
-				if (subject)
-				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ " ", EventTypes::PlayerDeath });
-				}
+
 				ServiceLocator::GetAudio()->QueueSound(7); // id 7 = game over
-				SceneManager::GetInstance().SetActiveScene("Level_1");
-				m_Score = 0;
+				//m_Score = 0;
 				m_CurrentLevel = 1;
 				ResetLevels();
 				SetCurrentLevel(m_CurrentLevel);
@@ -148,7 +150,6 @@ void QBertComponent::Render(const float) const
 
 void QBertComponent::Kill()
 {
-	ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
 	if (m_Health >= m_MaxHealth)
 	{
 		m_Health = 0;
@@ -194,7 +195,7 @@ void QBertComponent::KillCoilyWithDisc()
 		m_Score += 500;
 		m_NrOfDiscsRemaining--;
 	}
-
+	\
 	std::shared_ptr<SubjectComponent> subject{ nullptr };
 	if (m_pParent)
 	{
@@ -251,6 +252,7 @@ void QBertComponent::MoveTopLeft()
 	{
 		if(targetIndex == -1 && !CheckForDisc(m_CurrentLevel))
 		{
+			ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
 			Kill();
 			m_TargetPos = tiles[0]->Position.GetPosition2D();
 			m_CurrentTile = 0;
@@ -275,6 +277,7 @@ void QBertComponent::MoveTopRight()
 	{
 		if (targetIndex == -1 && !CheckForDisc(m_CurrentLevel))
 		{
+			ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
 			Kill();
 			m_TargetPos = tiles[0]->Position.GetPosition2D();
 			m_CurrentTile = 0;
@@ -299,6 +302,7 @@ void QBertComponent::MoveBotLeft()
 	{
 		if (targetIndex == -1 && !CheckForDisc(m_CurrentLevel))
 		{
+			ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
 			Kill();
 			m_TargetPos = tiles[0]->Position.GetPosition2D();
 			m_CurrentTile = 0;
@@ -323,6 +327,7 @@ void QBertComponent::MoveBotRight()
 	{
 		if (targetIndex == -1 && !CheckForDisc(m_CurrentLevel))
 		{
+			ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
 			Kill();
 			m_TargetPos = tiles[0]->Position.GetPosition2D();
 			m_CurrentTile = 0;
@@ -417,6 +422,16 @@ void QBertComponent::ResetLevels()
 	ResetLevel(2);
 	ResetLevel(3);
 	m_NrLives = 3;
+}
+
+void QBertComponent::StartNewGame()
+{
+	m_Score = 0;
+	m_CurrentTile = 0;
+	m_Health = m_MaxHealth;
+	m_bMoving = false;
+	m_NrLives = 3;
+	NPCManager::GetInstance().ClearAllEnemies();
 }
 
 void QBertComponent::ResetLevel(const int level)

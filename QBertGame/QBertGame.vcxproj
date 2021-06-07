@@ -211,7 +211,10 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Level\Level_1\Level_1.cpp" />
+    <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="Level\Levels\GameLevels.cpp" />
+    <ClCompile Include="NPC\NPCBaseComponent.cpp" />
+    <ClCompile Include="NPC\Observer\NPCObserverComponent.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Player\Observer\PlayerObserverComponent.cpp" />
     <ClCompile Include="Player\QBertComponent.cpp" />
@@ -223,8 +226,10 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Level\Demo\DemoLevel.cpp" />
-    <ClCompile Include="Level\Tile\TileComponent.cpp" />
-    <ClCompile Include="Level\Tile\Manager\TileManager.cpp" />
+    <ClCompile Include="Level\Tile\TileManager.cpp" />
+    <ClCompile Include="NPC\Spawner\NPCManager.cpp" />
+    <ClCompile Include="NPC\Slime\SlimeComponent.cpp" />
+    <ClCompile Include="NPC\Spawner\SpawnerComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">
@@ -233,16 +238,21 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildTypeSelector.h" />
-    <ClInclude Include="Level\Level_1\Level_1.h" />
-    <ClInclude Include="Level\QBertStructs\QBertStructs.h" />
+    <ClInclude Include="ButtonComponent.h" />
+    <ClInclude Include="Level\Levels\GameLevels.h" />
+    <ClInclude Include="Structs_And_Menu\QBertStructs.h" />
+    <ClInclude Include="NPC\NPCBaseComponent.h" />
+    <ClInclude Include="NPC\Observer\NPCObserverComponent.h" />
     <ClInclude Include="Player\Commands\QBertCommands.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Player\Observer\PlayerObserverComponent.h" />
     <ClInclude Include="Player\QBertComponent.h" />
     <ClInclude Include="QBertGamePCH.h" />
     <ClInclude Include="Level\Demo\DemoLevel.h" />
-    <ClInclude Include="Level\Tile\TileComponent.h" />
-    <ClInclude Include="Level\Tile\Manager\TileManager.h" />
+    <ClInclude Include="Level\Tile\TileManager.h" />
+    <ClInclude Include="NPC\Spawner\NPCManager.h" />
+    <ClInclude Include="NPC\Slime\SlimeComponent.h" />
+    <ClInclude Include="NPC\Spawner\SpawnerComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

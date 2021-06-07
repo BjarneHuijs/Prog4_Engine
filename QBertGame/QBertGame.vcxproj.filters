@@ -27,10 +27,7 @@
     <ClCompile Include="Level\Demo\DemoLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\Tile\TileComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Level\Level_1\Level_1.cpp">
+    <ClCompile Include="Level\Levels\GameLevels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player\Observer\PlayerObserverComponent.cpp">
@@ -42,7 +39,25 @@
     <ClCompile Include="Player\QBertComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\Tile\Manager\TileManager.cpp">
+    <ClCompile Include="Level\Tile\TileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Spawner\NPCManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Slime\SlimeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Observer\NPCObserverComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\NPCBaseComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Spawner\SpawnerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,10 +71,7 @@
     <ClInclude Include="BuildTypeSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\Tile\TileComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level\Level_1\Level_1.h">
+    <ClInclude Include="Level\Levels\GameLevels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player\Observer\PlayerObserverComponent.h">
@@ -74,10 +86,28 @@
     <ClInclude Include="Player\QBertComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\QBertStructs\QBertStructs.h">
+    <ClInclude Include="Structs_And_Menu\QBertStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\Tile\Manager\TileManager.h">
+    <ClInclude Include="Level\Tile\TileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Spawner\NPCManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Slime\SlimeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Observer\NPCObserverComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\NPCBaseComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Spawner\SpawnerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 {
   "LevelNr": 1,
   "NrOfColors": 2,
+  "SpawnInterval": 5,
   "Tiles": [
     {
       "Id": 0,

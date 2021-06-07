@@ -1,7 +1,8 @@
 {
 	"LevelNr": 3,
 	"NrOfColors": 2,
-	"Tiles": [
+  "SpawnInterval": 2,
+  "Tiles": [
 		{
 			"Id": 0,
 			"LinkedPlayTiles": [ -1, -1, 1, 2 ],
@@ -144,26 +145,26 @@
 			"LinkedSideTiles": [ 26, -1 ]
 		}
 	],
-  "Discs": [
-    {
-      "Id": 0,
-      "ConnectedTile": 6,
-      "TargetTile": 0
-    },
+	"Discs": [
+		{
+			"Id": 0,
+			"ConnectedTile": 6,
+			"TargetTile": 0
+		},
 		{
 			"Id": 1,
 			"ConnectedTile": 9,
 			"TargetTile": 0
 		},
-    {
-      "Id": 2,
-      "ConnectedTile": 15,
-      "TargetTile": 0
-    },
-    {
-      "Id": 3,
-      "ConnectedTile": 20,
-      "TargetTile": 0
-    }
-  ]
+		{
+			"Id": 2,
+			"ConnectedTile": 15,
+			"TargetTile": 0
+		},
+		{
+			"Id": 3,
+			"ConnectedTile": 20,
+			"TargetTile": 0
+		}
+	]
 }

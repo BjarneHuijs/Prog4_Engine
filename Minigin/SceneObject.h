@@ -1,6 +1,7 @@
 #pragma once
 namespace Idiot_Engine
 {
+	// No longer used
 	class SceneObject
 	{
 	public:
@@ -16,4 +17,5 @@ namespace Idiot_Engine
 		SceneObject& operator=(const SceneObject& other) = delete;
 		SceneObject& operator=(SceneObject&& other) = delete;
 	};
+
 }

@@ -27,7 +27,7 @@ struct TileData
 	int NrOfColors = 2;
 	float size = 50.f;
 	bool cleared = false;
-
+	bool npcOnTile = false;
 	
 	// sprite has 3 frames per level -> some empty for spacing when less than 3 colors
 	int FramesPerLevel = 3;

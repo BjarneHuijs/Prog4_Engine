@@ -37,9 +37,9 @@ void DemoLevel::Load()
 	scene.Add(go);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font, Color{ 255, 0, 0 });
-	to->SetPosition(80, 20);
-	scene.Add(to);
+	//auto to = std::make_shared<TextObject>("Programming 4 Assignment", font, Color{ 255, 0, 0 });
+	//to->SetPosition(80, 20);
+	//scene.Add(to);
 
 	// FPS
 	go = std::make_shared<GameObject>();
@@ -147,20 +147,22 @@ void DemoLevel::Load()
 
 void DemoLevel::InitDemoInput(Idiot_Engine::GameObject* controllerObject, Idiot_Engine::GameObject* keyboardObject)
 {
+	UNREFERENCED_PARAMETER(controllerObject);
+	UNREFERENCED_PARAMETER(keyboardObject);
 	// Init default controller commands
-	InputManager::GetInstance().AddCommand(ControllerButton::ButtonA, new KillCoily(controllerObject));
-	InputManager::GetInstance().AddCommand(ControllerButton::ButtonX, new ChangeColor(controllerObject));
-	InputManager::GetInstance().AddCommand(ControllerButton::ButtonY, new Kill(controllerObject));
-	InputManager::GetInstance().AddCommand(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject));
+	//InputManager::GetInstance().AddCommand(ControllerButton::ButtonA, new KillCoily(controllerObject));
+	//InputManager::GetInstance().AddCommand(ControllerButton::ButtonX, new ChangeColor(controllerObject));
+	//InputManager::GetInstance().AddCommand(ControllerButton::ButtonY, new Kill(controllerObject));
+	//InputManager::GetInstance().AddCommand(ControllerButton::RightShoulder, new CalculateRemainingDiscs(controllerObject));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonB, std::make_unique<Fire>(Fire())));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonX, std::make_unique<Duck>(Duck())));
 	//m_ControllerCommands.insert(std::make_pair(ControllerButton::ButtonY, std::make_unique<Fart>(Fart())));
 
 	// Init default keyboard commands
 	//m_KeyboardCommands.insert(std::make_pair('E', std::make_unique<Kill>(Kill(controllerObject))));
-	InputManager::GetInstance().AddCommand(SDLK_1, new KillCoily(keyboardObject));
-	InputManager::GetInstance().AddCommand(SDLK_2, new ChangeColor(keyboardObject));
-	InputManager::GetInstance().AddCommand(SDLK_3, new CatchNPC(keyboardObject));
-	InputManager::GetInstance().AddCommand(SDLK_4, new CalculateRemainingDiscs(keyboardObject));
-	InputManager::GetInstance().AddCommand(SDLK_e, new Kill(keyboardObject));
+	//InputManager::GetInstance().AddCommand(SDLK_1, new KillCoily(keyboardObject));
+	//InputManager::GetInstance().AddCommand(SDLK_2, new ChangeColor(keyboardObject));
+	//InputManager::GetInstance().AddCommand(SDLK_3, new CatchNPC(keyboardObject));
+	//InputManager::GetInstance().AddCommand(SDLK_4, new CalculateRemainingDiscs(keyboardObject));
+	//InputManager::GetInstance().AddCommand(SDLK_e, new Kill(keyboardObject));
 }

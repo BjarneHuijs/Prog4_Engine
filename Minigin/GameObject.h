@@ -9,13 +9,13 @@ namespace Idiot_Engine
 {
 	class Texture2D;
 	class BaseComponent;
-	class GameObject final : public SceneObject, public std::enable_shared_from_this<GameObject>
+	class GameObject final// : public std::enable_shared_from_this<GameObject>
 	{
 	public:
-		void FixedUpdate(const float deltaTime) override;
-		void Update(const float deltaTime) override;
-		void LateUpdate(const float deltaTime) override;
-		void Render(const float nextFrameTime) const override;
+		void FixedUpdate(const float deltaTime);
+		void Update(const float deltaTime);
+		void LateUpdate(const float deltaTime);
+		void Render(const float nextFrameTime) const;
 
 		//void SetTexture(const std::string& filename);
 		void SetPosition(const float x, const float y);
@@ -37,10 +37,13 @@ namespace Idiot_Engine
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		bool IsMarkedForDelete() const;
+		void MarkForDelete();
 	private:
 		Transform m_Transform;
 		//std::shared_ptr<Texture2D> m_Texture{};
 		std::map<std::string, std::shared_ptr<BaseComponent>> m_pComponents{};
+		bool m_bMarkedForDelete{ false };
 	};
 
 	// templated function was provided by Martijn

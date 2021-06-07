@@ -4,7 +4,7 @@
 
 void TileManager::AddTile(TileData* tile)
 {
-	if(m_pLevelTiles.size() < tile->LevelNr)
+	if(static_cast<int>(m_pLevelTiles.size()) < tile->LevelNr)
 		m_pLevelTiles.push_back(std::vector<TileData*>());
 	
 	m_pLevelTiles[tile->LevelNr - 1].push_back(tile);
@@ -12,14 +12,14 @@ void TileManager::AddTile(TileData* tile)
 
 std::vector<TileData*> TileManager::GetTiles(const int level) const
 {
-	if (level < m_pLevelTiles.size())
+	if (level < static_cast<int>(m_pLevelTiles.size()))
 		return m_pLevelTiles.at(level);
 	return {};
 }
 
 TileData* TileManager::GetTile(const int level, const int index) const
 {
-	if (level < m_pLevelTiles.size())
+	if (level < static_cast<int>(m_pLevelTiles.size()))
 		return m_pLevelTiles.at(level).at(index);
 	return nullptr;
 }
@@ -39,7 +39,7 @@ bool TileManager::LevelCleared(const int level)
 
 void TileManager::AddDisc(DiscData* disc)
 {
-	if (m_pLevelDiscs.size() < disc->LevelNr)
+	if (static_cast<int>(m_pLevelDiscs.size()) < disc->LevelNr)
 		m_pLevelDiscs.push_back(std::vector<DiscData*>());
 
 	m_pLevelDiscs[disc->LevelNr - 1].push_back(disc);
@@ -47,14 +47,14 @@ void TileManager::AddDisc(DiscData* disc)
 
 std::vector<DiscData*> TileManager::GetDiscs(const int level) const
 {
-	if (level < m_pLevelDiscs.size())
+	if (level < static_cast<int>(m_pLevelDiscs.size()))
 		return m_pLevelDiscs.at(level);
 	return {};
 }
 
 DiscData* TileManager::GetDisc(const int level, const int index) const
 {
-	if (level < m_pLevelDiscs.size())
+	if (level < static_cast<int>(m_pLevelDiscs.size()))
 
 		return m_pLevelDiscs.at(level).at(index);
 	return nullptr;

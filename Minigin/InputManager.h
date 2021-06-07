@@ -53,18 +53,25 @@ namespace Idiot_Engine
 		Command* GetCommand(const ControllerButton& button);
 		Command* GetCommand(const SDL_Keycode& button);
 
-		void AddCommand(DWORD inputValue, Command* command);
+		void AddCommand(const std::string& levelName, DWORD inputValue, Command* command);
+		void SetCurrentLevel(const std::string& levelName);
+
+		void QuitGame();
 	
 	private:
 		XINPUT_STATE m_GamePadState{};
 		XINPUT_KEYSTROKE m_Keystroke{};
 
-		CommandsMap m_Commands{};
+		std::map<std::string, CommandsMap> m_Commands;
+		//CommandsMap m_Commands{};
 		//CommandsMap m_ControllerCommands{};
 		//CommandsMap m_KeyboardCommands{};
 
 		bool m_bRebindMode{ false };
 		int m_errorCounter{ 0 };
+		std::string m_CurrentLevel{};
+
+		bool m_bDontExitGame{ true };
 	};
 
 }

@@ -5,7 +5,26 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-Idiot_Engine::GameObject::~GameObject() = default;
+Idiot_Engine::GameObject::~GameObject()
+{
+	for(auto component : m_pComponents)
+	{
+
+		component.second.reset();
+		//m_pComponents.erase();
+	}
+	m_pComponents.clear();
+}
+
+bool Idiot_Engine::GameObject::IsMarkedForDelete() const
+{
+	return m_bMarkedForDelete;
+}
+
+void Idiot_Engine::GameObject::MarkForDelete()
+{
+	m_bMarkedForDelete = true;
+}
 
 void Idiot_Engine::GameObject::FixedUpdate(const float deltaTime)
 {	

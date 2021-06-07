@@ -1,6 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "../QBertComponent.h"
+#include "../../ButtonComponent.h"
 using namespace Idiot_Engine;
 class Kill : public Command
 {
@@ -79,6 +80,52 @@ public:
 class MoveBotRight : public Command
 {
 public:
-	explicit  MoveBotRight(GameObject* object) : Command(object) {}
+	explicit MoveBotRight(GameObject* object) : Command(object) {}
 	void Execute() override { GetActor()->GetComponentByType<QBertComponent>()->MoveBotRight(); }
+};
+
+// Menu Commands
+class MoveSelectionUp : public Command
+{
+public:
+	explicit MoveSelectionUp(GameObject* object) : Command(object) {}
+	void Execute() override
+	{
+		const std::string selectedButton{ GetActor()->GetComponentByType<ButtonComponent>()->GetSelectedButtonName() };
+		GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->MoveSelectionUp();
+	}
+};
+
+class MoveSelectionDown : public Command
+{
+public:
+	explicit MoveSelectionDown(GameObject* object) : Command(object) {}
+	void Execute() override
+	{
+		const std::string selectedButton{ GetActor()->GetComponentByType<ButtonComponent>()->GetSelectedButtonName() };
+		GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->MoveSelectionDown();
+	}
+};
+
+class ConfirmSelection : public Command
+{
+public:
+	explicit ConfirmSelection(GameObject* object) : Command(object) {}
+	void Execute() override
+	{
+		const std::string selectedButton{ GetActor()->GetComponentByType<ButtonComponent>()->GetSelectedButtonName() };
+		if(selectedButton._Equal("StartGameButton"))
+		{
+			SceneManager::GetInstance().SetActiveScene("Level_1");
+			GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->GetUser()->StartNewGame();
+		}
+		else if(selectedButton._Equal("MainMenuButton"))
+		{
+			SceneManager::GetInstance().SetActiveScene("MainMenu");
+		}
+		else if (selectedButton._Equal("ExitGameButton"))
+		{
+			InputManager::GetInstance().QuitGame();
+		}
+	}
 };

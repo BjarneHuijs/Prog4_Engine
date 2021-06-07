@@ -5,13 +5,18 @@ namespace Idiot_Engine {
 	class Transform;
 }
 
-class Level_1;
+class GameLevels;
 class TileComponent;
 class QBertComponent : public Idiot_Engine::PlayerComponent
 {
 public:
 	explicit QBertComponent(const std::string& name, int level = 1, float movementSpeed = 5.f);
 	~QBertComponent() override = default;
+
+	QBertComponent(const QBertComponent& other) = delete;
+	QBertComponent(QBertComponent&& other) = delete;
+	QBertComponent& operator=(const QBertComponent& other) = delete;
+	QBertComponent& operator=(QBertComponent&& other) = delete;
 	
 	void FixedUpdate(const float deltaTime) override;
 	void Update(const float deltaTime) override;
@@ -41,6 +46,7 @@ public:
 	void SetCurrentLevel(const int level);
 
 	void ResetLevels();
+	void StartNewGame();
 private:
 	int m_NrLives{};
 	int m_Score{};

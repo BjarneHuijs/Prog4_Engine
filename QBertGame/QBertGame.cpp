@@ -11,7 +11,7 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Level/Demo/DemoLevel.h"
-#include "Level/Level_1/Level_1.h"
+#include "Level/Levels/GameLevels.h"
 
 void LoadGame();
 
@@ -34,8 +34,7 @@ int main(int, char* [])
 	//TODO 2: make Level scene accessed from menu (read from file)
 	//TODO 3: back to menu scene after game
 	//LoadGame();
-	Level_1 t{};
-	Idiot_Engine::SceneManager::GetInstance().SetActiveScene("Level_1");
+	GameLevels levels{};
 
 	engine.Run();
 

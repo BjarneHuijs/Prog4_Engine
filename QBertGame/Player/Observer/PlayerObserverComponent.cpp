@@ -4,11 +4,13 @@
 #include "GameObject.h"
 #include "ObserverComponent.h"
 #include "PlayerComponent.h"
+#include "ServiceLocator.h"
 #include "SpriteComponent.h"
 #include "TextComponent.h"
 #include "../QBertComponent.h"
-#include "../../Level/QBertStructs/QBertStructs.h"
-#include "../../Level/Tile/Manager/TileManager.h"
+#include "../../Structs_And_Menu/QBertStructs.h"
+#include "../../Level/Tile/TileManager.h"
+#include "../../NPC/Spawner/NPCManager.h"
 
 using namespace Idiot_Engine;
 PlayerObserverComponent::PlayerObserverComponent(const std::string& name, const std::string& linkedComponentName, const std::vector<EventTypes>& types, const int level)
@@ -20,10 +22,6 @@ void PlayerObserverComponent::OnNotify(const GameObject& player, const ObserverE
 {
 	for (const EventTypes& type : m_Types) 
 	{
-		/*const bool playerMoveEvent{ type == EventTypes::MoveBotLeft
-		|| type == EventTypes::MoveBotRight
-		|| type == EventTypes::MoveTopLeft
-		|| type == EventTypes::MoveTopRight };*/
 		if (m_pParent && event.type == type)
 		{
 			auto qBert = player.GetComponentByName<QBertComponent>(m_LinkedComponentName);
@@ -61,10 +59,19 @@ void PlayerObserverComponent::OnNotify(const GameObject& player, const ObserverE
 					{
 						if (spriteComponent && tileIdx == qBert->GetCurrentTileID() && qBert->GetNrOfLives() > 0)
 						{
-							TileStates prevState = tile->CurrentState;
-							tile->QBertStep();
-							if (static_cast<int>(prevState) < tile->NrOfColors - 1)
-								qBert->ChangeColor(tileIdx);
+							if(tile->npcOnTile)
+							{
+								ServiceLocator::GetAudio()->QueueSound(8); // id 8 = swear
+								qBert->Kill();
+								NPCManager::GetInstance().ClearAllEnemies();
+							}
+							else 
+							{
+								TileStates prevState = tile->CurrentState;
+								tile->QBertStep();
+								if (static_cast<int>(prevState) < tile->NrOfColors - 1)
+									qBert->ChangeColor(tileIdx);
+							}
 						}
 
 						const int offset = ((tile->LevelNr - 1) * tile->FramesPerLevel);

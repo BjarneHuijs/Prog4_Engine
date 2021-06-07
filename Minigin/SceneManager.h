@@ -20,6 +20,8 @@ namespace Idiot_Engine
 		void SetActiveScene(const std::string& name);
 		int GetActiveSceneIndex() const;
 		std::shared_ptr<Scene> GetActiveScene() const;
+
+		void CleanUp();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

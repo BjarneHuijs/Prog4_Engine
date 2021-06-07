@@ -17,9 +17,13 @@ namespace Idiot_Engine
 		
 		void SetTexture(const std::string& filename);
 		void SetScale(float xScale, float yScale);
+
+		void SetRelativePosition(const float x, const float y);
+
 	private:
 		std::shared_ptr<Texture2D> m_Texture{};
 		SDL_Rect m_Source, m_Destination;
 		glm::vec2 m_Scale;
+		glm::vec2 m_RelativePosition{};
 	};
 }

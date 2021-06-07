@@ -28,6 +28,9 @@ bool InputManager::ProcessInput()
     const bool keyboardResult = HandleKeyboardInput();
     if (!keyboardResult) return keyboardResult;
 
+	// If Exit game button pressed
+    if (!m_bDontExitGame) return m_bDontExitGame;
+	
 	return true;
 }
 
@@ -95,8 +98,8 @@ bool InputManager::HandleControllerInput()
             ControllerButton newButton{ static_cast<ControllerButton>(newKey.VirtualKey) };
             //auto command = m_ControllerCommands.extract(oldButton);
             //auto otherCommand = m_ControllerCommands.extract(newButton);
-            auto command = m_Commands.extract(oldButton);
-            auto otherCommand = m_Commands.extract(newButton);
+            auto command = m_Commands[m_CurrentLevel].extract(oldButton);
+            auto otherCommand = m_Commands[m_CurrentLevel].extract(newButton);
             if (command.empty())
             {
                 std::cout << "Cannot rebind non-existing command" << std::endl;
@@ -108,7 +111,7 @@ bool InputManager::HandleControllerInput()
                 {
                     otherCommand.key() = command.key();
                     //m_ControllerCommands.insert(std::move(otherCommand));
-                    m_Commands.insert(std::move(otherCommand));
+                    m_Commands[m_CurrentLevel].insert(std::move(otherCommand));
 
                 }
 
@@ -116,7 +119,7 @@ bool InputManager::HandleControllerInput()
                 command.key() = oldButton;
 
                 //m_ControllerCommands.insert(std::move(command));
-                m_Commands.insert(std::move(command));
+                m_Commands[m_CurrentLevel].insert(std::move(command));
 
                 m_bRebindMode = false;
 
@@ -186,7 +189,7 @@ bool InputManager::HandleKeyboardInput()
 
 Command* InputManager::GetCommand(const ControllerButton& button)
 {
-	auto& command = m_Commands[button];
+	auto& command = m_Commands[m_CurrentLevel][button];
 	if (command) return command;
 
 	return nullptr;
@@ -194,24 +197,37 @@ Command* InputManager::GetCommand(const ControllerButton& button)
 
 Command* InputManager::GetCommand(const SDL_Keycode& button)
 {
-    auto& command = m_Commands[button];
+    auto& command = m_Commands[m_CurrentLevel][button];
     if (command) return command;
 
     return nullptr;
 }
 
+void InputManager::SetCurrentLevel(const std::string& levelName)
+{
+    m_CurrentLevel = levelName;
+}
+
+void InputManager::QuitGame()
+{
+    m_bDontExitGame = false;
+}
+
 InputManager::~InputManager()
 {
-    for (std::pair<DWORD, Command*> pair : m_Commands)
-    {
-        delete pair.second;
-        pair.second = nullptr;
+    for (std::pair<std::string, CommandsMap> commandList : m_Commands) {
+        for (std::pair<DWORD, Command*> pair : commandList.second)
+        {
+            delete pair.second;
+            pair.second = nullptr;
+        }
+        commandList.second.clear();
     }
 }
 
-void InputManager::AddCommand(DWORD inputValue, Command* command)
+void InputManager::AddCommand(const std::string& levelName, DWORD inputValue, Command* command)
 {
-	m_Commands.insert(std::make_pair(inputValue, command));
+	m_Commands[levelName].insert(std::make_pair(inputValue, command));
 	//switch (inputEvent)
 	//{
 	//case EventTypes::MoveTopLeft: 

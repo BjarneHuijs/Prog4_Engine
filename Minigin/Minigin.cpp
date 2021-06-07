@@ -217,7 +217,8 @@ void Idiot_Engine::Minigin::Run()
 			sceneManager.LateUpdate(deltaTime);
 			
 			renderer.Render(deltaTime);
-			
+
+			sceneManager.CleanUp();
 		}
 
 	}

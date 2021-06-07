@@ -14,6 +14,9 @@ enum class EventTypes
 	MoveBotRight,
 	TileChanged,
 	DiscChanged,
+	SlimeMoved,
+	CoilyMoved,
+	SlickSamMoved,
 };
 
 struct Color

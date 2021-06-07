@@ -56,6 +56,7 @@ void Idiot_Engine::Renderer::Render(const float nextFrameTime) //const
 
 	SceneManager::GetInstance().Render(nextFrameTime);
 
+#ifdef DemoWindows
 	// ImGui demo window
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
@@ -63,11 +64,11 @@ void Idiot_Engine::Renderer::Render(const float nextFrameTime) //const
 
 	Player1Controls();
 	Player2Controls();
-
 	
 	//if (m_ShowDemo) ImGui::ShowDemoWindow(&m_ShowDemo);
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+#endif
 	
 	
 	SDL_RenderPresent(m_Renderer);

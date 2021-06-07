@@ -1,5 +1,5 @@
 #include "QBertGamePCH.h"
-#include "Level_1.h"
+#include "GameLevels.h"
 
 #include <fstream>
 
@@ -19,27 +19,149 @@
 #include "TextObserverComponent.h"
 #include "TextureComponent.h"
 #include "../../BuildTypeSelector.h"
+#include "../../ButtonComponent.h"
+#include "../../NPC/Observer/NPCObserverComponent.h"
+#include "../../NPC/Spawner/SpawnerComponent.h"
 #include "../../Player/QBertComponent.h"
 #include "../../Player/Commands/QBertCommands.h"
 #include "../../Player/Observer/PlayerObserverComponent.h"
-#include "../Tile/TileComponent.h"
-#include "../Tile/Manager/TileManager.h"
+#include "../Tile/TileManager.h"
 
-Level_1::Level_1()
+GameLevels::GameLevels()
 {
 	InitAudio();
 	InitQBert();
+	LoadMainMenu();
+	LoadEndMenu();
 	LoadLevel(1);
 	LoadLevel(2);
 	LoadLevel(3);
 	m_pQBert_1->GetComponentByType<QBertComponent>()->SetCurrentLevel(1);
-	InitInput();
+	SceneManager::GetInstance().SetActiveScene("MainMenu");
 }
 
-void Level_1::LoadLevel(int levelNum)
+void GameLevels::LoadMainMenu()
 {
 	using namespace Idiot_Engine;
-	auto& scene = SceneManager::GetInstance().CreateScene("Level_" + std::to_string(levelNum));
+	auto& scene = SceneManager::GetInstance().CreateScene("MainMenu");
+
+	auto go = std::make_shared<GameObject>();
+	auto texComp = std::make_shared<TextureComponent>("Background");
+	texComp->SetTexture("background.jpg");
+	go->AddComponent(texComp, texComp->GetName());
+	scene.Add(go);
+
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+
+	SDL_Window* window{ Renderer::GetInstance().GetWindow() };
+	int xSize{};
+	int ySize{};
+	SDL_GetWindowSize(window, &xSize, &ySize);
+
+	auto title = std::make_shared<TextComponent>("MenuText", "QBert", font, Color{ 255, 255, 0 });
+	go->AddComponent(title, title->GetName());
+	title->SetRelativePosition((xSize * 0.4f), 50);
+
+	scene.Add(go);
+
+	scene.Add(m_pQBert_1);
+
+	m_pButtonObject = std::make_shared<GameObject>();
+	const auto startGame = std::make_shared<ButtonComponent>("StartGameButton", this);
+	m_pButtonObject->AddComponent(startGame, startGame->GetName());
+	const auto startButtonTex = std::make_shared<TextureComponent>("StartGameButton_Texture");
+	startButtonTex->SetScale(0.5f, 0.3f);
+	startButtonTex->SetRelativePosition(0, 100);
+	m_pButtonObject->AddComponent(startButtonTex, startButtonTex->GetName());
+
+
+	const auto quitGame = std::make_shared<ButtonComponent>("ExitGameButton", this);
+	m_pButtonObject->AddComponent(quitGame, quitGame->GetName());
+	const auto quitButtonTex = std::make_shared<TextureComponent>("ExitGameButton_Texture");
+	quitButtonTex->SetScale(0.5f, 0.3f);
+	quitButtonTex->SetRelativePosition(0, 200);
+	m_pButtonObject->AddComponent(quitButtonTex, quitButtonTex->GetName());
+
+	startGame->SetNextButton(quitGame->GetName());
+	startGame->SetPreviousButton(quitGame->GetName());
+	
+	m_pButtonObject->SetPosition(xSize * 0.25f, 80);
+	scene.Add(m_pButtonObject);
+	
+	quitGame->DeSelect();
+	startGame->Select();
+	
+	InitMenuInput("MainMenu");
+}
+
+void GameLevels::LoadEndMenu()
+{
+	using namespace Idiot_Engine;
+	auto& scene = SceneManager::GetInstance().CreateScene("EndMenu");
+
+	auto go = std::make_shared<GameObject>();
+	auto texComp = std::make_shared<TextureComponent>("Background");
+	texComp->SetTexture("background.jpg");
+	go->AddComponent(texComp, texComp->GetName());
+	scene.Add(go);
+
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+
+	SDL_Window* window{ Renderer::GetInstance().GetWindow() };
+	int xSize{};
+	int ySize{};
+	SDL_GetWindowSize(window, &xSize, &ySize);
+	
+	auto score_1 = std::make_shared<TextComponent>("ScoreText", "Score: 0", font, Color{ 0, 255, 0 });
+	go->AddComponent(score_1, score_1->GetName());
+	score_1->SetRelativePosition((xSize * 0.4f), 170);
+
+	std::vector<EventTypes> score{ std::vector<EventTypes>{ EventTypes::ScoreChanged } };
+	const auto p1ScoreObserver = std::make_shared<TextObserverComponent>("Score", score_1->GetName(), score);
+	go->AddComponent(p1ScoreObserver, p1ScoreObserver->GetName());
+	scene.Add(go);
+
+	auto p1Subject = m_pQBert_1->GetComponentByType<SubjectComponent>();
+	p1Subject->AddObserver(p1ScoreObserver.get());
+	scene.Add(m_pQBert_1);
+	m_pQBert_1->SetPosition(xSize / 2.f, ySize / 2.f);
+	
+	go = std::make_shared<GameObject>();
+	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
+	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
+	std::vector<EventTypes> death{ std::vector<EventTypes>{ EventTypes::PlayerDeath } };
+	const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), death);
+	go->AddComponent(gameEnder, gameEnder->GetName());
+	go->AddComponent(endObserver, endObserver->GetName());
+	go->SetPosition(xSize * 0.4f, 120);
+	scene.Add(go);
+
+	p1Subject->AddObserver(endObserver.get());
+
+
+	m_pButtonObject = std::make_shared<GameObject>();
+	const auto mainMenu = std::make_shared<ButtonComponent>("MainMenuButton", this);
+	m_pButtonObject->AddComponent(mainMenu, mainMenu->GetName());
+	const auto startButtonTex = std::make_shared<TextureComponent>("MainMenuButton_Texture");
+	startButtonTex->SetScale(0.5f, 0.3f);
+	startButtonTex->SetRelativePosition(0, 220);
+	m_pButtonObject->AddComponent(startButtonTex, startButtonTex->GetName());
+
+	mainMenu->SetPreviousButton(mainMenu->GetName());
+
+	m_pButtonObject->SetPosition(xSize * 0.25f, 80);
+	scene.Add(m_pButtonObject);
+
+	mainMenu->Select();
+	
+	InitMenuInput("EndMenu");
+}
+
+void GameLevels::LoadLevel(int levelNum)
+{
+	using namespace Idiot_Engine;
+	std::string levelName{ "Level_" + std::to_string(levelNum) };
+	auto& scene = SceneManager::GetInstance().CreateScene(levelName);
 	
 	auto go = std::make_shared<GameObject>();
 	auto texComp = std::make_shared<TextureComponent>("Background");
@@ -49,6 +171,7 @@ void Level_1::LoadLevel(int levelNum)
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	
+#ifdef VS
 	// FPS
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
@@ -56,21 +179,28 @@ void Level_1::LoadLevel(int levelNum)
 	go->AddComponent(fps, fps->GetName());
 	go->SetPosition(10, 5);
 	scene.Add(go);
-
+#endif
+	
 	SDL_Window* window{ Renderer::GetInstance().GetWindow() };
 	int xSize{};
 	int ySize{};
 	SDL_GetWindowSize(window, &xSize, &ySize);
 
+	
 	m_StartLocation = glm::vec2{ xSize  * 0.45f, ySize / 5 };
 #ifdef BUILD
-	std::ifstream file("Data/Level_" + std::to_string(levelNum) + ".json");
+	std::ifstream file("Data/Levels/" + levelName + ".json");
 #endif
 #ifdef VS
-	std::ifstream file("../Data/Level_" + std::to_string(levelNum) + ".json");
+	std::ifstream file("../Data/Levels/" + levelName + ".json");
 #endif
 	LoadTiles(scene, file);
 
+	go = std::make_shared<GameObject>();
+	const auto spawner = std::make_shared<SpawnerComponent>("npcSpawner", m_SpawnerInterval);
+	go->AddComponent(spawner, spawner->GetName());
+	scene.Add(go);
+	
 	// Lives + Scores
 	go = std::make_shared<GameObject>();
 	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
@@ -103,8 +233,9 @@ void Level_1::LoadLevel(int levelNum)
 	const float posOffset{ m_pTiles[0]->size * 0.25f };
 	m_pQBert_1->GetComponentByType<QBertComponent>()->SetPosOffset(posOffset);
 	m_pQBert_1->SetPosition(m_StartLocation.x + posOffset, m_StartLocation.y - posOffset);
-
-	for(int idx{}; idx < m_pTileObjects.size(); idx++)
+	
+	
+	for(size_t idx{}; idx < m_pTileObjects.size(); idx++)
 	{
 		std::vector<EventTypes> moveEvents{ EventTypes::TileChanged };
 		std::string observerName{ "Tile " + std::to_string(idx) + " Level " + std::to_string(levelNum) + " Observer" };
@@ -113,7 +244,7 @@ void Level_1::LoadLevel(int levelNum)
 		p1Subject->AddObserver(playerObserver.get());
 	}
 
-	for(int idx{}; idx < m_pDiscObjects.size(); idx++)
+	for(size_t idx{}; idx < m_pDiscObjects.size(); idx++)
 	{
 		std::vector<EventTypes> moveEvents{ EventTypes::DiscChanged };
 		std::string observerName{ "Disc " + std::to_string(idx) + " Level " + std::to_string(levelNum) + " Observer" };
@@ -122,24 +253,26 @@ void Level_1::LoadLevel(int levelNum)
 		p1Subject->AddObserver(playerObserver.get());
 	}
 
-	go = std::make_shared<GameObject>();
-	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
-	const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
-	std::vector<EventTypes> death{ std::vector<EventTypes>{ EventTypes::PlayerDeath } };
-	const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), death);
-	go->AddComponent(gameEnder, gameEnder->GetName());
-	go->AddComponent(endObserver, endObserver->GetName());
-	go->SetPosition(180, 150);
-	scene.Add(go);
+	//go = std::make_shared<GameObject>();
+	//font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
+	//const auto gameEnder = std::make_shared<TextComponent>("DeathText", "  ", font, Color{ 255, 255, 0 });
+	//std::vector<EventTypes> death{ std::vector<EventTypes>{ EventTypes::PlayerDeath } };
+	//const auto endObserver = std::make_shared<TextObserverComponent>("Death", gameEnder->GetName(), death);
+	//go->AddComponent(gameEnder, gameEnder->GetName());
+	//go->AddComponent(endObserver, endObserver->GetName());
+	//go->SetPosition(180, 150);
+	//scene.Add(go);
 
-	p1Subject->AddObserver(endObserver.get());
+	//p1Subject->AddObserver(endObserver.get());
 	
 	// TODO: add more dynamic method to use sound
 	auto* audio = ServiceLocator::GetAudio();
 	audio->QueueMusic(0);
+
+	InitGameplayInput(levelName);
 }
 
-void Level_1::LoadTiles(Scene& scene, const std::ifstream& file)
+void GameLevels::LoadTiles(Scene& scene, const std::ifstream& file)
 {
 	using namespace rapidjson;
 	Document jsonDoc;
@@ -152,7 +285,8 @@ void Level_1::LoadTiles(Scene& scene, const std::ifstream& file)
 	{
 		int lvlNr = jsonDoc["LevelNr"].GetInt();
 		int nrOfColors = jsonDoc["NrOfColors"].GetInt();
-		
+		m_SpawnerInterval = jsonDoc["SpawnInterval"].GetInt();
+
 		const Value& tiles = jsonDoc["Tiles"];
 
 		//Check if the data we got has an array
@@ -233,10 +367,8 @@ void Level_1::LoadTiles(Scene& scene, const std::ifstream& file)
 						int targetTile = val["TargetTile"].GetInt();
 
 						std::shared_ptr<GameObject> discObject(std::make_shared<GameObject>());
-						//std::shared_ptr<TileComponent> tile = std::make_shared<TileComponent>(idx, moveTiles, sideMoveTiles);
 						std::shared_ptr<SpriteComponent> tileSprite = std::make_shared<SpriteComponent>("DiscSprite_" + std::to_string(idx), NrOfDiscFrames);
 						tileSprite->SetScale(2, 2);
-						//tileObject->AddComponent(tile, tile->GetName());
 						discObject->AddComponent(tileSprite, tileSprite->GetName());
 
 						tileSprite->SetTexture("Disc.png");
@@ -327,7 +459,7 @@ void Level_1::LoadTiles(Scene& scene, const std::ifstream& file)
 }
 
 using namespace rapidjson;
-std::vector<int> Level_1::LoadLinkedTiles(const Value& val, const std::string& jsonKey) const
+std::vector<int> GameLevels::LoadLinkedTiles(const Value& val, const std::string& jsonKey) const
 {
 	const Value& jsonArray = val[jsonKey.c_str()];
 	std::vector<int> array{};
@@ -345,8 +477,12 @@ std::vector<int> Level_1::LoadLinkedTiles(const Value& val, const std::string& j
 	return array;
 }
 
-void Level_1::InitAudio()
+void GameLevels::InitAudio()
 {
+	//Music
+	// id 0 = bgm
+	
+	// Sounds:
 	// id 0 = loss life
 	// id 1 = jump player
 	// id 2 = jump enemy
@@ -355,45 +491,60 @@ void Level_1::InitAudio()
 	// id 5 = lift
 	// id 6 = level done
 	// id 7 = Game over
+	// id 8 = swear
 	
 	auto* audio = ServiceLocator::GetAudio();
 #ifdef BUILD
-	audio->AddMusic("Data/Star Commander1.wav");
-	audio->AddSound("Data/WilhelmScream.WAV"); // id 0
-	audio->AddSound("Data/jump-qbert.mp3"); // id 1
-	audio->AddSound("Data/jump-npc.mp3"); // id 2
-	audio->AddSound("Data/jump-slime.mp3"); // id 3
-	audio->AddSound("Data/fall.mp3"); // id 4
-	audio->AddSound("Data/lift.mp3"); // id 5
-	audio->AddSound("Data/tune-levelClear.mp3"); // id 6
-	audio->AddSound("Data/tune-gameOver.mp3"); // id 7
+	audio->AddMusic("Data/Audio/Star Commander1.wav");
+	audio->AddSound("Data/Audio/WilhelmScream.WAV"); // id 0
+	audio->AddSound("Data/Audio/jump-qbert.mp3"); // id 1
+	audio->AddSound("Data/Audio/jump-npc.mp3"); // id 2
+	audio->AddSound("Data/Audio/jump-slime.mp3"); // id 3
+	audio->AddSound("Data/Audio/fall.mp3"); // id 4
+	audio->AddSound("Data/Audio/lift.mp3"); // id 5
+	audio->AddSound("Data/Audio/tune-levelClear.mp3"); // id 6
+	audio->AddSound("Data/Audio/tune-gameOver.mp3"); // id 7
+	audio->AddSound("Data/Audio/swear.mp3"); // id 8
 #endif
 #ifdef VS
-	audio->AddMusic("../Data/Star Commander1.wav");
-	audio->AddSound("../Data/WilhelmScream.WAV"); // id 0
-	audio->AddSound("../Data/jump-qbert.mp3"); // id 1
-	audio->AddSound("../Data/jump-npc.mp3"); // id 2
-	audio->AddSound("../Data/jump-slime.mp3"); // id 3
-	audio->AddSound("../Data/fall.mp3"); // id 4
-	audio->AddSound("../Data/lift.mp3"); // id 5
-	audio->AddSound("../Data/tune-levelClear.mp3"); // id 6
-	audio->AddSound("../Data/tune-gameOver.mp3"); // id 7
+	audio->AddMusic("../Data/Audio/Star Commander1.wav");
+	audio->AddSound("../Data/Audio/WilhelmScream.WAV"); // id 0
+	audio->AddSound("../Data/Audio/jump-qbert.mp3"); // id 1
+	audio->AddSound("../Data/Audio/jump-npc.mp3"); // id 2
+	audio->AddSound("../Data/Audio/jump-slime.mp3"); // id 3
+	audio->AddSound("../Data/Audio/fall.mp3"); // id 4
+	audio->AddSound("../Data/Audio/lift.mp3"); // id 5
+	audio->AddSound("../Data/Audiotune-levelClear.mp3"); // id 6
+	audio->AddSound("../Data/Audio/tune-gameOver.mp3"); // id 7
+	audio->AddSound("../Data/Audio/swear.mp3"); // id 8
 #endif   
 }
 
-void Level_1::InitInput()
+void GameLevels::InitGameplayInput(const std::string& levelName)
 {
-	InputManager::GetInstance().AddCommand(SDLK_w, new MoveTopLeft(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(ControllerButton::DPadUp, new MoveTopLeft(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(SDLK_d, new MoveTopRight(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(ControllerButton::DPadRight, new MoveTopRight(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(SDLK_a, new MoveBotLeft(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(ControllerButton::DPadLeft, new MoveBotLeft(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(SDLK_s, new MoveBotRight(m_pQBert_1.get()));
-	InputManager::GetInstance().AddCommand(ControllerButton::DPadDown, new MoveBotRight(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_w, new MoveTopLeft(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadUp, new MoveTopLeft(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_d, new MoveTopRight(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadRight, new MoveTopRight(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_a, new MoveBotLeft(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadLeft, new MoveBotLeft(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_s, new MoveBotRight(m_pQBert_1.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadDown, new MoveBotRight(m_pQBert_1.get()));
 }
 
-void Level_1::InitQBert()
+void GameLevels::InitMenuInput(const std::string& levelName)
+{
+	InputManager::GetInstance().AddCommand(levelName, SDLK_w, new MoveSelectionUp(m_pButtonObject.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadUp, new MoveSelectionUp(m_pButtonObject.get()));
+
+	InputManager::GetInstance().AddCommand(levelName, SDLK_s, new MoveSelectionDown(m_pButtonObject.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadDown, new MoveSelectionDown(m_pButtonObject.get()));
+
+	InputManager::GetInstance().AddCommand(levelName, SDLK_RETURN, new ConfirmSelection(m_pButtonObject.get()));
+	InputManager::GetInstance().AddCommand(levelName, ControllerButton::ButtonA, new ConfirmSelection(m_pButtonObject.get()));
+}
+
+void GameLevels::InitQBert()
 {
 	m_pQBert_1 = std::make_shared<GameObject>();
 	const auto player_1 = std::make_shared<QBertComponent>("Player 1");
@@ -405,4 +556,9 @@ void Level_1::InitQBert()
 	m_pQBert_1->AddComponent(player_1, player_1->GetName());
 	m_pQBert_1->AddComponent(p1Subject, p1Subject->GetName());
 	m_pQBert_1->AddComponent(playerSprite, playerSprite->GetName());
+}
+
+std::shared_ptr<QBertComponent> GameLevels::GetQBert() const
+{
+	return m_pQBert_1->GetComponentByType<QBertComponent>();
 }

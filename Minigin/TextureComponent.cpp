@@ -23,9 +23,11 @@ TextureComponent::TextureComponent(const std::string& name)
 void TextureComponent::Render(const float) const
 {
 	//nextFrame
-	const auto& pos = m_pParent->GetTransform().GetPosition();
+	//const auto& pos = m_pParent->GetTransform().GetPosition();
 	if (m_Texture)
 	{
+		const glm::vec2 parentPos{ m_pParent->GetTransform().GetPosition().x, m_pParent->GetTransform().GetPosition().y };
+		const glm::vec2 pos{ parentPos + m_RelativePosition };
 		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, m_Source, m_Destination);
 	}
 }
@@ -43,4 +45,9 @@ void TextureComponent::SetScale(float xScale, float yScale)
 {
 	m_Scale.x = xScale;
 	m_Scale.y = yScale;
+}
+
+void TextureComponent::SetRelativePosition(const float x, const float y)
+{
+	m_RelativePosition = { x, y };
 }

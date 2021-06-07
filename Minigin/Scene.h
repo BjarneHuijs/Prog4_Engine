@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h"
 #include "SceneManager.h"
 
 namespace Idiot_Engine
@@ -8,7 +9,7 @@ namespace Idiot_Engine
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(const std::shared_ptr<SceneObject>& object);
+		void Add(const std::shared_ptr<GameObject>& object);
 
 		void FixedUpdate(float deltaTime);
 		void Update(float deltaTime);
@@ -22,11 +23,13 @@ namespace Idiot_Engine
 		Scene& operator=(Scene&& other) = delete;
 		
 		std::string GetName() const;
+		void RemoveObject(const std::shared_ptr<GameObject>& object);
+		void CleanUp();
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector < std::shared_ptr<SceneObject>> m_Objects{};
+		std::vector <std::shared_ptr<GameObject>> m_Objects{};
 
 		static unsigned int m_IdCounter; 
 	};
