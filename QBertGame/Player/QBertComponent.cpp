@@ -27,6 +27,7 @@ QBertComponent::QBertComponent(const std::string& name, int level, float movemen
 	, m_bOnDisc(false)
 	, m_DiscTarget(INT16_MIN)
 	, m_DiscId(INT16_MIN)
+	, m_bCoop(false)
 {}
 
 void QBertComponent::FixedUpdate(const float)
@@ -34,107 +35,109 @@ void QBertComponent::FixedUpdate(const float)
 
 void QBertComponent::Update(const float deltaTime)
 {
-
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	const Transform transform{ m_pParent->GetTransform() };
-	if (m_pParent)
+	if (m_Name._Equal("Player 1") || (m_bCoop && m_Name._Equal("Player 2")))
 	{
-		if(TileManager::GetInstance().LevelCleared(m_CurrentLevel - 1))
+		std::shared_ptr<SubjectComponent> subject{ nullptr };
+		const Transform transform{ m_pParent->GetTransform() };
+		if (m_pParent)
 		{
-			ServiceLocator::GetAudio()->QueueSound(6); // id 6 = win
-			if (m_CurrentLevel < 3)
+			if (TileManager::GetInstance().LevelCleared(m_CurrentLevel - 1))
 			{
-				ResetLevel(m_CurrentLevel);
-				RemainingDiscsScore();
-				m_CurrentLevel++;
-				m_CurrentTile = 0;
-				m_NrLives = 3;
-				m_Health = 0;
-				ResetToLevelStart();
-				SetCurrentLevel(m_CurrentLevel);
-				SceneManager::GetInstance().SetActiveScene("Level_" + std::to_string(m_CurrentLevel));
+				ServiceLocator::GetAudio()->QueueSound(6); // id 6 = win
+				if (m_CurrentLevel < 3)
+				{
+					ResetLevel(m_CurrentLevel);
+					RemainingDiscsScore();
+					m_CurrentLevel++;
+					m_CurrentTile = 0;
+					m_NrLives = 3;
+					m_Health = 0;
+					ResetToLevelStart();
+					SetCurrentLevel(m_CurrentLevel);
+					SceneManager::GetInstance().SetActiveScene("Level_" + std::to_string(m_CurrentLevel));
+				}
+				else
+				{
+					//std::cout << "Lvl 3 cleared -> Game Over!!!!!" << std::endl;
+					if (subject)
+					{
+						subject->NotifyObservers(*m_pParent, ObserverEvent{ "You Win !!!!!", EventTypes::PlayerDeath });
+					}
+					//m_Score = 0;
+					m_CurrentLevel = 1;
+					ResetLevels();
+					SetCurrentLevel(m_CurrentLevel);
+					SceneManager::GetInstance().SetActiveScene("EndMenu");
+				}
+			}
+
+			subject = m_pParent->GetComponentByType<SubjectComponent>();
+			if (m_bMoving)
+			{
+				// Base logic for the lerp to target given to me by Martijn
+				const glm::vec2 movement = (transform.GetPosition2D() + (m_TargetPos - transform.GetPosition2D()) * deltaTime * m_CurrentMovementSpeed);
+
+				if (glm::length(m_TargetPos - movement) < 3.0f)
+				{
+					m_CurrentMovementSpeed = m_MovementSpeed;
+
+					m_pParent->SetPosition(m_TargetPos.x, m_TargetPos.y);
+					m_bMoving = false;
+
+					if (subject && m_Health == m_MaxHealth)
+					{
+						subject->NotifyObservers(*m_pParent, ObserverEvent{ "TileChanged", EventTypes::TileChanged });
+					}
+
+					if (m_bOnDisc)
+					{
+						DiscTaken();
+					}
+				}
+				else
+				{
+					m_pParent->SetPosition(movement.x, movement.y);
+				}
+			}
+
+			//deltaTime;
+			if (m_Health < m_MaxHealth || m_CurrentTile == -1)
+			{
+				//std::cout << "player died" << std::endl;
+				m_Health += deltaTime;
+
+
+				if (subject)
+				{
+					subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
+				}
+
 			}
 			else
 			{
-				//std::cout << "Lvl 3 cleared -> Game Over!!!!!" << std::endl;
-				if (subject)
+				m_Health = m_MaxHealth;
+
+				if (m_NrLives <= 0)
 				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ "You Win !!!!!", EventTypes::PlayerDeath });
+					SceneManager::GetInstance().SetActiveScene("EndMenu");
+					if (subject)
+					{
+						subject->NotifyObservers(*m_pParent, ObserverEvent{ "Game Over", EventTypes::PlayerDeath });
+					}
+
+					ServiceLocator::GetAudio()->QueueSound(7); // id 7 = game over
+					//m_Score = 0;
+					m_CurrentLevel = 1;
+					ResetLevels();
+					SetCurrentLevel(m_CurrentLevel);
+
 				}
-				//m_Score = 0;
-				m_CurrentLevel = 1;
-				ResetLevels();
-				SetCurrentLevel(m_CurrentLevel);
-				SceneManager::GetInstance().SetActiveScene("EndMenu");
-			}
-		}
-
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-		if (m_bMoving) 
-		{
-			// Base logic for the lerp to target given to me by Martijn
-			const glm::vec2 movement = (transform.GetPosition2D() + (m_TargetPos - transform.GetPosition2D()) * deltaTime * m_CurrentMovementSpeed);
-
-			if (glm::length(m_TargetPos - movement) < 3.0f)
-			{
-				m_CurrentMovementSpeed = m_MovementSpeed;
-				
-				m_pParent->SetPosition(m_TargetPos.x, m_TargetPos.y);
-				m_bMoving = false;
-				
-				if (subject && m_Health == m_MaxHealth)
+				else
 				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ "TileChanged", EventTypes::TileChanged });
-				}
-
-				if (m_bOnDisc) 
-				{
-					DiscTaken();
-				}
-			}
-			else
-			{
-				m_pParent->SetPosition(movement.x, movement.y);
-			}
-		}
-
-		//deltaTime;
-		if (m_Health < m_MaxHealth || m_CurrentTile == -1)
-		{
-			//std::cout << "player died" << std::endl;
-			m_Health += deltaTime;
-
-
-			if (subject)
-			{
-				subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
-			}
-		
-		}
-		else
-		{
-			m_Health = m_MaxHealth;
-
-			if (m_NrLives <= 0)
-			{
-				SceneManager::GetInstance().SetActiveScene("EndMenu");
-				if (subject)
-				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ "Game Over", EventTypes::PlayerDeath });
-				}
-
-				ServiceLocator::GetAudio()->QueueSound(7); // id 7 = game over
-				//m_Score = 0;
-				m_CurrentLevel = 1;
-				ResetLevels();
-				SetCurrentLevel(m_CurrentLevel);
-				
-			}
-			else
-			{
-				if (subject)
-				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+					if (subject)
+					{
+						subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
+					}
 				}
 			}
 		}
@@ -425,14 +428,35 @@ void QBertComponent::ResetLevels()
 	m_NrLives = 3;
 }
 
-void QBertComponent::StartNewGame()
+void QBertComponent::StartNewGame(bool coop)
 {
+	/*if(m_Name._Equal("Player 2") && coop)
+	{
+		m_CurrentTile = 1;
+	}else
+	{
+		m_CurrentTile = 0;
+	}*/
+	
 	m_Score = 0;
 	m_CurrentTile = 0;
 	m_Health = m_MaxHealth;
 	m_bMoving = false;
 	m_NrLives = 3;
+	m_bCoop = coop;
 	NPCManager::GetInstance().ClearAllEnemies();
+
+	//std::shared_ptr<SubjectComponent> subject{ nullptr };
+	/*subject = m_pParent->GetComponentByType<SubjectComponent>();
+	if (subject)
+	{
+		subject->NotifyObservers(*m_pParent, ObserverEvent{ "Tiles changed", EventTypes::TileChanged });
+	}*/
+}
+
+bool QBertComponent::IsCoop() const
+{
+	return m_bCoop;
 }
 
 void QBertComponent::ResetLevel(const int level)

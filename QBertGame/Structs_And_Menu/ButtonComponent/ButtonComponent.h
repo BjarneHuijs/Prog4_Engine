@@ -24,6 +24,7 @@ public:
 	void DeSelect();
 
 	std::shared_ptr<QBertComponent> GetUser() const;
+	std::shared_ptr<QBertComponent> GetUser2() const;
 private:
 	std::string m_PreviousButtonName;
 	std::string m_NextButtonName;

@@ -118,10 +118,18 @@ public:
 		{
 			SceneManager::GetInstance().SetActiveScene("Level_1");
 			GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->GetUser()->StartNewGame();
+			//GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->GetUser2()->StartNewGame(false);
 		}
 		else if(selectedButton._Equal("MainMenuButton"))
 		{
 			SceneManager::GetInstance().SetActiveScene("MainMenu");
+			GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->DeSelect();
+		}
+		else if(selectedButton._Equal("CoopButton"))
+		{
+			/*GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->GetUser()->StartNewGame(true);
+			GetActor()->GetComponentByName<ButtonComponent>(selectedButton)->GetUser2()->StartNewGame(true);
+			SceneManager::GetInstance().SetActiveScene("Level_1");*/
 		}
 		else if (selectedButton._Equal("ExitGameButton"))
 		{

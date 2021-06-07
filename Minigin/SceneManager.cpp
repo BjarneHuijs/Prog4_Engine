@@ -6,41 +6,62 @@
 
 void Idiot_Engine::SceneManager::FixedUpdate(const float deltaTime)
 {
-	const size_t size{ m_Scenes.size() };
-	for (size_t i{}; i < size; i++)
+	if (!m_bSwapped)
 	{
-		if(static_cast<int>(i) == m_ActiveScene)
-			m_Scenes[i]->FixedUpdate(deltaTime);
+		const size_t size{ m_Scenes.size() };
+		for (size_t i{}; i < size; i++)
+		{
+			if (static_cast<int>(i) == m_ActiveScene)
+				m_Scenes[i]->FixedUpdate(deltaTime);
+		}
 	}
 }
 
 void Idiot_Engine::SceneManager::Update(const float deltaTime)
 {
-	const size_t size{ m_Scenes.size() };
-	for (size_t i{}; i < size; i++)
+	if (m_bSwapped)
 	{
-		if (static_cast<int>(i) == m_ActiveScene)
-			m_Scenes[i]->Update(deltaTime);
+		m_Swaptimer += deltaTime;
+		if(m_Swaptimer >= m_Swaptime)
+		{
+			m_bSwapped = false;
+			m_Swaptimer = 0.f;
+		}
+	}
+	else
+	{
+		const size_t size{ m_Scenes.size() };
+		for (size_t i{}; i < size; i++)
+		{
+			if (static_cast<int>(i) == m_ActiveScene)
+				m_Scenes[i]->Update(deltaTime);
+		}
 	}
 }
 
 void Idiot_Engine::SceneManager::LateUpdate(const float deltaTime)
 {
-	const size_t size{ m_Scenes.size() };
-	for (size_t i{}; i < size; i++)
+	if (!m_bSwapped) 
 	{
-		if (static_cast<int>(i) == m_ActiveScene)
-			m_Scenes[i]->LateUpdate(deltaTime);
+		const size_t size{ m_Scenes.size() };
+		for (size_t i{}; i < size; i++)
+		{
+			if (static_cast<int>(i) == m_ActiveScene)
+				m_Scenes[i]->LateUpdate(deltaTime);
+		}
 	}
 }
 
 void Idiot_Engine::SceneManager::Render(const float nextFrameTime)
 {
-	const size_t size{ m_Scenes.size() };
-	for (size_t i{}; i < size; i++)
+	if (!m_bSwapped) 
 	{
-		if (static_cast<int>(i) == m_ActiveScene)
-			m_Scenes[i]->Render(nextFrameTime);
+		const size_t size{ m_Scenes.size() };
+		for (size_t i{}; i < size; i++)
+		{
+			if (static_cast<int>(i) == m_ActiveScene)
+				m_Scenes[i]->Render(nextFrameTime);
+		}
 	}
 }
 
@@ -63,7 +84,9 @@ std::shared_ptr<Idiot_Engine::Scene> Idiot_Engine::SceneManager::GetScene(const 
 
 void Idiot_Engine::SceneManager::SetActiveScene(int sceneIndex)
 {
+	m_bSwapped = true;
 	m_ActiveScene = sceneIndex;
+	InputManager::GetInstance().SetCurrentLevel(m_Scenes[sceneIndex]->GetName());
 }
 
 void Idiot_Engine::SceneManager::SetActiveScene(const std::string& name)
@@ -72,6 +95,7 @@ void Idiot_Engine::SceneManager::SetActiveScene(const std::string& name)
 	{
 		if(m_Scenes[i]->GetName()._Equal(name))
 		{
+			m_bSwapped = true;
 			m_ActiveScene = i;
 			InputManager::GetInstance().SetCurrentLevel(name);
 			return;

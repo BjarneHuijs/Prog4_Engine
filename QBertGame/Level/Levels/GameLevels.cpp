@@ -74,21 +74,30 @@ void GameLevels::LoadMainMenu()
 	startButtonTex->SetRelativePosition(0, 100);
 	m_pButtonObject->AddComponent(startButtonTex, startButtonTex->GetName());
 
+	const auto coopGame = std::make_shared<ButtonComponent>("CoopButton", this);
+	m_pButtonObject->AddComponent(coopGame, coopGame->GetName());
+	const auto coopButtonTex = std::make_shared<TextureComponent>("CoopButton_Texture");
+	coopButtonTex->SetScale(0.5f, 0.3f);
+	coopButtonTex->SetRelativePosition(0, 200);
+	m_pButtonObject->AddComponent(coopButtonTex, coopButtonTex->GetName());
 
 	const auto quitGame = std::make_shared<ButtonComponent>("ExitGameButton", this);
 	m_pButtonObject->AddComponent(quitGame, quitGame->GetName());
 	const auto quitButtonTex = std::make_shared<TextureComponent>("ExitGameButton_Texture");
 	quitButtonTex->SetScale(0.5f, 0.3f);
-	quitButtonTex->SetRelativePosition(0, 200);
+	quitButtonTex->SetRelativePosition(0, 300);
 	m_pButtonObject->AddComponent(quitButtonTex, quitButtonTex->GetName());
 
-	startGame->SetNextButton(quitGame->GetName());
-	startGame->SetPreviousButton(quitGame->GetName());
-	
 	m_pButtonObject->SetPosition(xSize * 0.25f, 80);
 	scene.Add(m_pButtonObject);
 	
+	startGame->SetNextButton(coopGame->GetName());
+	coopGame->SetNextButton(quitGame->GetName());
+	quitGame->SetNextButton(startGame->GetName());
+	startGame->SetPreviousButton(quitGame->GetName());
+
 	quitGame->DeSelect();
+	coopGame->DeSelect();
 	startGame->Select();
 	
 	InitMenuInput("MainMenu");
@@ -139,18 +148,18 @@ void GameLevels::LoadEndMenu()
 	p1Subject->AddObserver(endObserver.get());
 
 
-	m_pButtonObject = std::make_shared<GameObject>();
+	auto buttonObj = std::make_shared<GameObject>();
 	const auto mainMenu = std::make_shared<ButtonComponent>("MainMenuButton", this);
-	m_pButtonObject->AddComponent(mainMenu, mainMenu->GetName());
+	buttonObj->AddComponent(mainMenu, mainMenu->GetName());
 	const auto startButtonTex = std::make_shared<TextureComponent>("MainMenuButton_Texture");
 	startButtonTex->SetScale(0.5f, 0.3f);
 	startButtonTex->SetRelativePosition(0, 220);
-	m_pButtonObject->AddComponent(startButtonTex, startButtonTex->GetName());
+	buttonObj->AddComponent(startButtonTex, startButtonTex->GetName());
 
 	mainMenu->SetPreviousButton(mainMenu->GetName());
 
-	m_pButtonObject->SetPosition(xSize * 0.25f, 80);
-	scene.Add(m_pButtonObject);
+	buttonObj->SetPosition(xSize * 0.25f, 80);
+	scene.Add(buttonObj);
 
 	mainMenu->Select();
 	
@@ -252,11 +261,19 @@ void GameLevels::LoadLevel(int levelNum)
 	p1Subject->AddObserver(p1LivesObserver.get());
 	p1Subject->AddObserver(p1ScoreObserver.get());
 	scene.Add(m_pQBert_1);
-	
 	const float posOffset{ m_pTiles[0]->size * 0.25f };
+
 	m_pQBert_1->GetComponentByType<QBertComponent>()->SetPosOffset(posOffset);
 	m_pQBert_1->SetPosition(m_StartLocation.x + posOffset, m_StartLocation.y - posOffset);
 	
+	auto player_2 = m_pQBert_2->GetComponentByType<QBertComponent>();
+	auto p2Subject = m_pQBert_2->GetComponentByType<SubjectComponent>();
+	p2Subject->AddObserver(p1LivesObserver.get());
+	p2Subject->AddObserver(p1ScoreObserver.get());
+	scene.Add(m_pQBert_2);
+	
+	m_pQBert_2->GetComponentByType<QBertComponent>()->SetPosOffset(posOffset);
+	m_pQBert_2->SetPosition(m_StartLocation.x + posOffset, m_StartLocation.y - posOffset);
 	
 	for(size_t idx{}; idx < m_pTileObjects.size(); idx++)
 	{
@@ -265,6 +282,11 @@ void GameLevels::LoadLevel(int levelNum)
 		const auto playerObserver = std::make_shared<PlayerObserverComponent>(observerName, player_1->GetName(), moveEvents, levelNum);
 		m_pTileObjects[idx]->AddComponent(playerObserver, playerObserver->GetName());
 		p1Subject->AddObserver(playerObserver.get());
+
+		std::string observer2Name{ "Tile " + std::to_string(idx) + " Level " + std::to_string(levelNum) + " Observer2" };
+		const auto player2Observer = std::make_shared<PlayerObserverComponent>(observer2Name, player_2->GetName(), moveEvents, levelNum);
+		m_pTileObjects[idx]->AddComponent(player2Observer, player2Observer->GetName());
+		p1Subject->AddObserver(player2Observer.get());
 	}
 
 	for(size_t idx{}; idx < m_pDiscObjects.size(); idx++)
@@ -274,6 +296,11 @@ void GameLevels::LoadLevel(int levelNum)
 		const auto playerObserver = std::make_shared<PlayerObserverComponent>(observerName, player_1->GetName(), moveEvents, levelNum);
 		m_pDiscObjects[idx]->AddComponent(playerObserver, playerObserver->GetName());
 		p1Subject->AddObserver(playerObserver.get());
+
+		std::string observer2Name{ "Disc " + std::to_string(idx) + " Level " + std::to_string(levelNum) + " Observer2" };
+		const auto player2Observer = std::make_shared<PlayerObserverComponent>(observer2Name, player_2->GetName(), moveEvents, levelNum);
+		m_pDiscObjects[idx]->AddComponent(player2Observer, player2Observer->GetName());
+		p2Subject->AddObserver(player2Observer.get());
 	}
 
 	//go = std::make_shared<GameObject>();
@@ -554,6 +581,15 @@ void GameLevels::InitGameplayInput(const std::string& levelName)
 	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadLeft, new MoveBotLeft(m_pQBert_1.get()));
 	InputManager::GetInstance().AddCommand(levelName, SDLK_s, new MoveBotRight(m_pQBert_1.get()));
 	InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadDown, new MoveBotRight(m_pQBert_1.get()));
+
+	InputManager::GetInstance().AddCommand(levelName, SDLK_UP, new MoveTopLeft(m_pQBert_2.get()));
+	//InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadUp, new MoveTopLeft(m_pQBert_2.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_RIGHT, new MoveTopRight(m_pQBert_2.get()));
+	//InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadRight, new MoveTopRight(m_pQBert_2.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_LEFT, new MoveBotLeft(m_pQBert_2.get()));
+	//InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadLeft, new MoveBotLeft(m_pQBert_2.get()));
+	InputManager::GetInstance().AddCommand(levelName, SDLK_DOWN, new MoveBotRight(m_pQBert_2.get()));
+	//InputManager::GetInstance().AddCommand(levelName, ControllerButton::DPadDown, new MoveBotRight(m_pQBert_2.get()));
 }
 
 void GameLevels::InitMenuInput(const std::string& levelName)
@@ -580,9 +616,25 @@ void GameLevels::InitQBert()
 	m_pQBert_1->AddComponent(player_1, player_1->GetName());
 	m_pQBert_1->AddComponent(p1Subject, p1Subject->GetName());
 	m_pQBert_1->AddComponent(playerSprite, playerSprite->GetName());
+
+	m_pQBert_2 = std::make_shared<GameObject>();
+	const auto player_2 = std::make_shared<QBertComponent>("Player 2");
+	const auto player2Sprite = std::make_shared<SpriteComponent>("Player 2 Sprite", 8);
+	playerSprite->SetScale(2, 2);
+	playerSprite->SetTexture("QBert.png");
+	const auto p2Subject = std::make_shared<SubjectComponent>("Player 2 Subject");
+
+	m_pQBert_2->AddComponent(player_2, player_2->GetName());
+	m_pQBert_2->AddComponent(p2Subject, p2Subject->GetName());
+	m_pQBert_2->AddComponent(player2Sprite, player2Sprite->GetName());
 }
 
 std::shared_ptr<QBertComponent> GameLevels::GetQBert() const
 {
 	return m_pQBert_1->GetComponentByType<QBertComponent>();
+}
+
+std::shared_ptr<QBertComponent> GameLevels::GetQBert2() const
+{
+	return m_pQBert_2->GetComponentByType<QBertComponent>();
 }

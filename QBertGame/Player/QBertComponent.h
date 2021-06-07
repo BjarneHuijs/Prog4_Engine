@@ -46,7 +46,9 @@ public:
 	void SetCurrentLevel(const int level);
 
 	void ResetLevels();
-	void StartNewGame();
+	void StartNewGame(bool coop = false);
+
+	bool IsCoop() const;
 private:
 	int m_NrLives{};
 	int m_Score{};
@@ -65,6 +67,8 @@ private:
 	bool m_bOnDisc{};
 	int m_DiscTarget{};
 	int m_DiscId{};
+
+	bool m_bCoop;
 	
 	bool CheckForDisc(const int level);
 	void ResetLevel(const int level);

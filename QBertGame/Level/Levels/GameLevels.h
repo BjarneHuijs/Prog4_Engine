@@ -26,12 +26,14 @@ public:
 	void InitQBert();
 
 	std::shared_ptr<QBertComponent> GetQBert() const;
+	std::shared_ptr<QBertComponent> GetQBert2() const;
 private:
 	std::vector<std::shared_ptr<Idiot_Engine::GameObject>> m_pTileObjects{};
 	std::vector<std::shared_ptr<Idiot_Engine::GameObject>> m_pDiscObjects{};
 	std::vector<TileData*> m_pTiles{};
 	std::vector<DiscData*> m_pDiscs{};
 	std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_1{};
+	std::shared_ptr<Idiot_Engine::GameObject> m_pQBert_2{};
 	std::shared_ptr<Idiot_Engine::GameObject> m_pButtonObject{};
 	//std::shared_ptr<Idiot_Engine::GameObject> m_pSpawner{};
 	glm::vec2 m_StartLocation{};

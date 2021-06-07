@@ -66,6 +66,9 @@
     <ClCompile Include="NPC\Coily\CoilyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NPC\UggWrong\UggWrongComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QBertGamePCH.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NPC\Coily\CoilyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\UggWrong\UggWrongComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,8 +29,17 @@ void PlayerObserverComponent::OnNotify(const GameObject& player, const ObserverE
 		{
 			auto qBert = player.GetComponentByName<QBertComponent>(m_LinkedComponentName);
 			auto spriteComponent{ m_pParent->GetComponentByType<SpriteComponent>() };
-			if (qBert) 
+			if (qBert)
 			{
+				/*if (qBert->GetName()._Equal("Player 2") && !qBert->IsCoop())
+				{
+					qBert->GetParent()->GetComponentByType<SpriteComponent>()->SetScale(0, 0);
+				}
+				else if (qBert->GetName()._Equal("Player 2") && qBert->IsCoop())
+				{
+					qBert->GetParent()->GetComponentByType<SpriteComponent>()->SetScale(2, 2);
+				}*/
+				
 				std::string spriteName{ spriteComponent->GetName() };
 				
 				// add 1 to index to find value of index in name
@@ -58,7 +67,7 @@ void PlayerObserverComponent::OnNotify(const GameObject& player, const ObserverE
 							spriteComponent->ToTargetFrame(targetFrame);
 						}
 					}
-					else 
+					else
 					{
 						if (spriteComponent && tileIdx == qBert->GetCurrentTileID() && qBert->GetNrOfLives() > 0)
 						{

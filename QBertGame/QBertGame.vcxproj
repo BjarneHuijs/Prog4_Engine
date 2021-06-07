@@ -232,6 +232,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     <ClCompile Include="NPC\Slime\SlimeComponent.cpp" />
     <ClCompile Include="NPC\Spawner\SpawnerComponent.cpp" />
     <ClCompile Include="NPC\Slick_Sam\SlickSamComponent.cpp" />
+    <ClCompile Include="NPC\UggWrong\UggWrongComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">
@@ -257,6 +258,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     <ClInclude Include="NPC\Spawner\NPCManager.h" />
     <ClInclude Include="NPC\Slime\SlimeComponent.h" />
     <ClInclude Include="NPC\Spawner\SpawnerComponent.h" />
+    <ClInclude Include="NPC\UggWrong\UggWrongComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

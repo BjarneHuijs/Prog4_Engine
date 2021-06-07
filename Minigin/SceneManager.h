@@ -29,5 +29,8 @@ namespace Idiot_Engine
 		std::vector<std::shared_ptr<Scene>> m_Scenes{};
 
 		int m_ActiveScene{};
+		bool m_bSwapped{};
+		float m_Swaptime{0.5f};
+		float m_Swaptimer{0.f};
 	};
 }

@@ -101,3 +101,8 @@ std::shared_ptr<QBertComponent> ButtonComponent::GetUser() const
 {
 	return m_pLevel->GetQBert();
 }
+
+std::shared_ptr<QBertComponent> ButtonComponent::GetUser2() const
+{
+	return m_pLevel->GetQBert2();
+}
