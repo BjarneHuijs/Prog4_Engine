@@ -37,6 +37,7 @@ private:
 	glm::vec2 m_StartLocation{};
 
 	int m_SpawnerInterval{};
+	int m_NrOfNPCTypes{};
 	
 	std::vector<int> LoadLinkedTiles(const rapidjson::Value& val, const std::string& jsonKey)const;
 };

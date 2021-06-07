@@ -12,8 +12,11 @@ NPCBaseComponent::NPCBaseComponent(const std::string& name, int id, int spawnTil
 	, m_bMoving(true)
 	, m_bFalling(false)
 	, m_bPaused(false)
-	, m_PauseTime(2.f)
-	, m_PauseTimer()
+	, m_PauseTime(3.f)
+	, m_PauseTimer(0.f)
+	, m_bMoved(false)
+	, m_MoveDelay(0.5f)
+	, m_MoveDelayTimer(0.f)
 	, m_bDead(false)
 {
 }
@@ -21,6 +24,11 @@ NPCBaseComponent::NPCBaseComponent(const std::string& name, int id, int spawnTil
 void NPCBaseComponent::SetPosOffset(float offset)
 {
 	m_PosOffset = offset;
+}
+
+void NPCBaseComponent::Pause()
+{
+	m_bPaused = true;
 }
 
 int NPCBaseComponent::GetCurrentTileID() const

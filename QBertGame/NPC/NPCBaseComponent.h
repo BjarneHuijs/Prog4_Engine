@@ -19,12 +19,15 @@ public:
 	virtual void MoveTopRight() = 0;
 	virtual void MoveBotLeft() = 0;
 	virtual void MoveBotRight() = 0;
+	
 	void SetPosOffset(float offset);
-
+	void Pause();
+	
 	int GetCurrentTileID() const;
 	int GetCurrentLevelNr() const;
 	int GetNPC_ID() const;
 	int IsDead() const;
+
 protected:
 	int m_NPC_ID;
 	int m_CurrentTile;
@@ -40,6 +43,10 @@ protected:
 	float m_PauseTime;
 	float m_PauseTimer;
 
+	bool m_bMoved;
+	float m_MoveDelay;
+	float m_MoveDelayTimer;
+	
 	bool m_bDead;
 };
 

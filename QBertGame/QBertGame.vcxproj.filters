@@ -57,7 +57,13 @@
     <ClCompile Include="NPC\Spawner\SpawnerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonComponent.cpp">
+    <ClCompile Include="Structs_And_Menu\ButtonComponent\ButtonComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Slick_Sam\SlickSamComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC\Coily\CoilyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,7 +113,13 @@
     <ClInclude Include="NPC\Spawner\SpawnerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonComponent.h">
+    <ClInclude Include="Structs_And_Menu\ButtonComponent\ButtonComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Slick_Sam\SlickSamComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC\Coily\CoilyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

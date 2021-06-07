@@ -211,7 +211,8 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="Structs_And_Menu\ButtonComponent\ButtonComponent.cpp" />
+    <ClCompile Include="NPC\Coily\CoilyComponent.cpp" />
     <ClCompile Include="Level\Levels\GameLevels.cpp" />
     <ClCompile Include="NPC\NPCBaseComponent.cpp" />
     <ClCompile Include="NPC\Observer\NPCObserverComponent.cpp" />
@@ -230,6 +231,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
     <ClCompile Include="NPC\Spawner\NPCManager.cpp" />
     <ClCompile Include="NPC\Slime\SlimeComponent.cpp" />
     <ClCompile Include="NPC\Spawner\SpawnerComponent.cpp" />
+    <ClCompile Include="NPC\Slick_Sam\SlickSamComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">
@@ -238,8 +240,10 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildTypeSelector.h" />
-    <ClInclude Include="ButtonComponent.h" />
+    <ClInclude Include="Structs_And_Menu\ButtonComponent\ButtonComponent.h" />
+    <ClInclude Include="NPC\Coily\CoilyComponent.h" />
     <ClInclude Include="Level\Levels\GameLevels.h" />
+    <ClInclude Include="NPC\Slick_Sam\SlickSamComponent.h" />
     <ClInclude Include="Structs_And_Menu\QBertStructs.h" />
     <ClInclude Include="NPC\NPCBaseComponent.h" />
     <ClInclude Include="NPC\Observer\NPCObserverComponent.h" />

@@ -7,7 +7,7 @@
 #include "SpriteComponent.h"
 #include "TextComponent.h"
 #include "../../Player/QBertComponent.h"
-#include "../../QBertStructs/QBertStructs.h"
+#include "../../Structs_And_Menu/QBertStructs.h"
 #include "../../Level/Tile/TileManager.h"
 
 using namespace Idiot_Engine;

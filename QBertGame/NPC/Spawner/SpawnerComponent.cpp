@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "NPCManager.h"
 #include "../NPCBaseComponent.h"
+#include "../Coily/CoilyComponent.h"
+#include "../Slick_Sam/SlickSamComponent.h"
 #include "../Slime/SlimeComponent.h"
 
 
@@ -33,7 +35,7 @@ void SpawnerComponent::Update(const float deltaTime)
 	if (m_SpawnTimer >= m_SpawnInterval)
 	{
 		m_SpawnTimer = 0;
-		NPCManager::GetInstance().SpawnNpc();
+		NPCManager::GetInstance().SpawnNpc(m_Types);
 	}
 }
 
@@ -42,16 +44,31 @@ void SpawnerComponent::LateUpdate(const float)
 	auto npcs = NPCManager::GetInstance().GetNpcs();
 	for(const auto& npc : npcs)
 	{
-		auto npcComp = npc->GetComponentByType<SlimeComponent>();
-		if(npcComp->IsDead())
+		auto slimeComp = npc->GetComponentByType<SlimeComponent>();
+		if(slimeComp && slimeComp->IsDead())
 		{
-			NPCManager::GetInstance().RemoveNpc(npcComp->GetNPC_ID());
+			NPCManager::GetInstance().RemoveNpc(slimeComp->GetNPC_ID());
 		}
 
-		// redo check for other component types if type != slime
+		auto slickSamComp = npc->GetComponentByType<SlickSamComponent>();
+		if (slickSamComp && slickSamComp->IsDead())
+		{
+			NPCManager::GetInstance().RemoveNpc(slickSamComp->GetNPC_ID());
+		}
+		// redo check for other component types if type != slime or slickSam
+		auto coilyComp = npc->GetComponentByType<CoilyComponent>();
+		if (coilyComp && coilyComp->IsDead())
+		{
+			NPCManager::GetInstance().RemoveNpc(coilyComp->GetNPC_ID());
+		}
 	}
 }
 
 void SpawnerComponent::Render(const float) const
 {
+}
+
+void SpawnerComponent::SetNpcTypes(const std::vector<NPCTypes>& types)
+{
+	m_Types = types;
 }

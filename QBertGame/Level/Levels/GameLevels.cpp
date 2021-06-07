@@ -19,12 +19,12 @@
 #include "TextObserverComponent.h"
 #include "TextureComponent.h"
 #include "../../BuildTypeSelector.h"
-#include "../../ButtonComponent.h"
 #include "../../NPC/Observer/NPCObserverComponent.h"
 #include "../../NPC/Spawner/SpawnerComponent.h"
 #include "../../Player/QBertComponent.h"
 #include "../../Player/Commands/QBertCommands.h"
 #include "../../Player/Observer/PlayerObserverComponent.h"
+#include "../../Structs_And_Menu/ButtonComponent/ButtonComponent.h"
 #include "../Tile/TileManager.h"
 
 GameLevels::GameLevels()
@@ -198,6 +198,29 @@ void GameLevels::LoadLevel(int levelNum)
 
 	go = std::make_shared<GameObject>();
 	const auto spawner = std::make_shared<SpawnerComponent>("npcSpawner", m_SpawnerInterval);
+	std::vector<NPCTypes> types{};
+	switch (m_NrOfNPCTypes)
+	{
+		case 1:
+			types.push_back(NPCTypes::Slime);
+			break;
+		case 2:
+			types.push_back(NPCTypes::Slime);
+			types.push_back(NPCTypes::Coily);
+			break;
+		case 3:
+			types.push_back(NPCTypes::Slime);
+			types.push_back(NPCTypes::SlickSam);
+			types.push_back(NPCTypes::Coily);
+			break;
+		default: 
+			types.push_back(NPCTypes::Slime);
+			types.push_back(NPCTypes::SlickSam);
+			types.push_back(NPCTypes::Coily);
+			types.push_back(NPCTypes::UggWrong);
+			break;
+	}
+	spawner->SetNpcTypes(types);
 	go->AddComponent(spawner, spawner->GetName());
 	scene.Add(go);
 	
@@ -286,7 +309,8 @@ void GameLevels::LoadTiles(Scene& scene, const std::ifstream& file)
 		int lvlNr = jsonDoc["LevelNr"].GetInt();
 		int nrOfColors = jsonDoc["NrOfColors"].GetInt();
 		m_SpawnerInterval = jsonDoc["SpawnInterval"].GetInt();
-
+		m_NrOfNPCTypes = jsonDoc["NrOfNPCtypes"].GetInt();
+		
 		const Value& tiles = jsonDoc["Tiles"];
 
 		//Check if the data we got has an array

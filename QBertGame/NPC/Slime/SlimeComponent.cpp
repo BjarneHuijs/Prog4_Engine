@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "SubjectComponent.h"
 #include "../../Level/Tile/TileManager.h"
+#include "../Spawner/NPCManager.h"
 
 using namespace Idiot_Engine;
 SlimeComponent::SlimeComponent(const std::string& name, bool isRedSlime, int id, int spawnTile, int level, float movementSpeed)
@@ -25,17 +26,25 @@ void SlimeComponent::Update(const float deltaTime)
 		m_PauseTimer += deltaTime;
 		if(m_PauseTimer >= m_PauseTime)
 		{
+			NPCManager::GetInstance().UnPause();
 			m_bPaused = false;
 			m_PauseTimer = 0.f;
 		}
 	}
+	else if(m_bMoved)
+	{
+		m_MoveDelayTimer += deltaTime;
+		if (m_MoveDelayTimer >= m_MoveDelay)
+		{
+			m_bMoved = false;
+			m_MoveDelayTimer = 0.f;
+		}
+	}
 	else 
 	{
-		std::shared_ptr<SubjectComponent> subject{ nullptr };
 		const Transform transform{ m_pParent->GetTransform() };
 		if (m_pParent)
 		{
-			subject = m_pParent->GetComponentByType<SubjectComponent>();
 			if (m_bFalling)
 			{
 				m_TargetPos.y += (m_PosOffset / 4);
@@ -47,7 +56,6 @@ void SlimeComponent::Update(const float deltaTime)
 				}
 				else 
 				{
-
 					const glm::vec2 movement = (transform.GetPosition2D() + (m_TargetPos - transform.GetPosition2D()) * deltaTime * m_MovementSpeed);
 					m_pParent->SetPosition(movement.x, movement.y);
 				}
@@ -61,11 +69,7 @@ void SlimeComponent::Update(const float deltaTime)
 				{
 					m_pParent->SetPosition(m_TargetPos.x, m_TargetPos.y);
 					m_bMoving = false;
-					
-					//if (subject)// && m_Health == m_MaxHealth)
-					//{
-					//	subject->NotifyObservers(*m_pParent, ObserverEvent{ "SlimeMoved", EventTypes::SlimeMoved });
-					//}
+					m_bMoved = true;
 				}
 				else
 				{
@@ -85,51 +89,6 @@ void SlimeComponent::Update(const float deltaTime)
 					MoveBotRight();
 				}
 			}
-
-			//deltaTime;
-			/*if (m_Health < m_MaxHealth || m_CurrentTile == -1)
-			{
-				//std::cout << "player died" << std::endl;
-				m_Health += deltaTime;
-
-
-				if (subject)
-				{
-					subject->NotifyObservers(*m_pParent, ObserverEvent{ "PlayerDied", EventTypes::LivesChanged });
-				}
-
-				m_CurrentTile = 0;
-			}
-			else
-			{
-				m_Health = m_MaxHealth;
-
-				if (m_NrLives <= 0)
-				{
-					if (subject)
-					{
-						subject->NotifyObservers(*m_pParent, ObserverEvent{ "Game Over", EventTypes::PlayerDeath });
-					}
-					if (subject)
-					{
-						subject->NotifyObservers(*m_pParent, ObserverEvent{ " ", EventTypes::PlayerDeath });
-					}
-					ServiceLocator::GetAudio()->QueueSound(7); // id 7 = game over
-					SceneManager::GetInstance().SetActiveScene("Level_1");
-					m_Score = 0;
-					m_CurrentLevel = 1;
-					ResetLevels();
-					SetCurrentLevel(m_CurrentLevel);
-
-				}
-				else
-				{
-					if (subject)
-					{
-						subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
-					}
-				}
-			}*/
 		}
 	}
 }
@@ -144,37 +103,12 @@ void SlimeComponent::Render(const float) const
 void SlimeComponent::Kill()
 {
 	ServiceLocator::GetAudio()->QueueSound(4); // id 4 = fall
-	/*if (m_Health >= m_MaxHealth)
-	{
-		m_Health = 0;
-		m_NrLives--;
-
-		std::shared_ptr<SubjectComponent> subject{ nullptr };
-		if (m_pParent)
-		{
-			subject = m_pParent->GetComponentByType<SubjectComponent>();
-
-
-			if (subject)
-			{
-				subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
-			}
-		}
-	}*/
+	m_bDead = true;
 }
 
 void SlimeComponent::Fall()
 {
-	std::shared_ptr<SubjectComponent> subject{ nullptr };
-	if (m_pParent)
-	{
-		subject = m_pParent->GetComponentByType<SubjectComponent>();
-		m_bFalling = true;
-		if (subject)
-		{
-			//subject->NotifyObservers(*m_pParent, ObserverEvent{ ("Lives: " + std::to_string(m_NrLives)), EventTypes::LivesChanged });
-		}
-	}
+	m_bFalling = true;
 }
 
 void SlimeComponent::MoveTopLeft(){}
@@ -188,7 +122,12 @@ void SlimeComponent::MoveBotLeft()
 	{
 		ServiceLocator::GetAudio()->QueueSound(3); // id 3 = moveSlime
 		TileData* tile = TileManager::GetInstance().GetTile(m_CurrentLevel - 1, m_CurrentTile);
-		tile->npcOnTile = false;
+
+		if (m_bRed)
+			tile->npcHostileOnTile = false;
+		else
+			tile->npcOnTile = false;
+
 		if (targetIndex == -1)
 		{
 			Fall();
@@ -202,7 +141,10 @@ void SlimeComponent::MoveBotLeft()
 			m_TargetPos.y -= (m_PosOffset / 4);
 
 			tile = TileManager::GetInstance().GetTile(m_CurrentLevel - 1, m_CurrentTile);
-			tile->npcOnTile = true;
+			if(m_bRed)
+				tile->npcHostileOnTile = true;
+			else
+				tile->npcOnTile = true;
 		}
 		m_bMoving = true;
 	}
@@ -216,7 +158,12 @@ void SlimeComponent::MoveBotRight()
 	{
 		ServiceLocator::GetAudio()->QueueSound(3); // id 3 = moveSlime
 		TileData* tile = TileManager::GetInstance().GetTile(m_CurrentLevel - 1, m_CurrentTile);
-		tile->npcOnTile = false;
+
+		if (m_bRed)
+			tile->npcHostileOnTile = false;
+		else
+			tile->npcOnTile = false;
+		
 		if (targetIndex == -1)
 		{
 			Fall();
@@ -230,7 +177,10 @@ void SlimeComponent::MoveBotRight()
 			m_TargetPos.y -= (m_PosOffset / 4);
 			
 			tile = TileManager::GetInstance().GetTile(m_CurrentLevel - 1, m_CurrentTile);
-			tile->npcOnTile = true;
+			if (m_bRed)
+				tile->npcHostileOnTile = true;
+			else
+				tile->npcOnTile = true;
 		}
 		m_bMoving = true;
 	}

@@ -1,6 +1,6 @@
 #include "QBertGamePCH.h"
 #include "TileManager.h"
-#include "../../QBertStructs/QBertStructs.h"
+#include "../../Structs_And_Menu/QBertStructs.h"
 
 void TileManager::AddTile(TileData* tile)
 {
@@ -19,8 +19,10 @@ std::vector<TileData*> TileManager::GetTiles(const int level) const
 
 TileData* TileManager::GetTile(const int level, const int index) const
 {
-	if (level < static_cast<int>(m_pLevelTiles.size()))
+	if (level < static_cast<int>(m_pLevelTiles.size()) && index >= 0 )
+	{
 		return m_pLevelTiles.at(level).at(index);
+	}
 	return nullptr;
 }
 
@@ -89,6 +91,8 @@ void TileManager::ClearTiles(const int level)
 		{
 			tile->CurrentState = TileStates::Base;
 			tile->cleared = false;
+			tile->npcOnTile = false;
+			tile->npcHostileOnTile = false;
 		}
 	}
 
